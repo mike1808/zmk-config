@@ -12,9 +12,6 @@
 #define RSE 2
 #define ADJ 3
 
-&mt {
-    tapping-term-ms = <150>;
-};
 
 &sk {
     release-after-ms = <500>;
@@ -32,15 +29,24 @@
         };
           
         behaviors {
-            lt_qk: behavior_lt_quick {
+            lt_qk: layer_toggle_quick {
                 compatible = "zmk,behavior-hold-tap";
-                label = "lt_qk";
+                label = "LAYER_TOGGLE_QUICK";
                 #binding-cells = <2>;
-                flavor = "balanced";
-                tapping-term-ms = <200>;
-                quick-tap-ms = <125>;
+                flavor = "tap-preferred";
+                tapping-term-ms = <150>;
+                quick-tap-ms = <150>;
                 bindings = <&mo>, <&kp>;
             };
+            mt_sk: mod_tap_sticky {
+              compatible = "zmk,behavior-hold-tap";
+              label = "MOD_TAP_STICKY";
+              #binding-cells = <2>;
+              flavor = "tap-preferred";
+              tapping-term-ms = <150>;
+              quick-tap-ms = <150>;
+              bindings = <&sk>, <&kp>;
+          };
         };
 
         keymap {
@@ -53,9 +59,9 @@
 // | SHFT |  LCTRL/Z  |  LALT/X  |  C  |  V  |  B  |   |  N  |  M   |  ,  |  .  |  /  | ESC  |
 //                    | GUI | SPC | BKSP/LWR |   | RSE | ENT  | ALT |
                         bindings = <
-   &kp TAB   &kp Q        &kp W      &kp E &kp R &kp T   &kp Y &kp U  &kp I     &kp O        &kp P          &kp PIPE
-   &kp ESC   &kp A        &kp S      &kp D &kp F &kp G   &kp H &kp J  &kp K     &kp L        &kp SEMI       &kp SQT
-   &sk LSHFT &mt LCTRL Z  &mt LALT X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &mt RALT DOT &mt RCTRL FSLH &kp ESC
+   &kp TAB   &kp Q          &kp W         &kp E &kp R &kp T   &kp Y &kp U  &kp I     &kp O           &kp P            &kp PIPE
+   &kp ESC   &kp A          &kp S         &kp D &kp F &kp G   &kp H &kp J  &kp K     &kp L           &kp SEMI         &kp SQT
+   &sk LSHFT &mt_sk LCTRL Z &mt_sk LALT X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &mt_sk RALT DOT &mt_sk CTRL FSLH &sk RSHIFT
                   &kp LGUI &kp SPACE &lt_qk LOW BKSP        &lt_qk RSE DEL  &kp RET &kp RALT
                         >;
                 };
@@ -81,10 +87,10 @@
 // | SHFT |     |     |     |     |     |   |     |     |     |     |     |      |
 //                    | GUI |     | SPC |   | ENT |     | ALT |
                         bindings = <
-   &kp TAB    &kp N1       &kp N2       &kp N3       &kp N4       &kp N5         &kp N6   &kp N7   &kp N8 &kp N9    &kp N0 &trans
-   &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4   &kp LEFT &kp DOWN &kp UP &kp RIGHT &trans &trans
-   &kp LSHFT  &trans       &trans       &trans       &trans       &trans         &trans   &trans   &trans &trans    &trans &trans
-                    	     &trans &trans   &trans   &trans   &trans    &trans
+   &kp TAB    &kp N1     &kp N2     &kp N3     &kp N4     &kp N5         &kp N6   &kp N7   &kp N8 &kp N9    &kp N0 &trans
+   &trans     &kp F1     &kp F2     &kp F3     &kp F4     &kp F5         &kp LEFT &kp DOWN &kp UP &kp RIGHT &trans &trans
+   &trans     &kp F6     &kp F7     &kp F8     &kp F9     &kp F10        &trans   &trans   &trans &trans    &trans &trans
+                    	   &trans &trans   &trans   &trans   &trans    &trans
                         >;
                 };
 
