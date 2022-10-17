@@ -61,7 +61,7 @@
                         bindings = <
    &kp TAB   &kp Q          &kp W         &kp E &kp R &kp T   &kp Y &kp U  &kp I     &kp O           &kp P            &kp PIPE
    &kp ESC   &kp A          &kp S         &kp D &kp F &kp G   &kp H &kp J  &kp K     &kp L           &kp SEMI         &kp SQT
-   &sk LSHFT &mt_sk LCTRL Z &mt_sk LALT X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &mt_sk RALT DOT &mt_sk CTRL FSLH &sk RSHIFT
+   &sk LSHFT &mt_sk LCTRL Z &mt_sk LALT X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &mt_sk RALT DOT &mt_sk CTRL FSLH &sk RSHFT
                   &kp LGUI &kp SPACE &lt_qk LOW BKSP        &lt_qk RSE DEL  &kp RET &kp RALT
                         >;
                 };
