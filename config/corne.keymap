@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include "nice_nano_v2.dtsi"
 #include "keymap.dtsi"
 #include "nice_view.dtsi"
 
