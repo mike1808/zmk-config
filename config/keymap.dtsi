@@ -56,6 +56,15 @@
               quick-tap-ms = <150>;
               bindings = <&sk>, <&kp>;
           };
+          ht: hold_tap {
+              compatible = "zmk,behavior-hold-tap";
+              label = "HOLD_TAP";
+              #binding-cells = <2>;
+              tapping_term_ms = <135>;
+              quick_tap_ms = <0>;
+              flavor = "tap-preferred";
+              bindings = <&kp>, <&kp>;
+          };
         };
 
         keymap {
@@ -68,7 +77,7 @@
 // | SHFT |  LCTRL/Z  |  LALT/X  |  C  |  V  |  B  |   |  N  |  M   |  ,  |  .  |  /  | ESC  |
 //                    | GUI | SPC | BKSP/LWR |   | RSE | ENT  | ALT |
                         bindings = <
-   &kp TAB   &kp Q          &kp W         &kp E &kp R &kp T   &kp Y &kp U  &kp I     &kp O           &kp P             &kp PIPE
+   &kp TAB   &ht 1 Q        &ht 2 W       &ht 3 E &ht 4 R &ht 5 T   &ht 6 Y &ht 7 U  &ht 8 I     &ht 9 O           &ht 0 P             &kp PIPE
    &kp ESC   &kp A          &kp S         &kp D &kp F &kp G   &kp H &kp J  &kp K     &kp L           &kp SEMI          &kp SQT
    &sk LSHFT &mt_sk LCTRL Z &mt_sk LALT X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &mt_sk RALT DOT &mt_sk RCTRL FSLH &sk RSHFT
                   &sk LGUI &kp SPACE &lt_qk LOW BKSP        &lt_qk RSE DEL  &kp RET &sk RGUI
