@@ -25,6 +25,10 @@
 	};
 };
 
+nice_view_spi: &spi0 {
+	cs-gpios = <&gpio0 8 GPIO_ACTIVE_HIGH>;
+};
+
 / {
 	chosen {
 		zmk,underglow = &led_strip;

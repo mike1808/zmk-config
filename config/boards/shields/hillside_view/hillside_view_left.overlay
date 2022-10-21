@@ -1,0 +1,26 @@
+/*
+ * Copyright (c) 2022 The ZMK Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+#include "hillside_view.dtsi"
+
+&kscan0  {
+	col-gpios
+		= <&gpio1 7 GPIO_ACTIVE_HIGH>
+		, <&pro_micro 18 GPIO_ACTIVE_HIGH>
+		, <&pro_micro 15 GPIO_ACTIVE_HIGH>
+		, <&pro_micro 14 GPIO_ACTIVE_HIGH>
+		, <&pro_micro 16 GPIO_ACTIVE_HIGH>
+		, <&pro_micro 10 GPIO_ACTIVE_HIGH>
+		;
+};
+
+&left_encoder {
+	status = "okay";
+};
+
+&nice_view_spi {
+	status = "okay";
+};

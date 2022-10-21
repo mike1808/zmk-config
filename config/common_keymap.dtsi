@@ -1,0 +1,114 @@
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h> 
+#include <dt-bindings/zmk/rgb.h>
+#include <dt-bindings/zmk/ext_power.h>
+#include <dt-bindings/zmk/outputs.h>
+
+
+#define DEF 0
+#define LOW 1
+#define RSE 2
+#define ADJ 3
+
+
+&sk {
+  release-after-ms = <1000>;
+  quick-release;
+};
+
+&caps_word {};
+
+/ {
+  conditional_layers {
+    compatible = "zmk,conditional-layers";
+    tri_layer {
+        if-layers = <LOW RSE>;
+        then-layer = <ADJ>;
+    };
+  };
+
+  combos {
+    compatible = "zmk,combos";
+    combo_esc {
+        timeout-ms = <50>;
+        key-positions = <24 35>; // LSFT + RSHFT
+        bindings = <&caps_word>;
+    };
+  };
+    
+  behaviors {
+      lt_qk: layer_toggle_quick {
+          compatible = "zmk,behavior-hold-tap";
+          label = "LAYER_TOGGLE_QUICK";
+          #binding-cells = <2>;
+          flavor = "tap-preferred";
+          tapping-term-ms = <150>;
+          quick-tap-ms = <150>;
+          bindings = <&mo>, <&kp>;
+      };
+      mt_sk: mod_tap_sticky {
+        compatible = "zmk,behavior-hold-tap";
+        label = "MOD_TAP_STICKY";
+        #binding-cells = <2>;
+        flavor = "tap-preferred";
+        tapping-term-ms = <150>;
+        quick-tap-ms = <150>;
+        bindings = <&sk>, <&kp>;
+    };
+    ht: hold_tap {
+        compatible = "zmk,behavior-hold-tap";
+        label = "HOLD_TAP";
+        #binding-cells = <2>;
+        tapping_term_ms = <200>;
+        quick_tap_ms = <150>;
+        flavor = "tap-preferred";
+        bindings = <&kp>, <&kp>;
+    };
+  };
+};
+
+#define __________QWERTY_L1__________ &ht GRAVE TAB   &ht N1 Q        &ht N2 W         &ht N3 E          &ht N4 R             &ht N5 T
+#define __________QWERTY_L2__________ &kp ESC         &kp A           &kp S            &kp D             &kp F                &kp G
+#define __________QWERTY_L3__________ &sk LSHFT       &mt_sk LCTRL Z  &mt_sk LALT X    &kp C             &kp V                &kp B 
+
+#define __________QWERTY_R1__________ &ht N6 Y        &ht N7 U        &ht N8 I         &ht N9 O          &ht N0 P             &kp PIPE
+#define __________QWERTY_R2__________ &kp H           &kp J           &kp K            &kp L             &kp SEMI             &kp SQT
+#define __________QWERTY_R3__________ &kp N           &kp M           &kp COMMA        &mt_sk RALT DOT   &mt_sk RCTRL FSLH    &sk RSHFT
+
+#define ___________LOWER_L1__________ &trans  &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT
+#define ___________LOWER_L2__________ &trans  &trans   &trans &trans   &trans   &trans   
+#define ___________LOWER_L3__________ &trans  &trans   &trans &trans   &trans   &trans   
+
+#define ___________LOWER_R1__________ &kp CARET &kp AMPS  &kp KP_MULTIPLY &kp LPAR &kp RPAR &kp BSPC
+#define ___________LOWER_R2__________ &kp MINUS &kp EQUAL &kp LBKT        &kp RBKT &kp BSLH &kp GRAVE
+#define ___________LOWER_R3__________ &kp UNDER &kp PLUS  &kp LBRC        &kp RBRC &kp PIPE &kp TILDE
+
+#define ___________RAISE_L1__________ &kp TAB    &ht F1 N1  &ht F2 N2  &ht F3 N3  &ht F4 N4  &ht F5 N5
+#define ___________RAISE_L2__________ &trans     &kp F1     &kp F2     &kp F3     &kp F4     &kp F5   
+#define ___________RAISE_L3__________ &trans     &kp F6     &kp F7     &kp F8     &kp F9     &kp F10  
+
+#define ___________RAISE_R1__________ &ht F6 N6    &ht F7 N7   &ht F8 N8    &ht F9 N9    &ht F10 N0 &trans
+#define ___________RAISE_R2__________ &kp LEFT     &kp DOWN    &kp UP       &kp RIGHT    &trans     &trans
+#define ___________RAISE_R3__________ &kp C_VOL_UP &kp C_MUTE  &kp C_VOL_DN &kp C_PREV   &kp C_PP   &kp C_NEXT
+
+#define __________ADJUST_L1__________ &bootloader &rgb_ug RGB_TOG &rgb_ug RGB_HUI  &rgb_ug RGB_SAI &rgb_ug RGB_BRI &rgb_ug RGB_SPI
+#define __________ADJUST_L2__________ &reset      &rgb_ug RGB_EFF &rgb_ug RGB_HUD  &rgb_ug RGB_SAD &rgb_ug RGB_BRD &rgb_ug RGB_SPD
+#define __________ADJUST_L3__________ &bt BT_CLR  &bt BT_SEL 0    &bt BT_SEL 1     &bt BT_SEL 2    &bt BT_SEL 3    &bt BT_SEL 4   
+
+#define __________ADJUST_R1__________ &out OUT_TOG &trans &trans &trans &trans &bootloader
+#define __________ADJUST_R2__________ &trans       &trans &trans &trans &trans &reset
+#define __________ADJUST_R3__________ &trans       &trans &trans &trans &trans &trans
+
+
+#define _________THUMB3_BASE_L_______ &sk LGUI &kp SPACE &lt_qk LOW BKSP
+#define _________THUMB3_BASE_R_______ &lt_qk RSE DEL  &kp RET &sk RGUI
+
+#define _________THUMB3_LOWER_L______ &trans &trans &trans
+#define _________THUMB3_LOWER_R______ &trans &trans &trans
+
+#define _________THUMB3_RAISE_L______ &trans &trans &trans
+#define _________THUMB3_RAISE_R______ &trans &trans &trans
+
+#define _________THUMB3_ADJUST_L_____ &ext_power EP_TOG &trans &trans
+#define _________THUMB3_ADJUST_R_____ &trans            &trans &ext_power EP_TOG
