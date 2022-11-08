@@ -1,10 +1,65 @@
-/*
- * Copyright (c) 2020 The ZMK Contributors
- *
- * SPDX-License-Identifier: MIT
- */
+#include "corne_config.dtsi"
+#include "common_keymap.dtsi"
 
-#include "nice_nano_v2.dtsi"
-#include "keymap.dtsi"
-#include "nice_view.dtsi"
+/ {
+  keymap {
+    compatible = "zmk,keymap";
+
+    default_layer {
+// -----------------------------------------------------------------------------------------
+// |  TAB |  Q        |  W       |  E  |  R  |  T  |   |  Y  |  U   |  I  |  O  |  P  | "|"  |
+// |  ESC |  A        |  S       |  D  |  F  |  G  |   |  H  |  J   |  K  |  L  |  ;  |  '   |
+// | SHFT |  LCTRL/Z  |  LALT/X  |  C  |  V  |  B  |   |  N  |  M   |  ,  |  .  |  /  | ESC  |
+//                    | GUI | SPC | BKSP/LWR |   | RSE | ENT  | ALT |
+      bindings = <
+   __________QWERTY_L1__________   __________QWERTY_R1__________
+   __________QWERTY_L2__________   __________QWERTY_R2__________
+   __________QWERTY_L3__________   __________QWERTY_R3__________
+   _________THUMB3_BASE_L_______   _________THUMB3_BASE_R_______
+              >;
+      };
+
+      lower_layer {
+// -----------------------------------------------------------------------------------------
+// |  TAB |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |  (  |  )  | BKSP |
+// | CTRL |     |     |     |     |     |   |  -  |  =  |  [  |  ]  |  \  |  `   |
+// | SHFT |     |     |     |     |     |   |  _  |  +  |  {  |  }  | "|" |  ~   |
+//                    | GUI |     | SPC |   | ENT |     | ALT |
+        bindings = <
+   ___________LOWER_L1__________   ___________LOWER_R1__________
+   ___________LOWER_L2__________   ___________LOWER_R2__________
+   ___________LOWER_L3__________   ___________LOWER_R3__________
+   _________THUMB3_LOWER_L______   _________THUMB3_LOWER_R______
+                >;
+        };
+
+        raise_layer {
+// -----------------------------------------------------------------------------------------
+// |  TAB |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  | BKSP |
+// | BTCLR| BT1 | BT2 | BT3 | BT4 | BT5 |   | LFT | DWN |  UP | RGT |     |      |
+// | SHFT |     |     |     |     |     |   |     |     |     |     |     |      |
+//                    | GUI |     | SPC |   | ENT |     | ALT |
+          bindings = <
+   ___________RAISE_L1__________   ___________RAISE_R1__________
+   ___________RAISE_L2__________   ___________RAISE_R2__________
+   ___________RAISE_L3__________   ___________RAISE_R3__________
+   _________THUMB3_RAISE_L______   _________THUMB3_RAISE_R______
+                  >;
+          };
+
+          adjust_layer {
+// -----------------------------------------------------------------------------------------
+// | BOOT  |           |      |      |      |      |      |      |      |      |      |      | BOOT  |
+// | RESET |  RGB_TOG  |      |      |      |      |      |      |      |      |      |      | RESET |
+// | BTCLR |  BT1      | BT2  | BT 3 | BT4  | BT5  |      |      |      |      |      |      |       |
+//                 |     |     |     |        |      |     |     |
+            bindings = <
+   __________ADJUST_L1__________   __________ADJUST_R1__________
+   __________ADJUST_L2__________   __________ADJUST_R2__________
+   __________ADJUST_L3__________   __________ADJUST_R3__________
+   _________THUMB3_ADJUST_L_____   _________THUMB3_ADJUST_R_____
+                >;
+            };
+       };  
+};
 

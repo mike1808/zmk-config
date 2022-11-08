@@ -1,0 +1,67 @@
+# Copyright (c) 2022 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+if SHIELD_HILLSIDE_VIEW_LEFT
+
+config ZMK_KEYBOARD_NAME
+	default "Hillside View"
+
+config ZMK_SPLIT_ROLE_CENTRAL
+	default y
+
+endif # SHIELD_HILLSIDE_VIEW_LEFT
+
+if SHIELD_HILLSIDE_VIEW_LEFT || SHIELD_HILLSIDE_VIEW_RIGHT
+
+config ZMK_SPLIT
+	default y
+
+config ZMK_RGB_UNDERGLOW
+	select WS2812_STRIP
+	select SPI
+
+config ZMK_DISPLAY
+	select LVGL_FONT_MONTSERRAT_26
+
+if ZMK_DISPLAY
+
+config ZMK_DISPLAY_BLANK_ON_IDLE
+  default n
+
+config SPI
+	default y
+
+config LS0XX
+	default y
+
+config ZMK_WIDGET_WPM_STATUS
+	default y if !ZMK_SPLIT || ZMK_SPLIT_ROLE_CENTRAL
+
+config LVGL_BITS_PER_PIXEL
+	default 1
+
+choice LVGL_COLOR_DEPTH
+	default LVGL_COLOR_DEPTH_1
+endchoice
+
+endif # ZMK_DISPLAY
+
+if LVGL
+
+config LVGL_VDB_SIZE
+	default 64
+
+config LVGL_DPI
+	default 148
+
+config LVGL_BITS_PER_PIXEL
+	default 1
+
+choice LVGL_COLOR_DEPTH
+	default LVGL_COLOR_DEPTH_1
+
+endchoice
+
+endif # LVGL
+
+endif # SHIELD_HILLSIDE_VIEW_LEFT || SHIELD_HILLSIDE_VIEW_RIGHT

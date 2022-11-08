@@ -1,0 +1,48 @@
+#include "common_keymap.dtsi"
+
+/ {
+  keymap {
+    compatible = "zmk,keymap";
+
+    default_layer {
+      bindings = <
+   __________QWERTY_L1__________                          __________QWERTY_R1__________
+   __________QWERTY_L2__________                          __________QWERTY_R2__________
+   __________QWERTY_L3__________                          __________QWERTY_R3__________
+                           &kp C_MUTE                 &kp C_PP
+   _________THUMB3_BASE_L_______  &kp C_PREV   &kp C_NEXT _________THUMB3_BASE_R_______
+              >;
+      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
+      };
+
+      lower_layer {
+        bindings = <
+   ___________LOWER_L1__________                    ___________LOWER_R1__________
+   ___________LOWER_L2__________                    ___________LOWER_R2__________
+   ___________LOWER_L3__________                    ___________LOWER_R3__________
+                             &trans              &trans
+   _________THUMB3_LOWER_L______  &trans     &trans _________THUMB3_LOWER_R______
+                >;
+        };
+
+        raise_layer {
+          bindings = <
+   ___________RAISE_L1__________                    ___________RAISE_R1__________
+   ___________RAISE_L2__________                    ___________RAISE_R2__________
+   ___________RAISE_L3__________                    ___________RAISE_R3__________
+                             &trans              &trans
+   _________THUMB3_RAISE_L______  &trans     &trans _________THUMB3_RAISE_R______
+                  >;
+          };
+
+          adjust_layer {
+            bindings = <
+   __________ADJUST_L1__________                   __________ADJUST_R1__________
+   __________ADJUST_L2__________                   __________ADJUST_R2__________
+   __________ADJUST_L3__________                   __________ADJUST_R3__________
+                             &trans              &trans
+   _________THUMB3_ADJUST_L_____  &trans     &trans _________THUMB3_ADJUST_R_____
+                >;
+            };
+       };  
+};
