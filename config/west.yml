@@ -5,7 +5,7 @@ manifest:
   projects:
     - name: zmk
       remote: zmkfirmware
-      revision: hillside-view-shield
+      revision: develop
       import: app/west.yml
   self:
     path: config
