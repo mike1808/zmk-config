@@ -7,9 +7,10 @@
 
 
 #define DEF 0
-#define LOW 1
-#define RSE 2
-#define ADJ 3
+#define SWP 1
+#define LOW 2
+#define RSE 3
+#define ADJ 4
 
 
 &sk {
@@ -46,6 +47,20 @@
           tapping-term-ms = <150>;
           quick-tap-ms = <200>;
           bindings = <&mo>, <&kp>;
+      };
+      lswp: tap_dance_0 {
+          compatible = "zmk,behavior-tap-dance";
+          label = "TAP_DANCE_0_L";
+          #binding-cells = <0>;
+          tapping-term-ms = <200>;
+          bindings = <&sk LGUI>, <&mo SWP>;
+      };
+      rswp: tap_dance_0 {
+          compatible = "zmk,behavior-tap-dance";
+          label = "TAP_DANCE_0_R";
+          #binding-cells = <0>;
+          tapping-term-ms = <200>;
+          bindings = <&sk RGUI>, <&mo SWP>;
       };
       mt_sk: mod_tap_sticky {
         compatible = "zmk,behavior-hold-tap";
