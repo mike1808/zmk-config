@@ -15,7 +15,7 @@
    __________QWERTY_L1__________   __________QWERTY_R1__________
    __________QWERTY_L2__________   __________QWERTY_R2__________
    __________QWERTY_L3__________   __________QWERTY_R3__________
-   &lswp  &kp SPACE   &lt_qk LOW BKSP   &lt_qk RSE DEL  &kp RET &rswp
+   ________THUMB3_BASESWP_L_____   ________THUMB3_BASESWP_R_____
           >;
       };
 
