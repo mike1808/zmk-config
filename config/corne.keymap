@@ -15,9 +15,18 @@
    __________QWERTY_L1__________   __________QWERTY_R1__________
    __________QWERTY_L2__________   __________QWERTY_R2__________
    __________QWERTY_L3__________   __________QWERTY_R3__________
-   _________THUMB3_BASE_L_______   _________THUMB3_BASE_R_______
-              >;
+   ________THUMB3_BASESWP_L_____   ________THUMB3_BASESWP_R_____
+          >;
       };
+
+			hands_swap {
+            bindings = <
+    &kp PIPE  &ht N0 P          &ht N9 O         &ht N8 I  &ht N7 U &ht N6 Y           &ht N5 T &ht N4 R  &ht N3 E &ht N2 W      &ht N1 Q        &ht GRAVE TAB   
+    &kp SQT   &kp SEMI          &kp L            &kp K     &kp J    &kp H              &kp G    &kp F     &kp D    &kp S         &kp A           &kp ESC         
+    &sk RSHFT &mt_sk RCTRL FSLH &mt_sk RALT DOT  &kp COMMA &kp M    &kp N              &kp B    &kp V     &kp C    &mt_sk LALT X &mt_sk LCTRL Z  &sk LSHFT       
+                                &trans &kp RET &lt_qk RSE DEL              &lt_qk LOW BKSP &kp SPACE &trans
+                >;
+            };
 
       lower_layer {
 // -----------------------------------------------------------------------------------------
@@ -60,6 +69,7 @@
    _________THUMB3_ADJUST_L_____   _________THUMB3_ADJUST_R_____
                 >;
             };
+
        };  
 };
 

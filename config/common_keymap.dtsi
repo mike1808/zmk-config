@@ -7,9 +7,10 @@
 
 
 #define DEF 0
-#define LOW 1
-#define RSE 2
-#define ADJ 3
+#define SWP 1
+#define LOW 2
+#define RSE 3
+#define ADJ 4
 
 
 &sk {
@@ -47,6 +48,20 @@
           quick-tap-ms = <200>;
           bindings = <&mo>, <&kp>;
       };
+      lswp: tap_dance_0 {
+          compatible = "zmk,behavior-tap-dance";
+          label = "TAP_DANCE_0_L";
+          #binding-cells = <0>;
+          tapping-term-ms = <200>;
+          bindings = <&sk LGUI>, <&mo SWP>;
+      };
+      rswp: tap_dance_0 {
+          compatible = "zmk,behavior-tap-dance";
+          label = "TAP_DANCE_0_R";
+          #binding-cells = <0>;
+          tapping-term-ms = <200>;
+          bindings = <&sk RGUI>, <&mo SWP>;
+      };
       mt_sk: mod_tap_sticky {
         compatible = "zmk,behavior-hold-tap";
         label = "MOD_TAP_STICKY";
@@ -77,12 +92,12 @@
 #define __________QWERTY_R3__________ &kp N           &kp M           &kp COMMA        &mt_sk RALT DOT   &mt_sk RCTRL FSLH    &sk RSHFT
 
 #define ___________LOWER_L1__________ &trans  &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT
-#define ___________LOWER_L2__________ &trans  &trans   &trans &trans   &trans   &trans   
-#define ___________LOWER_L3__________ &trans  &trans   &trans &trans   &trans   &trans   
+#define ___________LOWER_L2__________ &trans  &trans   &trans &kp LBKT   &trans   &trans   
+#define ___________LOWER_L3__________ &trans  &trans   &trans &kp LBRC   &trans   &trans   
 
 #define ___________LOWER_R1__________ &kp CARET &kp AMPS  &kp KP_MULTIPLY &kp LPAR &kp RPAR &kp BSPC
-#define ___________LOWER_R2__________ &kp MINUS &kp EQUAL &kp LBKT        &kp RBKT &kp BSLH &kp GRAVE
-#define ___________LOWER_R3__________ &kp UNDER &kp PLUS  &kp LBRC        &kp RBRC &kp PIPE &kp TILDE
+#define ___________LOWER_R2__________ &kp MINUS &kp EQUAL &kp RBKT        &trans   &kp BSLH &kp GRAVE
+#define ___________LOWER_R3__________ &kp UNDER &kp PLUS  &kp RBRC        &trans   &kp PIPE &kp TILDE
 
 #define ___________RAISE_L1__________ &kp TAB    &ht F1 N1  &ht F2 N2  &ht F3 N3  &ht F4 N4  &ht F5 N5
 #define ___________RAISE_L2__________ &trans     &kp F1     &kp F2     &kp F3     &kp F4     &kp F5   
@@ -103,6 +118,9 @@
 
 #define _________THUMB3_BASE_L_______ &sk LGUI &kp SPACE &lt_qk LOW BKSP
 #define _________THUMB3_BASE_R_______ &lt_qk RSE DEL  &kp RET &sk RGUI
+
+#define ________THUMB3_BASESWP_L_____ &lswp  &kp SPACE   &lt_qk LOW BKSP
+#define ________THUMB3_BASESWP_R_____ &lt_qk RSE DEL  &kp RET &rswp
 
 #define _________THUMB3_LOWER_L______ &trans &trans &trans
 #define _________THUMB3_LOWER_R______ &trans &trans &trans
