@@ -6,6 +6,7 @@
     compatible = "zmk,keymap";
 
     default_layer {
+		  label = "BASE";
 // -----------------------------------------------------------------------------------------
 // |  TAB |  Q        |  W       |  E  |  R  |  T  |   |  Y  |  U   |  I  |  O  |  P  | "|"  |
 // |  ESC |  A        |  S       |  D  |  F  |  G  |   |  H  |  J   |  K  |  L  |  ;  |  '   |
@@ -20,6 +21,7 @@
       };
 
 			hands_swap {
+						label = "SWAP";
             bindings = <
     &kp PIPE  &ht N0 P          &ht N9 O         &ht N8 I  &ht N7 U &ht N6 Y           &ht N5 T &ht N4 R  &ht N3 E &ht N2 W      &ht N1 Q        &ht GRAVE TAB   
     &kp SQT   &kp SEMI          &kp L            &kp K     &kp J    &kp H              &kp G    &kp F     &kp D    &kp S         &kp A           &kp ESC         
@@ -29,6 +31,7 @@
             };
 
       lower_layer {
+				label = "LOWER";
 // -----------------------------------------------------------------------------------------
 // |  TAB |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |  (  |  )  | BKSP |
 // | CTRL |     |     |     |     |     |   |  -  |  =  |  [  |  ]  |  \  |  `   |
@@ -43,6 +46,7 @@
         };
 
         raise_layer {
+					label = "RAISE";
 // -----------------------------------------------------------------------------------------
 // |  TAB |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  | BKSP |
 // | BTCLR| BT1 | BT2 | BT3 | BT4 | BT5 |   | LFT | DWN |  UP | RGT |     |      |
@@ -57,6 +61,7 @@
           };
 
           adjust_layer {
+					  label = "ADJUST";
 // -----------------------------------------------------------------------------------------
 // | BOOT  |           |      |      |      |      |      |      |      |      |      |      | BOOT  |
 // | RESET |  RGB_TOG  |      |      |      |      |      |      |      |      |      |      | RESET |
