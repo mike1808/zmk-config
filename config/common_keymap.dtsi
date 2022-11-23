@@ -83,6 +83,8 @@
   };
 };
 
+#define ___________BLANK_____________ &trans  &trans   &trans &trans   &trans   &trans   
+
 #define __________QWERTY_L1__________ &ht GRAVE TAB   &ht N1 Q        &ht N2 W         &ht N3 E          &ht N4 R             &ht N5 T
 #define __________QWERTY_L2__________ &kp ESC         &kp A           &kp S            &kp D             &kp F                &kp G
 #define __________QWERTY_L3__________ &sk LSHFT       &mt_sk LCTRL Z  &mt_sk LALT X    &kp C             &kp V                &kp B 
