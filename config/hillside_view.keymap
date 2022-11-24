@@ -1,5 +1,5 @@
-#define XTR_DEF_LR &kp C_MUTE 
-#define XTR_DEF_RR &kp C_PP 
+#define XTR_DEF_LR &kp C_MUTE
+#define XTR_DEF_RR &kp C_PP
 
 #define XTR_SYM_LR &kp C_PREV
 #define XTR_SYM_RR &kp C_NEXT
@@ -24,3 +24,20 @@
 
 
 #include "common.keymap"
+
+/ {
+  keymap {
+    default_layer {
+      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
+    };
+    swap_layer {
+      sensor-bindings = <&inc_dec_kp PG_UP PG_DN &inc_dec_kp C_VOL_UP C_VOL_DN>;
+    };
+    sym_layer {
+      sensor-bindings = <&inc_dec_kp C_PREV C_NEXT &inc_dec_kp UP DOWN>;
+    };
+    num_layer {
+      sensor-bindings = <&inc_dec_kp RIGHT LEFT &inc_dec_kp PG_UP PG_DN>;
+    };
+  };
+};

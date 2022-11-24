@@ -111,7 +111,6 @@
                                         &lswp         &kp SPACE   &lt_qk SYM BKSP  XTR_DEF_LT                                           XTR_DEF_RT  &lt_qk NUM DEL  &kp RET       &rswp
       //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
       >;
-      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
     };
     swap_layer {
       label = "SWAP";
@@ -126,7 +125,6 @@
                                           ___          &kp RET     &lt_qk NUM DEL XTR_DEF_RT                                         XTR_DEF_LT    &lt_qk SYM BKSP &kp SPACE        ___
       //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
       >;
-      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
     };
     sym_layer {
       label = "SYMBOLS";
@@ -141,7 +139,6 @@
                                           ___            ___           ___        XTR_SYM_LT                                           XTR_SYM_RT       ___            ___           ___         
       //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
       >;
-      sensor-bindings = <&inc_dec_kp PG_UP PG_DN &inc_dec_kp C_VOL_UP C_VOL_DN>;
     };
     num_layer {
       label = "NUMBERS";
@@ -156,6 +153,7 @@
                                            ___            ___           ___        XTR_NUM_LT                                          XTR_NUM_RT       ___            ___           ___         
       //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
       >;
+    };
     adj_layer {
       label = "ADJUST";
       bindings = <
