@@ -1,62 +1,26 @@
-#include "common_keymap.dtsi"
+#define XTR_DEF_LR &kp C_MUTE 
+#define XTR_DEF_RR &kp C_PP 
 
-/ {
-  keymap {
-    compatible = "zmk,keymap";
+#define XTR_SYM_LR &kp C_PREV
+#define XTR_SYM_RR &kp C_NEXT
 
-    default_layer {
-      bindings = <
-   __________QWERTY_L1__________                          __________QWERTY_R1__________
-   __________QWERTY_L2__________                          __________QWERTY_R2__________
-   __________QWERTY_L3__________                          __________QWERTY_R3__________
-                           &kp C_MUTE                 &kp C_PP
-   ________THUMB3_BASESWP_L_____  &sk LSHFT    &sk RSHFT ________THUMB3_BASESWP_R_____
-              >;
-      					sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
-      };
+#define XTR_NUM_LR &trans
+#define XTR_NUM_RR &trans
 
-			hands_swap {
-            bindings = <
-    &kp PIPE  &ht N0 P          &ht N9 O         &ht N8 I  &ht N7 U &ht N6 Y           &ht N5 T &ht N4 R  &ht N3 E &ht N2 W      &ht N1 Q        &ht GRAVE TAB   
-    &kp SQT   &kp SEMI          &kp L            &kp K     &kp J    &kp H              &kp G    &kp F     &kp D    &kp S         &kp A           &kp ESC         
-    &sk RSHFT &mt_sk RCTRL FSLH &mt_sk RALT DOT  &kp COMMA &kp M    &kp N              &kp B    &kp V     &kp C    &mt_sk LALT X &mt_sk LCTRL Z  &sk LSHFT       
-                           																				&kp C_PP          	&kp C_MUTE
-															    &trans &kp RET &lt_qk RSE DEL  &sk RSHFT       &sk LSHFT  &lt_qk LOW BKSP &kp SPACE &trans
-                >;
-      					sensor-bindings = <&inc_dec_kp PG_UP PG_DN &inc_dec_kp C_VOL_UP C_VOL_DN>;
-            };
+#define XTR_ADJ_LR &trans
+#define XTR_ADJ_RR &trans
 
-      lower_layer {
-        bindings = <
-   ___________LOWER_L1__________                    ___________LOWER_R1__________
-   ___________LOWER_L2__________                    ___________LOWER_R2__________
-   ___________LOWER_L3__________                    ___________LOWER_R3__________
-                             &kp C_PREV        &kp C_NEXT
-   _________THUMB3_LOWER_L______  &trans     &trans _________THUMB3_LOWER_R______
-                >;
-      					sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
-        };
+#define XTR_DEF_LT &kp LSHFT
+#define XTR_DEF_RT &kp RSHFT
 
-        raise_layer {
-          bindings = <
-   ___________RAISE_L1__________                    ___________RAISE_R1__________
-   ___________RAISE_L2__________                    ___________RAISE_R2__________
-   ___________RAISE_L3__________                    ___________RAISE_R3__________
-                             &trans              &trans
-   _________THUMB3_RAISE_L______  &trans     &trans _________THUMB3_RAISE_R______
-                  >;
-      					sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
-          };
+#define XTR_SYM_LT &trans
+#define XTR_SYM_RT &trans
 
-          adjust_layer {
-            bindings = <
-   __________ADJUST_L1__________                   __________ADJUST_R1__________
-   __________ADJUST_L2__________                   __________ADJUST_R2__________
-   __________ADJUST_L3__________                   __________ADJUST_R3__________
-                             &trans              &trans
-   _________THUMB3_ADJUST_L_____  &trans     &trans _________THUMB3_ADJUST_R_____
-                >;
-      					sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
-            };
-       };  
-};
+#define XTR_NUM_LT &trans
+#define XTR_NUM_RT &trans
+
+#define XTR_ADJ_LT &trans
+#define XTR_ADJ_RT &trans
+
+
+#include "common.keymap"
