@@ -10,8 +10,8 @@
 #define XTR_ADJ_LR &trans
 #define XTR_ADJ_RR &trans
 
-#define XTR_DEF_LT &kp LSHFT
-#define XTR_DEF_RT &kp RSHFT
+#define XTR_DEF_LT &sk LSHFT
+#define XTR_DEF_RT &sk RSHFT
 
 #define XTR_SYM_LT &trans
 #define XTR_SYM_RT &trans
