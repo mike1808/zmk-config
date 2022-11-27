@@ -10,7 +10,7 @@
    __________QWERTY_L2__________                          __________QWERTY_R2__________
    __________QWERTY_L3__________                          __________QWERTY_R3__________
                            &kp C_MUTE                 &kp C_PP
-   _________THUMB3_BASE_L_______  &kp C_PREV   &kp C_NEXT _________THUMB3_BASE_R_______
+   _________THUMB3_BASE_L_______                          _________THUMB3_BASE_R_______
               >;
       sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
       };
@@ -21,7 +21,7 @@
    ___________LOWER_L2__________                    ___________LOWER_R2__________
    ___________LOWER_L3__________                    ___________LOWER_R3__________
                              &trans              &trans
-   _________THUMB3_LOWER_L______  &trans     &trans _________THUMB3_LOWER_R______
+   _________THUMB3_LOWER_L______                    _________THUMB3_LOWER_R______
                 >;
         };
 
@@ -31,7 +31,7 @@
    ___________RAISE_L2__________                    ___________RAISE_R2__________
    ___________RAISE_L3__________                    ___________RAISE_R3__________
                              &trans              &trans
-   _________THUMB3_RAISE_L______  &trans     &trans _________THUMB3_RAISE_R______
+   _________THUMB3_RAISE_L______                    _________THUMB3_RAISE_R______
                   >;
           };
 
@@ -41,7 +41,7 @@
    __________ADJUST_L2__________                   __________ADJUST_R2__________
    __________ADJUST_L3__________                   __________ADJUST_R3__________
                              &trans              &trans
-   _________THUMB3_ADJUST_L_____  &trans     &trans _________THUMB3_ADJUST_R_____
+   _________THUMB3_ADJUST_L_____                    _________THUMB3_ADJUST_R_____
                 >;
             };
        };  

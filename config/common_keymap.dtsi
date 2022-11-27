@@ -101,14 +101,14 @@
 #define __________ADJUST_R3__________ &trans       &trans &trans &trans &trans &trans
 
 
-#define _________THUMB3_BASE_L_______ &sk LGUI &kp SPACE &lt_qk LOW BKSP
-#define _________THUMB3_BASE_R_______ &lt_qk RSE DEL  &kp RET &sk RGUI
+#define _________THUMB3_BASE_L_______ &sk LGUI &kp SPACE &lt_qk LOW BKSP &kp C_PREV
+#define _________THUMB3_BASE_R_______ &kp C_NEXT &lt_qk RSE DEL  &kp RET &sk RGUI
 
-#define _________THUMB3_LOWER_L______ &trans &trans &trans
-#define _________THUMB3_LOWER_R______ &trans &trans &trans
+#define _________THUMB3_LOWER_L______ &trans &trans &trans &trans
+#define _________THUMB3_LOWER_R______ &trans &trans &trans &trans
 
-#define _________THUMB3_RAISE_L______ &trans &trans &trans
-#define _________THUMB3_RAISE_R______ &trans &trans &trans
+#define _________THUMB3_RAISE_L______ &trans &trans &trans &trans
+#define _________THUMB3_RAISE_R______ &trans &trans &trans &trans
 
-#define _________THUMB3_ADJUST_L_____ &ext_power EP_TOG &trans &trans
-#define _________THUMB3_ADJUST_R_____ &trans            &trans &ext_power EP_TOG
+#define _________THUMB3_ADJUST_L_____ &ext_power EP_TOG &trans &trans &trans 
+#define _________THUMB3_ADJUST_R_____ &trans &trans            &trans &ext_power EP_TOG
