@@ -1,51 +1,62 @@
 #include "common_keymap.dtsi"
 
-// Mike's config
+// John's config
 / {
   keymap {
     compatible = "zmk,keymap";
 
     default_layer {
       bindings = <
-   __________QWERTY_L1__________                          __________QWERTY_R1__________
-   __________QWERTY_L2__________                          __________QWERTY_R2__________
-   __________QWERTY_L3__________                          __________QWERTY_R3__________
-                           &kp C_MUTE                 &kp C_PP
-   _________THUMB3_BASE_L_______                          _________THUMB3_BASE_R_______
+   __________DEF_L1__________                          __________DEF_R1__________
+   __________DEF_L2__________                          __________DEF_R2__________
+   __________DEF_L3__________                          __________DEF_R3__________
+                            &kp C_MUTE                &kp C_PP
+   _________THUMB_DEF_L_______                         _________THUMB_DEF_R_______
               >;
       sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
       };
 
-      lower_layer {
-        bindings = <
-   ___________SYM_L1__________                    ___________SYM_R1__________
-   ___________SYM_L2__________                    ___________SYM_R2__________
-   ___________SYM_L3__________                    ___________SYM_R3__________
-                             &trans              &trans
-   _________THUMB3_SYM_L______                    _________THUMB3_SYM_R______
-                >;
-        };
+    number_layer {
+      bindings = <
+   __________NUM_L1__________                          __________NUM_R1__________
+   __________NUM_L2__________                          __________NUM_R2__________
+   __________NUM_L3__________                          __________NUM_R3__________
+                            &trans                    &trans
+   _________THUMB_NUM_L_______                         _________THUMB_NUM_R_______
+              >;
+      };
 
-        raise_layer {
-          bindings = <
-   ___________NAV_L1__________                    ___________NAV_R1__________
-   ___________NAV_L2__________                    ___________NAV_R2__________
-   ___________NAV_L3__________                    ___________NAV_R3__________
-                             &trans              &trans
-   _________THUMB3_NAV_L______                    _________THUMB3_NAV_R______
-                  >;
-          };
+    symbol_layer {
+      bindings = <
+   __________SYM_L1__________                          __________SYM_R1__________
+   __________SYM_L2__________                          __________SYM_R2__________
+   __________SYM_L3__________                          __________SYM_R3__________
+                            &trans                    &trans
+   _________THUMB_SYM_L_______                         _________THUMB_SYM_R_______
+              >;
+      };
 
-          adjust_layer {
-            bindings = <
-   __________ADJUST_L1__________                   __________ADJUST_R1__________
-   __________ADJUST_L2__________                   __________ADJUST_R2__________
-   __________ADJUST_L3__________                   __________ADJUST_R3__________
-                             &trans              &trans
-   _________THUMB3_ADJUST_L_____                    _________THUMB3_ADJUST_R_____
-                >;
-            };
-       };  
+    navigation_layer {
+      bindings = <
+   __________NAV_L1__________                          __________NAV_R1__________
+   __________NAV_L2__________                          __________NAV_R2__________
+   __________NAV_L3__________                          __________NAV_R3__________
+                            &trans                    &trans
+   _________THUMB_NAV_L_______                         _________THUMB_NAV_R_______
+              >;
+      };
+
+    settings_layer {
+      bindings = <
+   __________SET_L1__________                          __________SET_R1__________
+   __________SET_L2__________                          __________SET_R2__________
+   __________SET_L3__________                          __________SET_R3__________
+                            &trans                    &trans
+   _________THUMB_SET_L_______                         _________THUMB_SET_R_______
+              >;
+      };
+
+   };  
 };
 
 /*
