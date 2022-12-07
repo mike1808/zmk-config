@@ -129,10 +129,10 @@
 <text x="615.5" y="239.0">NAV</text>
 <rect rx="6" ry="6" x="102.25" y="145.5" width="27.5" height="25.0" class="combo"/>
 <text x="116.0" y="158.0" class="small">Esc</text>
-<rect rx="6" ry="6" x="631.25" y="172.5" width="27.5" height="25.0" class="combo"/>
-<text x="645.0" y="185.0" class="small">Enter</text>
-<rect rx="6" ry="6" x="131.75" y="172.5" width="27.5" height="25.0" class="combo"/>
-<text x="145.5" y="185.0" class="small">Tab</text>
+<rect rx="6" ry="6" x="572.25" y="172.5" width="27.5" height="25.0" class="combo"/>
+<text x="586.0" y="185.0" class="small">Enter</text>
+<rect rx="6" ry="6" x="190.75" y="172.5" width="27.5" height="25.0" class="combo"/>
+<text x="204.5" y="185.0" class="small">Tab</text>
 <rect rx="6" ry="6" x="249.75" y="118.5" width="27.5" height="25.0" class="combo"/>
 <text x="263.5" y="131.0" class="small">Gui</text>
 <rect rx="6" ry="6" x="220.25" y="118.5" width="27.5" height="25.0" class="combo"/>
@@ -168,9 +168,13 @@
 <rect rx="6" ry="6" x="147.5" y="318" width="55" height="50"/>
 <text x="175.0" y="343.0">Vol+</text>
 <rect rx="6" ry="6" x="206.5" y="318" width="55" height="50"/>
-<text x="234.0" y="343.0">Bri+</text>
+<text x="234.0" y="343.0">
+<tspan x="234.0" dy="-0.6em">to</tspan><tspan x="234.0" dy="1.2em">WSpace</tspan>
+</text>
 <rect rx="6" ry="6" x="265.5" y="318" width="55" height="50"/>
-<text x="293.0" y="343.0">Bri-</text>
+<text x="293.0" y="343.0">
+<tspan x="293.0" dy="-0.6em">switch</tspan><tspan x="293.0" dy="1.2em">WSpace</tspan>
+</text>
 <rect rx="6" ry="6" x="324.5" y="318" width="55" height="50"/>
 <text x="352.0" y="343.0">*</text>
 <rect rx="6" ry="6" x="29.5" y="372" width="55" height="50"/>
@@ -207,6 +211,7 @@
 <text x="615.5" y="343.0">9</text>
 <text x="615.5" y="361.0" class="small">F9</text>
 <rect rx="6" ry="6" x="647.0" y="318" width="55" height="50"/>
+<text x="674.5" y="343.0">Tmux</text>
 <rect rx="6" ry="6" x="706.0" y="318" width="55" height="50"/>
 <rect rx="6" ry="6" x="411.0" y="372" width="55" height="50"/>
 <text x="438.5" y="397.0">-</text>

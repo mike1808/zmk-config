@@ -109,13 +109,13 @@
     };
 
     combo_ret {
-      key-positions = <33 34>;
+      key-positions = <32 33>;
       bindings = <&kp RET>;
       timeout-ms = <30>;
     };
 
     combo_tab {
-      key-positions = <25 26>;
+      key-positions = <26 27>;
       bindings = <&kp TAB>;
       timeout-ms = <30>;
     };
@@ -252,12 +252,12 @@
 #define _________THUMB_DEF_R_______ &none &skq LCTRL  &mt LGUI SPACE    &cl_nav
 
 
-#define __________NUM_L1__________  &none  &kp C_VOLUME_DOWN   &kp C_VOLUME_UP  &kp C_BRI_UP  &kp C_BRI_DN   &kp KP_MULTIPLY
+#define __________NUM_L1__________  &none  &kp C_VOLUME_DOWN   &kp C_VOLUME_UP  &kp LG(LSHFT) &kp LGUI       &kp KP_MULTIPLY
 #define __________NUM_L2__________  &none  &none               &kp EQUAL        &kp COLON     &none          &kp KP_DIVIDE  
 #define __________NUM_L3__________  &none  &kp TAB             &kp C_PLAY_PAUSE &kp C_NEXT    &kp PERIOD     &kp KP_EQUAL   
 #define _________THUMB_NUM_L_______ &cl_num   &cl_sym  &ss_cw &sk LGUI
 
-#define __________NUM_R1__________  &kp PLUS         &ht F7 NUMBER_7  &ht F8 NUMBER_8  &ht F9 NUMBER_9    &none     &none
+#define __________NUM_R1__________  &kp PLUS         &ht F7 NUMBER_7  &ht F8 NUMBER_8  &ht F9 NUMBER_9    &kp LC(B) &none
 #define __________NUM_R2__________  &kp MINUS        &ht F4 NUMBER_4  &ht F5 NUMBER_5  &ht F6 NUMBER_6    &kp ENTER &none
 #define __________NUM_R3__________  &kp PERIOD       &ht F1 NUMBER_1  &ht F2 NUMBER_2  &ht F3 NUMBER_3    &trans    &none
 #define _________THUMB_NUM_R_______ &none &mt LCTRL NUMBER_0  &to DEF    &cl_nav

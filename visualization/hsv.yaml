@@ -28,9 +28,9 @@ layers:
         combos: &combos
             - positions: [13, 25]
               key: "Esc"
-            - positions: [33, 34]
+            - positions: [32, 33]
               key: "Enter"
-            - positions: [25, 26]
+            - positions: [26, 27]
               key: "Tab"
             - positions: [15, 16]
               key: "Gui"
@@ -62,11 +62,11 @@ layers:
               key: "\\"
     NUM:
         left:
-            - [null, "Vol-", "Vol+", "Bri+", "Bri-", "*"]
+            - [null, "Vol-", "Vol+", "to WSpace", "switch WSpace", "*"]
             - [null, null, "=", ":", null, "/"]
             - [null, "Tab", "Play Pause", "Next", ".", "="]
         right:
-            - ["+", {hold: F7, tap: 7}, {hold: F8, tap: 8}, {hold: F9, tap: 9}, null, null]
+            - ["+", {hold: F7, tap: 7}, {hold: F8, tap: 8}, {hold: F9, tap: 9}, "Tmux", null]
             - ["-",   {hold: F4, tap: 4}, {hold: F5, tap: 5}, {hold: F6, tap: 6}, "Enter", null]
             - [".",   {hold: F1, tap: 1}, {hold: F2, tap: 2}, {hold: F3, tap: 3}, null, null]
         left_thumbs:
