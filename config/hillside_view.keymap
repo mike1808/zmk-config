@@ -29,15 +29,22 @@
   keymap {
     default_layer {
       sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
+      trackball-bindings = <&tmv_coarse>;
     };
     swap_layer {
       sensor-bindings = <&inc_dec_kp PG_UP PG_DN &inc_dec_kp C_VOL_UP C_VOL_DN>;
     };
     sym_layer {
       sensor-bindings = <&inc_dec_kp C_PREV C_NEXT &inc_dec_kp UP DOWN>;
+      trackball-bindings = <&tsl>;
     };
     num_layer {
       sensor-bindings = <&inc_dec_kp RIGHT LEFT &inc_dec_kp PG_UP PG_DN>;
+      trackball-bindings = <&tmv>;
+    };
+    adj_layer {
+      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
+      trackball-bindings = <&tmv_fine>;
     };
   };
 };
