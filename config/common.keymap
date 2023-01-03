@@ -132,7 +132,7 @@
                                         &lswp         &kp SPACE   &lt_qk SYM BKSP  XTR_DEF_LT                                           XTR_DEF_RT  &lt_qk NUM DEL  &kp RET       &rswp
       //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
       >;
-      trackball-bindings = <&tmv_coarse>;
+      trackball-bindings = <&tmv>;
     };
     
     winlinux_layer {
@@ -195,7 +195,7 @@
                                            ___            ___           ___        XTR_NUM_LT                                          XTR_NUM_RT       ___            ___           ___         
       //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
       >;
-      trackball-bindings = <&tmv>;
+      trackball-bindings = <&tmv_fine>;
     };
     adj_layer {
       label = "ADJUST";
