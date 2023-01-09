@@ -179,7 +179,7 @@
                                           ___            ___           ___        XTR_SYM_LT                                           XTR_SYM_RT       ___            ___           ___         
       //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
       >;
-      trackball-bindings = <&tsl>;
+      trackball-bindings = <&tsl_fine>;
     };
     num_layer {
       label = "NUMBERS";
