@@ -103,7 +103,7 @@
     compatible = "zmk,combos";
 
     combo_esc {
-      key-positions = <13 25>;
+      key-positions = <27 28>;
       bindings = <&kp ESC>;
       timeout-ms = <30>;
     };
@@ -117,6 +117,12 @@
     combo_tab {
       key-positions = <26 27>;
       bindings = <&kp TAB>;
+      timeout-ms = <30>;
+    };
+
+    cb_slash {
+      bindings = <&kp SLASH>;
+      key-positions = <31 32>;
       timeout-ms = <30>;
     };
 
@@ -224,8 +230,8 @@
     };
 
 
-    cb_slash {
-      bindings = <&kp SLASH>;
+    cb_pipe {
+      bindings = <&kp PIPE>;
       key-positions = <9 21>;
       timeout-ms = <30>;
     };

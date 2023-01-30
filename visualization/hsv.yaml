@@ -26,12 +26,14 @@ layers:
               tap: Space
             - tap: NAV
         combos: &combos
-            - positions: [13, 25]
+            - positions: [27, 28]
               key: "Esc"
             - positions: [32, 33]
               key: "Enter"
             - positions: [26, 27]
               key: "Tab"
+            - positions: [31, 32]
+              key: "/"
             - positions: [15, 16]
               key: "Gui"
             - positions: [16, 14]
@@ -57,7 +59,7 @@ layers:
             - positions: [8, 20]
               key: "*"
             - positions: [9, 21]
-              key: "/"
+              key: "|"
             - positions: [10, 22]
               key: "\\"
     NUM:
