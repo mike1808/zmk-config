@@ -40,12 +40,24 @@
 #define XTR_DEF_RT
 #endif
 
+#ifndef XTR_DEF_RT2
+#define XTR_DEF_RT2
+#endif
+
+#ifndef XTR_SWP_RT2
+#define XTR_SWP_RT2
+#endif
+
 #ifndef XTR_SYM_LT
 #define XTR_SYM_LT
 #endif
 
 #ifndef XTR_SYM_RT
 #define XTR_SYM_RT
+#endif
+
+#ifndef XTR_SYM_RT2
+#define XTR_SYM_RT2
 #endif
 
 #ifndef XTR_NUM_LT
@@ -56,10 +68,18 @@
 #define XTR_NUM_RT
 #endif
 
+#ifndef XTR_NUM_RT2
+#define XTR_NUM_RT2
+#endif
+
 #ifndef XTR_ADJ_LT
 #define XTR_ADJ_LT
 #endif
 
 #ifndef XTR_ADJ_RT
 #define XTR_ADJ_RT
+#endif
+
+#ifndef XTR_ADJ_RT2
+#define XTR_ADJ_RT2
 #endif
