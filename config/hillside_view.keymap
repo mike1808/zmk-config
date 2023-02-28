@@ -28,14 +28,14 @@
 / {
   keymap {
     default_layer {
-      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
+      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp F13 F14>;
       trackball-bindings = <&tmv_coarse>;
     };
     swap_layer {
       sensor-bindings = <&inc_dec_kp PG_UP PG_DN &inc_dec_kp C_VOL_UP C_VOL_DN>;
     };
     sym_layer {
-      sensor-bindings = <&inc_dec_kp C_PREV C_NEXT &inc_dec_kp UP DOWN>;
+      sensor-bindings = <&inc_dec_kp C_PREV C_NEXT &inc_dec_kp F15 F16>;
       trackball-bindings = <&tsl>;
     };
     num_layer {
