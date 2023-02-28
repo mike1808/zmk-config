@@ -39,7 +39,7 @@
       trackball-bindings = <&tsl>;
     };
     num_layer {
-      sensor-bindings = <&inc_dec_kp RIGHT LEFT &inc_dec_kp PG_UP PG_DN>;
+      sensor-bindings = <&inc_dec_kp F13 F14 &inc_dec_kp PG_UP PG_DN>;
       trackball-bindings = <&tmv>;
     };
     adj_layer {
