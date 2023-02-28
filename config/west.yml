@@ -5,7 +5,7 @@ manifest:
   projects:
     - name: zmk
       remote: zmkfirmware
-      revision: mm/hillside-view-shield-trackball
+      revision: mm/develop
       import: app/west.yml
   self:
     path: config
