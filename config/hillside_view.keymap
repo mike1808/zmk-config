@@ -28,18 +28,18 @@
 / {
   keymap {
     default_layer {
-      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp F14 F15>;
+      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp F20 F19>;
       trackball-bindings = <&tmv_coarse>;
     };
     swap_layer {
       sensor-bindings = <&inc_dec_kp PG_UP PG_DN &inc_dec_kp C_VOL_UP C_VOL_DN>;
     };
     sym_layer {
-      sensor-bindings = <&inc_dec_kp C_PREV C_NEXT &inc_dec_kp F16 F17>;
+      sensor-bindings = <&inc_dec_kp C_NEXT C_PREV &inc_dec_kp F18 F17>;
       trackball-bindings = <&tsl>;
     };
     num_layer {
-      sensor-bindings = <&inc_dec_kp F14 F15 &inc_dec_kp PG_UP PG_DN>;
+      sensor-bindings = <&inc_dec_kp F15 F14 &inc_dec_kp PG_UP PG_DN>;
       trackball-bindings = <&tmv>;
     };
     adj_layer {
