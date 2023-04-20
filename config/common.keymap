@@ -4,7 +4,6 @@
 #include <dt-bindings/zmk/rgb.h>
 #include <dt-bindings/zmk/ext_power.h>
 #include <dt-bindings/zmk/outputs.h>
-#include <dt-bindings/zmk/mouse.h>
 
 #include "extra_keys_defaults.h"
 
@@ -51,24 +50,6 @@
       timeout-ms = <50>;
       key-positions = <LB5 RB5>;
       bindings = <&caps_word>;
-    };
-
-    combo_mb_lclick {
-      timeout-ms = <50>;
-      key-positions = <18 19>;
-      bindings = <&mkp LCLK>;
-    };
-
-     combo_mb_rclick {
-      timeout-ms = <50>;
-      key-positions = <20 21>;
-      bindings = <&mkp RCLK>;
-    };
-
-     combo_mb_mclick {
-      timeout-ms = <50>;
-      key-positions = <30 31>;
-      bindings = <&mkp MCLK>;
     };
   };
 
@@ -132,7 +113,6 @@
                                         &lswp         &kp SPACE   &lt_qk SYM BKSP  XTR_DEF_LT                                           XTR_DEF_RT  &lt_qk NUM DEL  &kp RET      XTR_DEF_RT2 
       //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
       >;
-      trackball-bindings = <&tmv>;
     };
     
     winlinux_layer {
@@ -179,7 +159,6 @@
                                           ___            ___           ___        XTR_SYM_LT                                           XTR_SYM_RT       ___            ___           ___         
       //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
       >;
-      trackball-bindings = <&tsl_fine>;
     };
     num_layer {
       label = "NUMBERS";
@@ -195,7 +174,6 @@
                                            ___            ___           ___        XTR_NUM_LT                                          XTR_NUM_RT       ___            ___           ___         
       //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
       >;
-      trackball-bindings = <&tmv_fine>;
     };
     adj_layer {
       label = "ADJUST";
@@ -211,7 +189,6 @@
                                    &ext_power EP_TOG   &to WIN         ___        XTR_ADJ_LT                                          XTR_ADJ_RT       ___          &to DEF     XTR_ADJ_RT2       
       //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
       >;
-      trackball-bindings = <&tmv_fine>;
     };
   };
 };
