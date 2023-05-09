@@ -100,7 +100,7 @@
   keymap {
     compatible = "zmk,keymap";
     default_layer {
-      label = "DEFAUT";
+      label = "DEFAULT";
       bindings = <
       // ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮                                      ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬────────────╮
           &ht GRAVE TAB    &ht N1 Q      &ht N2 W       &ht N3 E    &ht N4 R      &ht N5 T                                              &ht N6 Y     &ht N7 U      &ht N8 I      &ht N9 O       &ht N0 P     &kp PIPE
