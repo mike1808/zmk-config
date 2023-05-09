@@ -18,8 +18,8 @@ include:
   - board: nice_nano_v2
     shield: corne_right
   - board: nice_nano_v2
-    shield: hillside_view_left
+    shield: hillside_view_left nice_view
   - board: nice_nano_v2
-    shield: hillside_view_right
+    shield: hillside_view_right nicenview
   - board: nice_nano_v2
     shield: settings_reset
