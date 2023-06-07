@@ -30,6 +30,36 @@
 
 #define QUICK_TAP_MS 175
 
+#define SWAP_LAYOUT(\
+  l00, l01, l02, l03, l04, l05,                          r00, r01, r02, r03, r04, r05, \
+  l10, l11, l12, l13, l14, l15,                          r10, r11, r12, r13, r14, r15, \
+  l20, l21, l22, l23, l24, l25,                          r20, r21, r22, r23, r24, r25, \
+                                lrot               rrot,                               \
+            l30, l31, l32, l33,                          r30, r31, r32, r33            \
+  ) \
+
+  r05, r04, r03, r02, r01, r00,                          l05, l04, l03, l02, l01, l00, \
+  r15, r14, r13, r12, r11, r10,                          l15, l14, l13, l12, l11, l10, \
+  r25, r24, r23, r22, r21, r20,                          l20, l21, l22, l23, l24, l25, \
+                                rrot               lrot,                               \
+            r33, r32, r31, r30,                          l33, l32, l31, l30            
+
+
+#define ZMK_HELPER_STRINGIFY(x) #x
+
+#define ZMK_SWP(name, tap) \
+    / { \
+        behaviors { \
+            name: name { \
+                label = ZMK_HELPER_STRINGIFY(ZB_ ## name); \
+                compatible = "zmk,behavior-tap-dance"; \
+                #binding-cells = <0>; \
+                tapping-term-ms = <200>; \
+                bindings = tap, <&mo SWP>; \
+            }; \
+        }; \
+    };
+
 &sk {
   release-after-ms = <600>;
   quick-release;
@@ -132,18 +162,32 @@
     };
     swap_layer {
       label = "SWAP";
-      bindings = <
+      bindings = <SWAP_LAYOUT(
       // ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮                                      ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬────────────╮
-              &kp PIPE      &ht N0 P     &ht N9 O      &ht N8 I     &ht N7 U       &ht N6 Y                                              &ht N5 T     &ht N4 R      &ht N3 E       &ht N2 W      &ht N1 Q   &ht GRAVE TAB   
+           &ht GRAVE TAB,     &ht N1 Q,       &ht N2 W,        &ht N3 E,     &ht N4 R,       &ht N5 T,                                               &ht N6 Y,      &ht N7 U,       &ht N8 I,       &ht N9 O,        &ht N0 P,      &kp PIPE,
       // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤                                      ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┤
-              &kp SQT       &kp SEMI     &kp L         &kp K        &kp J          &kp H                                                 &kp G        &kp F         &kp D          &kp S         &kp A      &kp ESC         
+           &kp ESC,            &kp A,          &kp S,          &kp D,          &kp F,          &kp G,                                                 &kp H,          &kp J,          &kp K,          &kp L,         &kp SEMI,       &kp SQT,
       // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤  ╭─────────────╮     ╭─────────────╮ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┤
-           &sk RSHFT &mt_sk RCTRL FSLH &mt_sk RALT DOT &kp COMMA    &kp M          &kp N                                                 &kp B        &kp V         &kp C    &mt_sk LALT X &mt_sk LCTRL Z  &sk LSHFT       
-                                                                                                  XTR_DEF_RR          XTR_DEF_LR  
+           &sk LSHFT,     &mt_sk LCTRL Z, &mt_sk LALT X,      &kp C,         &kp V,           &kp B,                                                 &kp N,          &kp M,        &kp COMMA,   &mt_sk RALT DOT, &mt_sk RCTRL FSLH, &sk RSHFT,
+                                                                                                  XTR_DEF_LR,          XTR_DEF_RR,                                                                                         
       // ╰─────────────┴─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤  ╰─────────────╯     ╰─────────────╯ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┴────────────╯
-                                           ___         &kp RET     &lt_qk NUM DEL XTR_DEF_RT                                          XTR_DEF_LT    &lt_qk SYM BKSP &kp SPACE       ___
+                                         ___          &kp SPACE,    &lt_qk SYM BKSP,  XTR_DEF_LT,                                           XTR_DEF_RT,   &lt_qk NUM DEL,   ___,     XTR_DEF_RT2 
       //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
-      >;
+      )>;
+      
+
+      # bindings = <
+      # // ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮                                      ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬────────────╮
+      #         &kp PIPE      &ht N0 P     &ht N9 O      &ht N8 I     &ht N7 U       &ht N6 Y                                              &ht N5 T     &ht N4 R      &ht N3 E       &ht N2 W      &ht N1 Q   &ht GRAVE TAB   
+      # // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤                                      ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┤
+      #         &kp SQT       &kp SEMI     &kp L         &kp K        &kp J          &kp H                                                 &kp G        &kp F         &kp D          &kp S         &kp A      &kp ESC         
+      # // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤  ╭─────────────╮     ╭─────────────╮ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┤
+      #      &sk RSHFT &mt_sk RCTRL FSLH &mt_sk RALT DOT &kp COMMA    &kp M          &kp N                                                 &kp B        &kp V         &kp C    &mt_sk LALT X &mt_sk LCTRL Z  &sk LSHFT       
+      #                                                                                             XTR_DEF_RR          XTR_DEF_LR  
+      # // ╰─────────────┴─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤  ╰─────────────╯     ╰─────────────╯ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┴────────────╯
+      #                                      ___         &kp RET     &lt_qk NUM DEL XTR_DEF_RT                                          XTR_DEF_LT    &lt_qk SYM BKSP &kp SPACE       ___
+      # //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
+      # >;
     };
     sym_layer {
       label = "SYMBOLS";
