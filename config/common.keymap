@@ -66,7 +66,7 @@
     lswp: left_swap_tap_dance {
       compatible = "zmk,behavior-tap-dance";
       label = "LEFT_SWAP_TAP_DANCE";
-      #binding-cells = <0>;
+      #binding-cells = <1>;
       tapping-term-ms = <200>;
       bindings = <&sk LGUI>, <&mo SWP>;
     };
@@ -75,7 +75,7 @@
       label = "RIGHT_SWAP_TAP_DANCE";
       #binding-cells = <0>;
       tapping-term-ms = <200>;
-      bindings = <&sk RGUI>, <&mo SWP>;
+      bindings = <&kp RET>, <&mo SWP>;
     };
     mt_sk: mod_tap_sticky {
       compatible = "zmk,behavior-hold-tap";
@@ -110,7 +110,7 @@
           &sk LSHFT    &mt_sk LCTRL Z &mt_sk LALT X     &kp C        &kp V          &kp B                                                &kp N         &kp M       &kp COMMA  &mt_sk RALT DOT &mt_sk RCTRL FSLH &sk RSHFT
                                                                                                   XTR_DEF_LR          XTR_DEF_RR                                                                                         
       // ╰─────────────┴─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤  ╰─────────────╯     ╰─────────────╯ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┴────────────╯
-                                        &lswp         &kp SPACE   &lt_qk SYM BKSP  XTR_DEF_LT                                           XTR_DEF_RT  &lt_qk NUM DEL  &kp RET      XTR_DEF_RT2 
+                                        &lswp         &kp SPACE   &lt_qk SYM BKSP  XTR_DEF_LT                                           XTR_DEF_RT  &lt_qk NUM DEL  &rswp      XTR_DEF_RT2 
       //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
       >;
     };
@@ -141,7 +141,7 @@
            &sk RSHFT &mt_sk RCTRL FSLH &mt_sk RALT DOT &kp COMMA    &kp M          &kp N                                                 &kp B        &kp V         &kp C    &mt_sk LALT X &mt_sk LCTRL Z  &sk LSHFT       
                                                                                                   XTR_DEF_RR          XTR_DEF_LR  
       // ╰─────────────┴─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤  ╰─────────────╯     ╰─────────────╯ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┴────────────╯
-                                          ___          &kp RET     &lt_qk NUM DEL XTR_DEF_RT                                         XTR_DEF_LT    &lt_qk SYM BKSP &kp SPACE        ___
+                                           ___         &kp RET     &lt_qk NUM DEL XTR_DEF_RT                                          XTR_DEF_LT    &lt_qk SYM BKSP &kp SPACE       ___
       //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
       >;
     };
@@ -156,7 +156,7 @@
               ___          ___            ___            ___           ___          ___                                                &kp UNDER      &kp PLUS      &kp LBRC     &kp RBRC       &kp PIPE     &kp TILDE
                                                                                                   XTR_SYM_LR          XTR_SYM_RR                                                                                      
       // ╰─────────────┴─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤  ╰─────────────╯     ╰─────────────╯ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┴────────────╯
-                                          ___            ___           ___        XTR_SYM_LT                                           XTR_SYM_RT       ___            ___           ___         
+                                           ___           ___           ___        XTR_SYM_LT                                           XTR_SYM_RT       ___            ___           ___         
       //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
       >;
     };
@@ -179,9 +179,9 @@
       label = "ADJUST";
       bindings = <
       // ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮                                      ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬────────────╮
-           &bootloader &rgb_ug RGB_TOG &rgb_ug RGB_HUI &rgb_ug RGB_SAI &rgb_ug RGB_BRI &rgb_ug RGB_SPI                               &out OUT_TOG       ___           ___           ___          ___       &bootloader
+           &bootloader &rgb_ug RGB_TOG &rgb_ug RGB_HUI &rgb_ug RGB_SAI &rgb_ug RGB_BRI &rgb_ug RGB_SPI                               &out OUT_TOG       ___           ___           ___          ___        &bootloader
       // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤                                      ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┤
-           &sys_reset      &rgb_ug RGB_EFF &rgb_ug RGB_HUD &rgb_ug RGB_SAD &rgb_ug RGB_BRD &rgb_ug RGB_SPD                                     ___          ___           ___           ___          ___    &sys_reset
+           &sys_reset  &rgb_ug RGB_EFF &rgb_ug RGB_HUD &rgb_ug RGB_SAD &rgb_ug RGB_BRD &rgb_ug RGB_SPD                                     ___          ___           ___           ___          ___         &sys_reset
       // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤  ╭─────────────╮     ╭─────────────╮ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┤
            &bt BT_CLR  &bt BT_SEL 0    &bt BT_SEL 1 &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4                                               ___          ___           ___           ___          ___          ___
                                                                                                   XTR_ADJ_LR          XTR_ADJ_RR                                                                                 
