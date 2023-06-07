@@ -66,7 +66,7 @@
     lswp: left_swap_tap_dance {
       compatible = "zmk,behavior-tap-dance";
       label = "LEFT_SWAP_TAP_DANCE";
-      #binding-cells = <1>;
+      #binding-cells = <0>;
       tapping-term-ms = <200>;
       bindings = <&sk LGUI>, <&mo SWP>;
     };
