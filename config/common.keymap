@@ -37,11 +37,11 @@
                                 lrot,              rrot,                               \
             l30, l31, l32, l33,                          r30, r31, r32, r33            \
   ) \
-  r05, r04, r03, r02, r01, r00,                          l05, l04, l03, l02, l01, l00, \
-  r15, r14, r13, r12, r11, r10,                          l15, l14, l13, l12, l11, l10, \
-  r25, r24, r23, r22, r21, r20,                          l20, l21, l22, l23, l24, l25, \
-                                rrot,              lrot,                               \
-            r33, r32, r31, r30,                          l33, l32, l31, l30            
+  r05  r04  r03  r02  r01  r00                           l05  l04  l03  l02  l01  l00  \
+  r15  r14  r13  r12  r11  r10                           l15  l14  l13  l12  l11  l10  \
+  r25  r24  r23  r22  r21  r20                           l20  l21  l22  l23  l24  l25  \
+                                rrot               lrot                                \
+            r33  r32  r31  r30                           l33  l32  l31  l30            
 
 
 #define ZMK_HELPER_STRINGIFY(x) #x
