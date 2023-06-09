@@ -43,6 +43,8 @@
                                 lrot               rrot                                \
             l30  l31  l32  l33                           r30  r31  r32  r33            
 
+#define LAYOUT_ARGS(...) LAYOUT(__VA_ARGS__)
+
 #define SWAP_LAYOUT(\
   l00, l01, l02, l03, l04, l05,                          r00, r01, r02, r03, r04, r05, \
   l10, l11, l12, l13, l14, l15,                          r10, r11, r12, r13, r14, r15, \
@@ -55,6 +57,9 @@
   r25  r24  r23  r22  r21  r20                           l20  l21  l22  l23  l24  l25  \
                                 rrot               lrot                                \
             r33  r32  r31  r30                           l33  l32  l31  l30            
+
+
+#define SWAP_LAYOUT_ARGS(...) SWAP_LAYOUT(__VA_ARGS__)
 
 
 #define DEFAULT_LAOUT \
@@ -156,7 +161,7 @@
     compatible = "zmk,keymap";
     default_layer {
       label = "DEFAULT";
-      bindings = <LAYOUT(DEFAULT_LAOUT)>;
+      bindings = <LAYOUT_ARGS(DEFAULT_LAOUT)>;
     };
     
     winlinux_layer {
@@ -176,7 +181,7 @@
     };
     swap_layer {
       label = "SWAP";
-      bindings = <SWAP_LAYOUT(DEFAULT_LAOUT)>;
+      bindings = <SWAP_LAYOUT_ARGS(DEFAULT_LAOUT)>;
     };
     sym_layer {
       label = "SYMBOLS";
