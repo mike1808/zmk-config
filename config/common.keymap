@@ -43,7 +43,7 @@
                                 lrot               rrot                                \
             l30  l31  l32  l33                           r30  r31  r32  r33            
 
-#define LAYOUT_ARGS(...) LAYOUT(__VA_ARGS__)
+#define LAYOUT_wrapper(...) LAYOUT(__VA_ARGS__)
 
 #define SWAP_LAYOUT(\
   l00, l01, l02, l03, l04, l05,                          r00, r01, r02, r03, r04, r05, \
@@ -59,10 +59,10 @@
             r33  r32  r31  r30                           l33  l32  l31  l30            
 
 #define APPLY(M, ...) M(__VA_ARGS__)
-#define SWAP_LAYOUT_ARGS(...) SWAP_LAYOUT(__VA_ARGS__)
+#define SWAP_LAYOUT_wrapper(...) SWAP_LAYOUT(__VA_ARGS__)
 
 
-#define DEFAULT_LAY0UT \
+#define DEFAULT_LAYOUT \
       // ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮                                      ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬────────────╮
           &ht GRAVE TAB,   &ht N1 Q,    &ht N2 W,     &ht N3 E,     &ht N4 R,     &ht N5 T,                                             &ht N6 Y,    &ht N7 U,     &ht N8 I,     &ht N9 O,     &ht N0 P,    &kp PIPE,         \
       // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤                                      ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┤
@@ -161,7 +161,7 @@
     compatible = "zmk,keymap";
     default_layer {
       label = "DEFAULT";
-      bindings = <APPLY(LAYOUT, DEFAULT_LAYOUT)>;
+      bindings = <LAYOUT_wrapper(DEFAULT_LAYOUT)>;
     };
     
     winlinux_layer {
@@ -181,7 +181,7 @@
     };
     swap_layer {
       label = "SWAP";
-      bindings = <APPLY(SWAP_LAYOUT, DEFAULT_LAYOUT)>;
+      bindings = <SWAP_LAYOUT_wrapper(DEFAULT_LAYOUT)>;
     };
     sym_layer {
       label = "SYMBOLS";
