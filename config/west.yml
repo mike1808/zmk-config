@@ -5,7 +5,7 @@ manifest:
   projects:
     - name: zmk
       remote: zmkfirmware
-      revision: mm/test-nice-view-widgets
+      revision: mm/experiments
       import: app/west.yml
   self:
     path: config
