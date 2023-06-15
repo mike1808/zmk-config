@@ -38,7 +38,7 @@
            &sk LSHFT,  &mt_sk LCTRL Z, &mt_sk LALT X,   &kp C,        &kp V,       &kp B,                                                &kp N,        &kp M,       &kp COMMA, &mt_sk RALT DOT, &mt_sk RCTRL FSLH, &sk RSHFT, \
                                                                                                   XTR_DEF_LR,          XTR_DEF_RR,                                                                                            \
       /* ╰─────────────┴─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤  ╰─────────────╯     ╰─────────────╯ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┴────────────╯   */ \
-                                           ___,       &lswp, &lt_qk SYM BKSP, XTR_DEF_LT,                                          XTR_DEF_RT,   &lt_qk NUM DEL,   &rswp,     XTR_DEF_RT2                                   
+                                          &lswp,     &kp SPACE,  &lt_qk SYM BKSP, XTR_DEF_LT                                           XTR_DEF_RT,  &lt_qk NUM DEL,  &rswp,      XTR_DEF_RT2 
       /*                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯                              */
 
 
