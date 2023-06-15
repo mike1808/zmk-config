@@ -5,6 +5,7 @@
 #include <dt-bindings/zmk/ext_power.h>
 #include <dt-bindings/zmk/outputs.h>
 
+#include "helpers.h"
 #include "extra_keys_defaults.h"
 
 // Left bottom row pinky 2nd column
@@ -25,15 +26,30 @@
 #define NUM 4
 #define ADJ 5
 
-#define XXX &none
-#define ___ &trans
 
 #define QUICK_TAP_MS 175
+
+#define DEFAULT_LAYOUT \
+      /* ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮                                      ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬────────────╮   */ \
+          &ht GRAVE TAB,   &ht N1 Q,    &ht N2 W,     &ht N3 E,     &ht N4 R,     &ht N5 T,                                             &ht N6 Y,    &ht N7 U,     &ht N8 I,     &ht N9 O,     &ht N0 P,    &kp PIPE,         \
+      /* ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤                                      ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┤   */ \
+           &kp ESC,         &kp A,        &kp S,        &kp D,        &kp F,       &kp G,                                                &kp H,        &kp J,        &kp K,        &kp L,       &kp SEMI,    &kp SQT,         \
+      /* ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤  ╭─────────────╮     ╭─────────────╮ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┤   */ \
+           &sk LSHFT,  &mt_sk LCTRL Z, &mt_sk LALT X,   &kp C,        &kp V,       &kp B,                                                &kp N,        &kp M,       &kp COMMA, &mt_sk RALT DOT, &mt_sk RCTRL FSLH, &sk RSHFT, \
+                                                                                                  XTR_DEF_LR,          XTR_DEF_RR,                                                                                            \
+      /* ╰─────────────┴─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤  ╰─────────────╯     ╰─────────────╯ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┴────────────╯   */ \
+                                           ___,       &lswp, &lt_qk SYM BKSP, XTR_DEF_LT,                                          XTR_DEF_RT,   &lt_qk NUM DEL,   &rswp,     XTR_DEF_RT2                                   
+      /*                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯                              */
+
+
 
 &sk {
   release-after-ms = <600>;
   quick-release;
 };
+
+ZMK_SWP(lswp, &sk LGUI)
+ZMK_SWP(rswp, &kp RET)
 
 / {
   conditional_layers {
@@ -63,20 +79,6 @@
       quick-tap-ms = <QUICK_TAP_MS>;
       bindings = <&mo>, <&kp>;
     };
-    lswp: left_swap_tap_dance {
-      compatible = "zmk,behavior-tap-dance";
-      label = "LEFT_SWAP_TAP_DANCE";
-      #binding-cells = <0>;
-      tapping-term-ms = <200>;
-      bindings = <&sk LGUI>, <&mo SWP>;
-    };
-    rswp: right_swap_tap_dance {
-      compatible = "zmk,behavior-tap-dance";
-      label = "RIGHT_SWAP_TAP_DANCE";
-      #binding-cells = <0>;
-      tapping-term-ms = <200>;
-      bindings = <&kp RET>, <&mo SWP>;
-    };
     mt_sk: mod_tap_sticky {
       compatible = "zmk,behavior-hold-tap";
       label = "MOD_TAP_STICKY";
@@ -101,18 +103,7 @@
     compatible = "zmk,keymap";
     default_layer {
       label = "DEFAULT";
-      bindings = <
-      // ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮                                      ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬────────────╮
-          &ht GRAVE TAB    &ht N1 Q      &ht N2 W       &ht N3 E    &ht N4 R      &ht N5 T                                              &ht N6 Y     &ht N7 U      &ht N8 I      &ht N9 O       &ht N0 P     &kp PIPE
-      // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤                                      ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┤
-          &kp ESC           &kp A         &kp S         &kp D         &kp F         &kp G                                                &kp H         &kp J         &kp K         &kp L        &kp SEMI      &kp SQT
-      // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤  ╭─────────────╮     ╭─────────────╮ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┤
-          &sk LSHFT    &mt_sk LCTRL Z &mt_sk LALT X     &kp C        &kp V          &kp B                                                &kp N         &kp M       &kp COMMA  &mt_sk RALT DOT &mt_sk RCTRL FSLH &sk RSHFT
-                                                                                                  XTR_DEF_LR          XTR_DEF_RR                                                                                         
-      // ╰─────────────┴─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤  ╰─────────────╯     ╰─────────────╯ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┴────────────╯
-                                        &lswp         &kp SPACE   &lt_qk SYM BKSP  XTR_DEF_LT                                           XTR_DEF_RT  &lt_qk NUM DEL  &rswp      XTR_DEF_RT2 
-      //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
-      >;
+      bindings = <LAYOUT_wrapper(DEFAULT_LAYOUT)>;
     };
     
     winlinux_layer {
@@ -132,18 +123,7 @@
     };
     swap_layer {
       label = "SWAP";
-      bindings = <
-      // ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮                                      ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬────────────╮
-              &kp PIPE      &ht N0 P     &ht N9 O      &ht N8 I     &ht N7 U       &ht N6 Y                                              &ht N5 T     &ht N4 R      &ht N3 E       &ht N2 W      &ht N1 Q   &ht GRAVE TAB   
-      // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤                                      ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┤
-              &kp SQT       &kp SEMI     &kp L         &kp K        &kp J          &kp H                                                 &kp G        &kp F         &kp D          &kp S         &kp A      &kp ESC         
-      // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤  ╭─────────────╮     ╭─────────────╮ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┤
-           &sk RSHFT &mt_sk RCTRL FSLH &mt_sk RALT DOT &kp COMMA    &kp M          &kp N                                                 &kp B        &kp V         &kp C    &mt_sk LALT X &mt_sk LCTRL Z  &sk LSHFT       
-                                                                                                  XTR_DEF_RR          XTR_DEF_LR  
-      // ╰─────────────┴─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤  ╰─────────────╯     ╰─────────────╯ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┴────────────╯
-                                           ___         &kp RET     &lt_qk NUM DEL XTR_DEF_RT                                          XTR_DEF_LT    &lt_qk SYM BKSP &kp SPACE       ___
-      //                             ╰─────────────┴─────────────┴─────────────┴─────────────╯                                      ╰─────────────┴─────────────┴─────────────┴─────────────╯
-      >;
+      bindings = <SWAP_LAYOUT_wrapper(DEFAULT_LAYOUT)>;
     };
     sym_layer {
       label = "SYMBOLS";
