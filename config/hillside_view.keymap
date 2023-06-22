@@ -1,11 +1,11 @@
-#define XTR_DEF_LR &kp C_MUTE
-#define XTR_DEF_RR &kp C_PP
+#define XTR_DEF_LR &kp SPACE
+#define XTR_DEF_RR &kp C_MUTE
 
-#define XTR_SYM_LR &kp C_PREV
-#define XTR_SYM_RR &kp C_NEXT
+#define XTR_SYM_LR &kp END
+#define XTR_SYM_RR &kp C_PP
 
 #define XTR_NUM_LR &trans
-#define XTR_NUM_RR &trans
+#define XTR_NUM_RR &kp C_PP
 
 #define XTR_ADJ_LR &trans
 #define XTR_ADJ_RR &trans
@@ -28,20 +28,20 @@
 / {
   keymap {
     default_layer {
-      // sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp F20 F19>;
-      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp C_VOL_UP C_VOL_DN>;
-    };
-    swap_layer {
       sensor-bindings = <&inc_dec_kp PG_UP PG_DN &inc_dec_kp C_VOL_UP C_VOL_DN>;
     };
+    swap_layer {
+      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
+    };
     sym_layer {
-      sensor-bindings = <&inc_dec_kp C_NEXT C_PREV &inc_dec_kp F18 F17>;
+      sensor-bindings = <&inc_dec_kp UP DOWN &inc_dec_kp C_NEXT C_PREV>;
     };
     num_layer {
-      sensor-bindings = <&inc_dec_kp F15 F14 &inc_dec_kp PG_UP PG_DN>;
+      sensor-bindings = <&inc_dec_kp HOME END &inc_dec_kp C_NEXT C_PREV>;
     };
     adj_layer {
-      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
+      // F15 and F14 are brightness controls for macOS
+      sensor-bindings = <&inc_dec_kp F15 F14 &inc_dec_kp PG_UP PG_DN>;
     };
   };
 };
