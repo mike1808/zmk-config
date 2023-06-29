@@ -1,6 +1,5 @@
 #include "common_keymap.dtsi"
 
-// John's config
 / {
   keymap {
     compatible = "zmk,keymap";
@@ -58,53 +57,3 @@
 
    };  
 };
-
-/*
-// Mike's config
-/ {
-  keymap {
-    compatible = "zmk,keymap";
-
-    default_layer {
-      bindings = <
-   __________QWERTY_L1__________                          __________QWERTY_R1__________
-   __________QWERTY_L2__________                          __________QWERTY_R2__________
-   __________QWERTY_L3__________                          __________QWERTY_R3__________
-                           &kp C_MUTE                 &kp C_PP
-   _________THUMB3_BASE_L_______                          _________THUMB3_BASE_R_______
-              >;
-      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
-      };
-
-      lower_layer {
-        bindings = <
-   ___________SYM_L1__________                    ___________SYM_R1__________
-   ___________SYM_L2__________                    ___________SYM_R2__________
-   ___________SYM_L3__________                    ___________SYM_R3__________
-                             &trans              &trans
-   _________THUMB3_SYM_L______                    _________THUMB3_SYM_R______
-                >;
-        };
-
-        raise_layer {
-          bindings = <
-   ___________NAV_L1__________                    ___________NAV_R1__________
-   ___________NAV_L2__________                    ___________NAV_R2__________
-   ___________NAV_L3__________                    ___________NAV_R3__________
-                             &trans              &trans
-   _________THUMB3_NAV_L______                    _________THUMB3_NAV_R______
-                  >;
-          };
-
-          adjust_layer {
-            bindings = <
-   __________ADJUST_L1__________                   __________ADJUST_R1__________
-   __________ADJUST_L2__________                   __________ADJUST_R2__________
-   __________ADJUST_L3__________                   __________ADJUST_R3__________
-                             &trans              &trans
-   _________THUMB3_ADJUST_L_____                    _________THUMB3_ADJUST_R_____
-                >;
-            };
-       };  
-};
-*/
