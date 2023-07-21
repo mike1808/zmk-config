@@ -5,17 +5,19 @@
     compatible = "zmk,keymap";
 
     default_layer {
+      label = "DEFAULT";
       bindings = <
    __________DEF_L1__________                          __________DEF_R1__________
    __________DEF_L2__________                          __________DEF_R2__________
    __________DEF_L3__________                          __________DEF_R3__________
-                            &kp C_MUTE                &kp C_PP
+                            &trans                    &trans
    _________THUMB_DEF_L_______                         _________THUMB_DEF_R_______
               >;
       sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
       };
 
     number_layer {
+      label = "NUMBER";
       bindings = <
    __________NUM_L1__________                          __________NUM_R1__________
    __________NUM_L2__________                          __________NUM_R2__________
@@ -26,6 +28,7 @@
       };
 
     symbol_layer {
+      label = "SYMBOL";
       bindings = <
    __________SYM_L1__________                          __________SYM_R1__________
    __________SYM_L2__________                          __________SYM_R2__________
@@ -36,6 +39,7 @@
       };
 
     navigation_layer {
+      label = "NAVIGATION";
       bindings = <
    __________NAV_L1__________                          __________NAV_R1__________
    __________NAV_L2__________                          __________NAV_R2__________
@@ -46,6 +50,7 @@
       };
 
     settings_layer {
+      label = "SETTINGS";
       bindings = <
    __________SET_L1__________                          __________SET_R1__________
    __________SET_L2__________                          __________SET_R2__________
