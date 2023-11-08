@@ -47,6 +47,72 @@
       key-positions = <LB5 RB5>;
       bindings = <&caps_word>;
     };
+
+    // symbols
+    cb_excl {
+      bindings = <&kp EXCL>;
+      key-positions = <1 13>;
+      timeout-ms = <30>;
+    };
+
+    cb_at {
+      bindings = <&kp AT>;
+      key-positions = <2 14>;
+      timeout-ms = <30>;
+    };
+
+    cb_hash {
+      bindings = <&kp HASH>;
+      key-positions = <3 15>;
+      timeout-ms = <30>;
+    };
+
+    cb_dllr {
+      bindings = <&kp DLLR>;
+      key-positions = <4 16>;
+      timeout-ms = <30>;
+    };
+
+
+    cb_prcnt {
+      bindings = <&kp PRCNT>;
+      key-positions = <5 17>;
+      timeout-ms = <30>;
+    };
+
+
+    cb_caret {
+      bindings = <&kp CARET>;
+      key-positions = <6 18>;
+      timeout-ms = <30>;
+    };
+
+
+    cb_amps {
+      bindings = <&kp AMPS>;
+      key-positions = <7 19>;
+      timeout-ms = <30>;
+    };
+
+
+    cb_mult {
+      bindings = <&kp KP_MULTIPLY>;
+      key-positions = <8 20>;
+      timeout-ms = <30>;
+    };
+
+
+    cb_pipe {
+      bindings = <&kp PIPE>;
+      key-positions = <9 21>;
+      timeout-ms = <30>;
+    };
+
+    cb_bslash {
+      bindings = <&kp BACKSLASH>;
+      key-positions = <10 22>;
+      timeout-ms = <30>;
+    };
   };
 
   behaviors {
