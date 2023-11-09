@@ -150,6 +150,13 @@
             tapping-term-ms = <200>;
             bindings = <&sk LGUI>, <&mo 2>, <&tog 2>;
         };
+        rswp: right_swap {
+            compatible = "zmk,behavior-tap-dance";
+            label = "RIGHT_SWAP";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&sk RGUI>, <&mo 2>, <&tog 2>;
+        };
     };
 
     keymap {
@@ -162,7 +169,7 @@
 &kp ESC        &kp A           &kp S          &kp D            &kp F       &kp G         &kp H     &kp J       &kp K           &kp L            &kp SEMI           &kp SQT
 &sk LSHFT      &mt_sk LCTRL Z  &mt_sk LALT X  &kp C            &kp V       &kp B         &kp N     &kp M       &kp COMMA       &mt_sk RALT DOT  &mt_sk RCTRL FSLH  &sk RSHFT
                                               &kp SPACE                                                        &kp C_MUTE
-               &lswp           &kp SPACE      &lt_qk SYM BSPC  &sk LSHIFT                          &sk RSHIFT  &lt_qk NUM DEL  &kp RET          &tog SWP
+               &lswp           &kp SPACE      &lt_qk SYM BSPC  &sk LSHIFT                          &sk RSHIFT  &lt_qk NUM DEL  &kp RET          &rswp
             >;
 
             sensor-bindings = <&inc_dec_kp PG_UP PG_DN &inc_dec_kp C_VOL_UP C_VOL_DN>;
