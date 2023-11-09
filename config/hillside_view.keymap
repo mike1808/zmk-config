@@ -148,7 +148,7 @@
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>;
             tapping-term-ms = <200>;
-            bindings = <&sk LGUI>, <&tog SWP>;
+            bindings = <&sk LGUI>, <&mo 2>, <&tog 2>;
         };
     };
 
@@ -158,11 +158,11 @@
         default_layer {
             label = "DEFAULT";
             bindings = <
-&ht GRAVE TAB  &ht N1 Q        &ht N2 W       &ht N3 E         &ht N4 R    &ht N5 T  &ht N6 Y  &ht N7 U    &ht N8 I        &ht N9 O         &ht N0 P           &kp PIPE
-&kp ESC        &kp A           &kp S          &kp D            &kp F       &kp G     &kp H     &kp J       &kp K           &kp L            &kp SEMI           &kp SQT
-&sk LSHFT      &mt_sk LCTRL Z  &mt_sk LALT X  &kp C            &kp V       &kp B     &kp N     &kp M       &kp COMMA       &mt_sk RALT DOT  &mt_sk RCTRL FSLH  &sk RSHFT
-                                              &kp SPACE                                                    &kp C_MUTE
-               &lswp           &kp SPACE      &lt_qk SYM BSPC  &sk LSHIFT                      &sk RSHIFT  &lt_qk NUM DEL  &kp RET          &tog SWP
+&ht GRAVE TAB  &ht N1 Q        &ht N2 W       &ht N3 E         &ht N4 R    &ht N5 T      &ht N6 Y  &ht N7 U    &ht N8 I        &ht N9 O         &ht N0 P           &kp PIPE
+&kp ESC        &kp A           &kp S          &kp D            &kp F       &kp G         &kp H     &kp J       &kp K           &kp L            &kp SEMI           &kp SQT
+&sk LSHFT      &mt_sk LCTRL Z  &mt_sk LALT X  &kp C            &kp V       &kp B         &kp N     &kp M       &kp COMMA       &mt_sk RALT DOT  &mt_sk RCTRL FSLH  &sk RSHFT
+                                              &kp SPACE                                                        &kp C_MUTE
+               &lswp           &kp SPACE      &lt_qk SYM BSPC  &sk LSHIFT                          &sk RSHIFT  &lt_qk NUM DEL  &kp RET          &tog SWP
             >;
 
             sensor-bindings = <&inc_dec_kp PG_UP PG_DN &inc_dec_kp C_VOL_UP C_VOL_DN>;
@@ -171,22 +171,22 @@
         winlinux_layer {
             label = "WINLINUX";
             bindings = <
-&trans  &trans         &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans            &trans
-&trans  &trans         &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans            &trans
-&trans  &mt_sk LGUI Z  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &mt_sk RGUI FSLH  &trans
-                               &trans                                  &trans
-        &kp LCTRL      &trans  &trans  &trans                  &trans  &trans  &trans  &kp RCTRL
+&trans  &trans         &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &trans            &trans
+&trans  &trans         &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &trans            &trans
+&trans  &mt_sk LGUI Z  &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &mt_sk RGUI FSLH  &trans
+                               &trans                                      &trans
+        &kp LCTRL      &trans  &trans  &trans                      &trans  &trans  &trans  &kp RCTRL
             >;
         };
 
         swap_layer {
             label = "SWAP";
             bindings = <
-&kp PIPE   &ht N0 P           &ht N9 O         &ht N8 I        &ht N7 U    &ht N6 Y  &ht N5 T  &ht N4 R    &ht N3 E         &ht N2 W       &ht N1 Q        &ht GRAVE TAB
-&kp SQT    &kp SEMI           &kp L            &kp K           &kp J       &kp H     &kp G     &kp F       &kp D            &kp S          &kp A           &kp ESC
-&sk RSHFT  &mt_sk RCTRL FSLH  &mt_sk RALT DOT  &kp COMMA       &kp M       &kp N     &kp B     &kp V       &kp C            &mt_sk LALT X  &mt_sk LCTRL Z  &sk LSHFT
-                                               &kp C_MUTE                                                  &kp SPACE
-           &tog SWP           &kp RET          &lt_qk NUM DEL  &sk RSHIFT                      &sk LSHIFT  &lt_qk SYM BSPC  &kp SPACE      &lswp
+&kp PIPE   &ht N0 P           &ht N9 O         &ht N8 I        &ht N7 U    &ht N6 Y      &ht N5 T  &ht N4 R    &ht N3 E         &ht N2 W       &ht N1 Q        &ht GRAVE TAB
+&kp SQT    &kp SEMI           &kp L            &kp K           &kp J       &kp H         &kp G     &kp F       &kp D            &kp S          &kp A           &kp ESC
+&sk RSHFT  &mt_sk RCTRL FSLH  &mt_sk RALT DOT  &kp COMMA       &kp M       &kp N         &kp B     &kp V       &kp C            &mt_sk LALT X  &mt_sk LCTRL Z  &sk LSHFT
+                                               &kp C_MUTE                                                      &kp SPACE
+           &tog SWP           &kp RET          &lt_qk NUM DEL  &sk RSHIFT                          &sk LSHIFT  &lt_qk SYM BSPC  &kp SPACE      &lswp
             >;
 
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
@@ -195,11 +195,11 @@
         sym_layer {
             label = "SYMBOLS";
             bindings = <
-&trans  &kp EXCL  &kp AT  &kp HASH  &kp DLLR  &kp PRCNT  &kp CARET  &kp AMPS   &kp KP_MULTIPLY  &kp LPAR  &kp RPAR  &kp BSPC
-&trans  &trans    &trans  &trans    &trans    &trans     &kp MINUS  &kp EQUAL  &kp LBKT         &kp RBKT  &kp BSLH  &kp GRAVE
-&trans  &trans    &trans  &trans    &trans    &trans     &kp UNDER  &kp PLUS   &kp LBRC         &kp RBRC  &kp PIPE  &kp TILDE
-                          &kp END                                              &kp C_PP
-        &trans    &trans  &trans    &trans                          &trans     &trans           &trans    &trans
+&trans  &kp EXCL  &kp AT  &kp HASH  &kp DLLR  &kp PRCNT      &kp CARET  &kp AMPS   &kp KP_MULTIPLY  &kp LPAR  &kp RPAR  &kp BSPC
+&trans  &trans    &trans  &trans    &trans    &trans         &kp MINUS  &kp EQUAL  &kp LBKT         &kp RBKT  &kp BSLH  &kp GRAVE
+&trans  &trans    &trans  &trans    &trans    &trans         &kp UNDER  &kp PLUS   &kp LBRC         &kp RBRC  &kp PIPE  &kp TILDE
+                          &kp END                                                  &kp C_PP
+        &trans    &trans  &trans    &trans                              &trans     &trans           &trans    &trans
             >;
 
             sensor-bindings = <&inc_dec_kp UP DOWN &inc_dec_kp C_NEXT C_PREV>;
@@ -208,11 +208,11 @@
         num_layer {
             label = "NUMBERS";
             bindings = <
-&kp TAB  &ht F1 N1  &ht F2 N2  &ht F3 N3  &ht F4 N4  &ht F5 N5  &ht F6 N6  &ht F7 N7  &ht F8 N8  &ht F9 N9  &ht F10 N0  &trans
-&trans   &trans     &trans     &trans     &trans     &trans     &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT  &trans      &trans
-&trans   &trans     &trans     &trans     &trans     &trans     &kp HOME   &kp PG_DN  &kp PG_UP  &kp END    &trans      &trans
-                               &trans                                                 &trans
-         &trans     &trans     &trans     &trans                           &trans     &trans     &trans     &trans
+&kp TAB  &ht F1 N1  &ht F2 N2  &ht F3 N3  &ht F4 N4  &ht F5 N5      &ht F6 N6  &ht F7 N7  &ht F8 N8  &ht F9 N9  &ht F10 N0  &trans
+&trans   &trans     &trans     &trans     &trans     &trans         &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT  &trans      &trans
+&trans   &trans     &trans     &trans     &trans     &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END    &trans      &trans
+                               &trans                                                     &trans
+         &trans     &trans     &trans     &trans                               &trans     &trans     &trans     &trans
             >;
 
             sensor-bindings = <&inc_dec_kp HOME END &inc_dec_kp C_NEXT C_PREV>;
@@ -221,11 +221,11 @@
         adj_layer {
             label = "ADJUST";
             bindings = <
-&bootloader  &rgb_ug RGB_TOG    &rgb_ug RGB_HUI  &rgb_ug RGB_SAI  &rgb_ug RGB_BRI  &rgb_ug RGB_SPI  &out OUT_TOG  &trans    &trans      &trans        &trans      &bootloader
-&sys_reset   &rgb_ug RGB_EFF    &rgb_ug RGB_HUD  &rgb_ug RGB_SAD  &rgb_ug RGB_BRD  &rgb_ug RGB_SPD  &trans        &trans    &trans      &trans        &trans      &sys_reset
-&bt BT_CLR   &bt BT_SEL 0       &bt BT_SEL 1     &bt BT_SEL 2     &bt BT_SEL 3     &bt BT_SEL 4     &kp C_PREV    &kp C_PP  &kp C_NEXT  &kp C_VOL_UP  &kp C_MUTE  &kp C_VOL_DN
-                                                 &trans                                                                     &trans
-             &ext_power EP_TOG  &to WIN          &trans           &trans                                          &trans    &trans      &to DEF       &trans
+&bootloader  &rgb_ug RGB_TOG    &rgb_ug RGB_HUI  &rgb_ug RGB_SAI  &rgb_ug RGB_BRI  &rgb_ug RGB_SPI      &out OUT_TOG  &trans    &trans      &trans        &trans      &bootloader
+&sys_reset   &rgb_ug RGB_EFF    &rgb_ug RGB_HUD  &rgb_ug RGB_SAD  &rgb_ug RGB_BRD  &rgb_ug RGB_SPD      &trans        &trans    &trans      &trans        &trans      &sys_reset
+&bt BT_CLR   &bt BT_SEL 0       &bt BT_SEL 1     &bt BT_SEL 2     &bt BT_SEL 3     &bt BT_SEL 4         &kp C_PREV    &kp C_PP  &kp C_NEXT  &kp C_VOL_UP  &kp C_MUTE  &kp C_VOL_DN
+                                                 &trans                                                                         &trans
+             &ext_power EP_TOG  &to WIN          &trans           &trans                                              &trans    &trans      &to DEF       &trans
             >;
 
             // F15 and F14 are brightness controls for macOS
