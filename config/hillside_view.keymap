@@ -125,6 +125,7 @@
             quick-tap-ms = <QUICK_TAP_MS>;
             bindings = <&mo>, <&kp>;
         };
+
         mt_sk: mod_tap_sticky {
             compatible = "zmk,behavior-hold-tap";
             label = "MOD_TAP_STICKY";
@@ -134,6 +135,7 @@
             quick-tap-ms = <200>;
             bindings = <&sk>, <&kp>;
         };
+
         ht: hold_tap {
             compatible = "zmk,behavior-hold-tap";
             label = "HOLD_TAP";
@@ -143,6 +145,7 @@
             flavor = "tap-preferred";
             bindings = <&kp>, <&kp>;
         };
+
         lswp: left_swp {
             label = "LSWAP";
             compatible = "zmk,behavior-tap-dance";
@@ -150,6 +153,7 @@
             tapping-term-ms = <200>;
             bindings = <&sk LGUI>, <&mo 2>, <&tog 2>;
         };
+
         rswp: right_swap {
             compatible = "zmk,behavior-tap-dance";
             label = "RIGHT_SWAP";
@@ -165,11 +169,11 @@
         default_layer {
             label = "DEFAULT";
             bindings = <
-&ht GRAVE TAB  &ht N1 Q        &ht N2 W       &ht N3 E         &ht N4 R    &ht N5 T      &ht N6 Y  &ht N7 U    &ht N8 I        &ht N9 O         &ht N0 P           &kp PIPE
-&kp ESC        &kp A           &kp S          &kp D            &kp F       &kp G         &kp H     &kp J       &kp K           &kp L            &kp SEMI           &kp SQT
-&sk LSHFT      &mt_sk LCTRL Z  &mt_sk LALT X  &kp C            &kp V       &kp B         &kp N     &kp M       &kp COMMA       &mt_sk RALT DOT  &mt_sk RCTRL FSLH  &sk RSHFT
-                                              &kp SPACE                                                        &kp C_MUTE
-               &lswp           &kp SPACE      &lt_qk SYM BSPC  &sk LSHIFT                          &sk RSHIFT  &lt_qk NUM DEL  &kp RET          &rswp
+&ht GRAVE TAB  &ht N1 Q        &ht N2 W       &ht N3 E         &ht N4 R      &ht N5 T      &ht N6 Y  &ht N7 U       &ht N8 I        &ht N9 O         &ht N0 P           &kp PIPE
+&kp ESC        &kp A           &kp S          &kp D            &kp F         &kp G         &kp H     &kp J          &kp K           &kp L            &kp SEMI           &kp SQT
+&sk LSHFT      &mt_sk LCTRL Z  &mt_sk LALT X  &kp C            &kp V         &kp B         &kp N     &kp M          &kp COMMA       &mt_sk RALT DOT  &mt_sk RCTRL FSLH  &sk RSHFT
+                                              &kp SPACE                                                             &kp C_MUTE
+               &lswp           &kp SPACE      &lt_qk SYM BSPC  &sk LEFT_ALT                          &sk RIGHT_ALT  &lt_qk NUM DEL  &kp RET          &rswp
             >;
 
             sensor-bindings = <&inc_dec_kp PG_UP PG_DN &inc_dec_kp C_VOL_UP C_VOL_DN>;
