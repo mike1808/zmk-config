@@ -1,0 +1,16 @@
+file_format: "1"
+id: hillside_view
+name: Hillside View
+type: shield
+url: https://github.com/wannabecoffeenerd/hillside
+requires:
+  - pro_micro
+exposes:
+  - nice_view_header
+features:
+  - keys
+  - display
+  - underglow
+siblings:
+  - hillside_view_left
+  - hillside_view_right
