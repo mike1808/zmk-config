@@ -118,7 +118,6 @@
     behaviors {
         lt_qk: layer_toggle_quick {
             compatible = "zmk,behavior-hold-tap";
-            label = "LAYER_TOGGLE_QUICK";
             #binding-cells = <2>;
             flavor = "tap-preferred";
             tapping-term-ms = <150>;
@@ -128,7 +127,6 @@
 
         mt_sk: mod_tap_sticky {
             compatible = "zmk,behavior-hold-tap";
-            label = "MOD_TAP_STICKY";
             #binding-cells = <2>;
             flavor = "tap-preferred";
             tapping-term-ms = <150>;
@@ -138,16 +136,14 @@
 
         ht: hold_tap {
             compatible = "zmk,behavior-hold-tap";
-            label = "HOLD_TAP";
             #binding-cells = <2>;
-            tapping_term_ms = <200>;
-            quick_tap_ms = <200>;
+            tapping-term-ms = <200>;
+            quick-tap-ms = <200>;
             flavor = "tap-preferred";
             bindings = <&kp>, <&kp>;
         };
 
         lswp: left_swp {
-            label = "LSWAP";
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>;
             tapping-term-ms = <200>;
@@ -156,7 +152,6 @@
 
         rswp: right_swap {
             compatible = "zmk,behavior-tap-dance";
-            label = "RIGHT_SWAP";
             #binding-cells = <0>;
             tapping-term-ms = <200>;
             bindings = <&sk RGUI>, <&mo 2>, <&tog 2>;
@@ -167,7 +162,7 @@
         compatible = "zmk,keymap";
 
         default_layer {
-            label = "DEFAULT";
+            display-name = "DEFAULT";
             bindings = <
 &ht GRAVE TAB  &ht N1 Q        &ht N2 W       &ht N3 E         &ht N4 R      &ht N5 T      &ht N6 Y  &ht N7 U       &ht N8 I        &ht N9 O         &ht N0 P           &kp PIPE
 &kp ESC        &kp A           &kp S          &kp D            &kp F         &kp G         &kp H     &kp J          &kp K           &kp L            &kp SEMI           &kp SQT
@@ -180,7 +175,7 @@
         };
 
         winlinux_layer {
-            label = "WINLINUX";
+            display-name = "WINLINUX";
             bindings = <
 &trans  &trans         &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &trans            &trans
 &trans  &trans         &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &trans            &trans
@@ -191,7 +186,7 @@
         };
 
         swap_layer {
-            label = "SWAP";
+            display-name = "SWAP";
             bindings = <
 &kp PIPE   &ht N0 P           &ht N9 O         &ht N8 I        &ht N7 U    &ht N6 Y      &ht N5 T  &ht N4 R    &ht N3 E         &ht N2 W       &ht N1 Q        &ht GRAVE TAB
 &kp SQT    &kp SEMI           &kp L            &kp K           &kp J       &kp H         &kp G     &kp F       &kp D            &kp S          &kp A           &kp ESC
@@ -204,7 +199,7 @@
         };
 
         sym_layer {
-            label = "SYMBOLS";
+            display-name = "SYMBOLS";
             bindings = <
 &trans  &kp EXCL  &kp AT  &kp HASH  &kp DLLR  &kp PRCNT      &kp CARET  &kp AMPS   &kp KP_MULTIPLY  &kp LPAR  &kp RPAR  &kp BSPC
 &trans  &trans    &trans  &trans    &trans    &trans         &kp MINUS  &kp EQUAL  &kp LBKT         &kp RBKT  &kp BSLH  &kp GRAVE
@@ -217,7 +212,7 @@
         };
 
         num_layer {
-            label = "NUMBERS";
+            display-name = "NUMBERS";
             bindings = <
 &kp TAB  &ht F1 N1  &ht F2 N2  &ht F3 N3  &ht F4 N4  &ht F5 N5      &ht F6 N6  &ht F7 N7  &ht F8 N8  &ht F9 N9  &ht F10 N0  &trans
 &trans   &trans     &trans     &trans     &trans     &trans         &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT  &trans      &trans
@@ -230,7 +225,7 @@
         };
 
         adj_layer {
-            label = "ADJUST";
+            display-name = "ADJUST";
             bindings = <
 &bootloader  &rgb_ug RGB_TOG    &rgb_ug RGB_HUI  &rgb_ug RGB_SAI  &rgb_ug RGB_BRI  &rgb_ug RGB_SPI      &out OUT_TOG  &trans    &trans      &trans        &trans      &bootloader
 &sys_reset   &rgb_ug RGB_EFF    &rgb_ug RGB_HUD  &rgb_ug RGB_SAD  &rgb_ug RGB_BRD  &rgb_ug RGB_SPD      &trans        &trans    &trans      &trans        &trans      &sys_reset
