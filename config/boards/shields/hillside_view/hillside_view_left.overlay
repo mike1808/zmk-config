@@ -35,3 +35,10 @@
 &nice_view {
   status = "okay";
 };
+
+&i2c0 {
+    status = "okay";
+    glidepoint: glidepoint@2a {
+        status = "okay";
+    };
+};

@@ -121,6 +121,21 @@ RC(2,1) RC(2,2) RC(2,3) RC(2,4) RC(2,5)                                       RC
       low-power-enable;
     };
   };
+  
+  i2c0_default: i2c0_default {
+    group1 {
+      psels = <NRF_PSEL(TWIM_SDA, 0, 24)>,
+          <NRF_PSEL(TWIM_SCL, 1, 0)>;
+    };
+  };
+
+  i2c0_sleep: i2c0_sleep {
+    group1 {
+      psels = <NRF_PSEL(TWIM_SDA, 0, 24)>,
+          <NRF_PSEL(TWIM_SCL, 1, 0)>;
+      low-power-enable;
+    };
+  };
 };
 
 &spi3 {
@@ -145,6 +160,34 @@ RC(2,1) RC(2,2) RC(2,3) RC(2,4) RC(2,5)                                       RC
 
     color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
   };
+};
+
+&i2c0 {
+    status = "disabled";
+    glidepoint: glidepoint@2a {
+        compatible = "cirque,pinnacle";
+        reg = <0x2a>;
+        status = "disabled";
+        dr-gpios = <&gpio1 2 (GPIO_ACTIVE_HIGH)>;
+
+        sensitivity = "4x";
+        // sleep;
+        no-taps;
+    };
+
+    // Rotation config, from Pete
+    // This will change in the future
+    // https://discord.com/channels/719497620560543766/845285481888743434/1206407883777114182
+    input_config {
+        compatible = "zmk,input-configs";
+    
+        cirque_config {
+            device = <&glidepoint>;
+            xy-swap;
+            y-invert;
+            x-invert;
+        };
+    };
 };
 
 nice_view_spi: &spi0 {
