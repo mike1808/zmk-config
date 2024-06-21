@@ -5,6 +5,9 @@
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/rgb.h>
 
+#include <dt-bindings/zmk/mouse.h>
+#include <behaviors/mouse_keys.dtsi>
+
 // Left bottom row pinky 2nd column
 
 #ifndef LB5

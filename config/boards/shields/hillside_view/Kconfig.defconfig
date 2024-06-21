@@ -28,7 +28,7 @@ config ZMK_DISPLAY
 
 if ZMK_MOUSE
 
-config SPI
+config I2C
   default y
 
 endif # ZMK_MOUSE
