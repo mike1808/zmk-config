@@ -170,24 +170,11 @@ RC(2,1) RC(2,2) RC(2,3) RC(2,4) RC(2,5)                                       RC
         status = "disabled";
         dr-gpios = <&gpio1 2 (GPIO_ACTIVE_HIGH)>;
 
-        sensitivity = "4x";
+        sensitivity = "5x";
         // sleep;
-        no-taps;
+        // no-taps;
     };
 
-    // Rotation config, from Pete
-    // This will change in the future
-    // https://discord.com/channels/719497620560543766/845285481888743434/1206407883777114182
-    input_config {
-        compatible = "zmk,input-configs";
-    
-        cirque_config {
-            device = <&glidepoint>;
-            xy-swap;
-            y-invert;
-            x-invert;
-        };
-    };
 };
 
 nice_view_spi: &spi1 {

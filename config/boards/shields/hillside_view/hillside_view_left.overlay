@@ -42,3 +42,15 @@
         status = "okay";
     };
 };
+
+/ {
+  tpad0: tpad0 {
+        compatible = "zmk,input-listener";
+
+        device = <&glidepoint>;
+        // xy-swap;
+        // y-invert;
+        // x-invert;
+    };
+};
+
