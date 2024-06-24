@@ -21,9 +21,9 @@
     ;
 };
 
-&right_encoder {
-  status = "okay";
-};
+// &right_encoder {
+//   status = "okay";
+// };
 
 // trackball bus
 /* &spi0 { */
@@ -40,15 +40,42 @@
 /* }; */
 
 
-&chosen {
-  zephyr,display = &nice_view;
+// &chosen {
+//   zephyr,display = &nice_view;
+// };
+
+// &nice_view_spi {
+//   status = "okay";
+// };
+
+// &nice_view {
+//   status = "okay";
+// };
+
+&i2c0 {
+    status = "okay";
+    glidepoint0: glidepoint@2a {
+        status = "okay";
+    };
 };
 
-&nice_view_spi {
-  status = "okay";
-};
+/ {
+    /* THIS only makes keymap binding happy, nothing happens on peripheral side */
+	glidepoint_virtual: virtual_input {
+		compatible = "zmk,virtual-input";
+	};
 
-&nice_view {
-  status = "okay";
-};
+    input_relay_config_102 {
+        compatible = "zmk,split-peripheral-input-relay";
 
+        /* peripheral side input device, used to... */
+		/*  - be intecepted on peripheral; */
+		/*  - and then, be resurrected as `zmk,virtual-device` on central; */
+        device = <&glidepoint>;
+
+        /* channel id, used to be be transfered along with all input events. */
+		/* NOTE 1: pick any 8bit integer. (1 - 255) */
+		/* TE 2: should matching relay-channel on central overlay */
+		relay-channel = <102>;
+    };
+};

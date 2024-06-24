@@ -163,18 +163,35 @@ RC(2,1) RC(2,2) RC(2,3) RC(2,4) RC(2,5)                                       RC
 };
 
 &i2c0 {
+  status = "disabled";
+  glidepoint: glidepoint@2a {
+    compatible = "cirque,pinnacle";
+    reg = <0x2a>;
     status = "disabled";
-    glidepoint: glidepoint@2a {
-        compatible = "cirque,pinnacle";
-        reg = <0x2a>;
-        status = "disabled";
-        dr-gpios = <&gpio1 2 (GPIO_ACTIVE_HIGH)>;
+    dr-gpios = <&gpio1 2 (GPIO_ACTIVE_HIGH)>;
 
-        sensitivity = "5x";
-        // sleep;
-        // no-taps;
-    };
+    sensitivity = "1x";
+    // sleep;
+    // no-taps;
+  };
+};
 
+/ {
+	/* assign `input-listener` to all pointing devices */
+	/* &glidepoint0 on central, &glidepoint1 on peripheral */
+    tpad_central_listener {
+        compatible = "zmk,input-listener";
+        device = <&glidepoint>;
+	};
+
+    tpad_peripheral_listener {
+        compatible = "zmk,input-listener";
+        device = <&glidepoint_virtual>;
+        y-invert;
+        // xy-swap;
+        // x-invert;
+        scale-multiplier = <3>;
+	};
 };
 
 nice_view_spi: &spi1 {
@@ -183,8 +200,10 @@ nice_view_spi: &spi1 {
   pinctrl-1 = <&spi1_sleep>;
   pinctrl-names = "default", "sleep";
   cs-gpios = <&gpio0 22 GPIO_ACTIVE_HIGH>;
+  status = "disabled";
 
   nice_view: ls0xx@0 {
+    status = "disabled";
     compatible = "sharp,ls0xx";
     spi-max-frequency = <1000000>;
     reg = <0>;

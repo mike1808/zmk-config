@@ -17,11 +17,11 @@
         ;
 };
 
-&left_encoder {
-    status = "okay";
-  a-gpios = <&pro_micro 20 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-  b-gpios = <&pro_micro 21 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-};
+// &left_encoder {
+//     status = "okay";
+//   a-gpios = <&pro_micro 20 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+//   b-gpios = <&pro_micro 21 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+// };
 
 &chosen {
   zephyr,display = &nice_view;
@@ -36,21 +36,23 @@
   status = "okay";
 };
 
-&i2c0 {
-    status = "okay";
-    glidepoint: glidepoint@2a {
-        status = "okay";
-    };
-};
 
 / {
-  tpad0: tpad0 {
-        compatible = "zmk,input-listener";
+    /* define virtual input, will be resurrected for emitting input event */
+	/* NOTE: set `device = <&glidepoint1>` in `zmk,input-listener` */
+	glidepoint_virtual: virtual_input {
+		compatible = "zmk,virtual-input";
+	};
 
-        device = <&glidepoint>;
-        // xy-swap;
-        // y-invert;
-        // x-invert;
-    };
+	/* for central side, define (relay-channel)-to-(virtual-input) mapping */
+	input_relay_config_102 {
+		compatible = "zmk,split-peripheral-input-relay";
+		
+		/* channel id, used to filter incoming input event from split peripheral */
+		/* NOTE: should matching relay-channel on peripheral overlay */
+		relay-channel = <102>;
+
+		/* virtual input device on central, which used to emit input event as an agent device */
+		device = <&glidepoint_virtual>;
+	};
 };
-
