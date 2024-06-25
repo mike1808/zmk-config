@@ -164,7 +164,7 @@ RC(2,1) RC(2,2) RC(2,3) RC(2,4) RC(2,5)                                       RC
 
 &i2c0 {
   status = "disabled";
-  glidepoint: glidepoint@2a {
+  glidepoint0: glidepoint@2a {
     compatible = "cirque,pinnacle";
     reg = <0x2a>;
     status = "disabled";
@@ -176,23 +176,23 @@ RC(2,1) RC(2,2) RC(2,3) RC(2,4) RC(2,5)                                       RC
   };
 };
 
-/ {
-	/* assign `input-listener` to all pointing devices */
-	/* &glidepoint0 on central, &glidepoint1 on peripheral */
-    tpad_central_listener {
-        compatible = "zmk,input-listener";
-        device = <&glidepoint>;
-	};
+// / {
+// 	/* assign `input-listener` to all pointing devices */
+// 	/* &glidepoint0 on central, &glidepoint1 on peripheral */
+//     tpad_central_listener {
+//         compatible = "zmk,input-listener";
+//         device = <&glidepoint0>;
+// 	};
 
-    tpad_peripheral_listener {
-        compatible = "zmk,input-listener";
-        device = <&glidepoint_virtual>;
-        y-invert;
-        // xy-swap;
-        // x-invert;
-        scale-multiplier = <3>;
-	};
-};
+//     tpad_peripheral_listener {
+//         compatible = "zmk,input-listener";
+//         device = <&glidepoint1>;
+//         y-invert;
+//         // xy-swap;
+//         // x-invert;
+//         scale-multiplier = <3>;
+// 	};
+// };
 
 nice_view_spi: &spi1 {
   compatible = "nordic,nrf-spim";

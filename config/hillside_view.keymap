@@ -37,6 +37,50 @@
 };
 
 / {
+	/* assign `input-listener` to all pointing devices */
+	/* &glidepoint0 on central, &glidepoint1 on peripheral */
+    tpad_central_listener {
+        compatible = "zmk,input-behavior-listener";
+        device = <&glidepoint0>;
+        y-invert;
+        scale-multiplier = <3>;
+        // xy-swap;
+        // x-invert;
+	};
+
+    tpad_peripheral_listener {
+        compatible = "zmk,input-behavior-listener";
+        device = <&glidepoint1>;
+        layers = <DEF WIN SWP SYM ADJ>;
+        y-invert;
+        scale-multiplier = <3>;
+        /* NOTE: do NOT override event code here, */
+        /*       let Cirque glidepoint reports click from taps */
+        // evt-type = <INPUT_EV_REL>;
+        // x-input-code = <INPUT_REL_X>;
+        // y-input-code = <INPUT_REL_Y>;
+    };
+
+    tpad_peripheral_scroll {
+        compatible = "zmk,input-behavior-listener";
+        device = <&glidepoint1>;
+        layers = <NUM>;
+        /* NOTE: only apply input-code overriding for INPUT_EV_REL */
+        evt-type = <INPUT_EV_REL>;
+        x-input-code = <INPUT_REL_MISC>;
+        y-input-code = <INPUT_REL_WHEEL>;
+        bindings = <&ib_wheel_scaler 1 8>;
+    };
+
+    ib_wheel_scaler: ib_wheel_scaler {
+        compatible = "zmk,input-behavior-scaler";
+        #binding-cells = <2>;
+        evt-type = <INPUT_EV_REL>;
+        input-code = <INPUT_REL_WHEEL>;
+    };
+};
+
+/ {
     conditional_layers {
         compatible = "zmk,conditional-layers";
 

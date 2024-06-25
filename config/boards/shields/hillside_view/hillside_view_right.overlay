@@ -53,29 +53,29 @@
 // };
 
 &i2c0 {
-    status = "okay";
-    glidepoint0: glidepoint@2a {
-        status = "okay";
-    };
+  status = "okay";
+  glidepoint0: glidepoint@2a {
+      status = "okay";
+  };
 };
 
 / {
     /* THIS only makes keymap binding happy, nothing happens on peripheral side */
-	glidepoint_virtual: virtual_input {
+  glidepoint1: virtual_input {
 		compatible = "zmk,virtual-input";
 	};
 
-    input_relay_config_102 {
-        compatible = "zmk,split-peripheral-input-relay";
+  input_relay_config_102 {
+    compatible = "zmk,split-peripheral-input-relay";
 
-        /* peripheral side input device, used to... */
-		/*  - be intecepted on peripheral; */
-		/*  - and then, be resurrected as `zmk,virtual-device` on central; */
-        device = <&glidepoint>;
+    /* peripheral side input device, used to... */
+    /*  - be intecepted on peripheral; */
+    /*  - and then, be resurrected as `zmk,virtual-device` on central; */
+    device = <&glidepoint0>;
 
-        /* channel id, used to be be transfered along with all input events. */
-		/* NOTE 1: pick any 8bit integer. (1 - 255) */
-		/* TE 2: should matching relay-channel on central overlay */
-		relay-channel = <102>;
-    };
+    /* channel id, used to be be transfered along with all input events. */
+    /* NOTE 1: pick any 8bit integer. (1 - 255) */
+    /* TE 2: should matching relay-channel on central overlay */
+    relay-channel = <102>;
+  };
 };
