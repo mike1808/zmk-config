@@ -171,7 +171,7 @@ RC(2,1) RC(2,2) RC(2,3) RC(2,4) RC(2,5)                                       RC
     dr-gpios = <&gpio1 2 (GPIO_ACTIVE_HIGH)>;
 
     sensitivity = "1x";
-    // sleep;
+    sleep;
     // no-taps;
   };
 };
