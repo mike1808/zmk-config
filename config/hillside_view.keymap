@@ -43,7 +43,7 @@
         compatible = "zmk,input-behavior-listener";
         device = <&glidepoint0>;
         y-invert;
-        scale-multiplier = <3>;
+        scale-multiplier = <2>;
         // xy-swap;
         // x-invert;
 	};
@@ -53,7 +53,7 @@
         device = <&glidepoint1>;
         layers = <DEF WIN SWP SYM ADJ>;
         y-invert;
-        scale-multiplier = <3>;
+        scale-multiplier = <2>;
         /* NOTE: do NOT override event code here, */
         /*       let Cirque glidepoint reports click from taps */
         // evt-type = <INPUT_EV_REL>;
