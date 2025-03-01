@@ -1,0 +1,58 @@
+/*
+ * Copyright (c) 2022 The ZMK Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+#include "hillside_view.dtsi"
+
+&kscan0  {
+    col-gpios
+        = <&gpio1 7 GPIO_ACTIVE_HIGH>
+        , <&pro_micro 18 GPIO_ACTIVE_HIGH>
+        , <&pro_micro 15 GPIO_ACTIVE_HIGH>
+        , <&pro_micro 14 GPIO_ACTIVE_HIGH>
+        , <&pro_micro 16 GPIO_ACTIVE_HIGH>
+        , <&pro_micro 10 GPIO_ACTIVE_HIGH>
+        ;
+};
+
+// &left_encoder {
+//     status = "okay";
+//   a-gpios = <&pro_micro 20 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+//   b-gpios = <&pro_micro 21 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+// };
+
+&chosen {
+  zephyr,display = &nice_view;
+};
+
+// nice view bus
+&nice_view_spi {
+  status = "okay";
+};
+
+&nice_view {
+  status = "okay";
+};
+
+
+/ {
+    /* define virtual input, will be resurrected for emitting input event */
+	/* NOTE: set `device = <&glidepoint1>` in `zmk,input-listener` */
+	glidepoint1: virtual_input {
+		compatible = "zmk,virtual-input";
+	};
+
+	/* for central side, define (relay-channel)-to-(virtual-input) mapping */
+	input_relay_config_102 {
+		compatible = "zmk,split-peripheral-input-relay";
+		
+		/* channel id, used to filter incoming input event from split peripheral */
+		/* NOTE: should matching relay-channel on peripheral overlay */
+		relay-channel = <102>;
+
+		/* virtual input device on central, which used to emit input event as an agent device */
+		device = <&glidepoint1>;
+	};
+};

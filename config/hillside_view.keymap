@@ -5,6 +5,10 @@
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/rgb.h>
 
+#include <dt-bindings/zmk/mouse.h>
+#include <behaviors/mouse_keys.dtsi>
+#include <behaviors/studio_unlock.dtsi>
+
 // Left bottom row pinky 2nd column
 
 #ifndef LB5
@@ -31,6 +35,50 @@
 &sk {
     release-after-ms = <600>;
     quick-release;
+};
+
+/ {
+	/* assign `input-listener` to all pointing devices */
+	/* &glidepoint0 on central, &glidepoint1 on peripheral */
+    tpad_central_listener {
+        compatible = "zmk,input-behavior-listener";
+        device = <&glidepoint0>;
+        y-invert;
+        scale-multiplier = <2>;
+        // xy-swap;
+        // x-invert;
+	};
+
+    tpad_peripheral_listener {
+        compatible = "zmk,input-behavior-listener";
+        device = <&glidepoint1>;
+        layers = <DEF WIN SWP SYM ADJ>;
+        y-invert;
+        scale-multiplier = <2>;
+        /* NOTE: do NOT override event code here, */
+        /*       let Cirque glidepoint reports click from taps */
+        // evt-type = <INPUT_EV_REL>;
+        // x-input-code = <INPUT_REL_X>;
+        // y-input-code = <INPUT_REL_Y>;
+    };
+
+    tpad_peripheral_scroll {
+        compatible = "zmk,input-behavior-listener";
+        device = <&glidepoint1>;
+        layers = <NUM>;
+        /* NOTE: only apply input-code overriding for INPUT_EV_REL */
+        evt-type = <INPUT_EV_REL>;
+        x-input-code = <INPUT_REL_MISC>;
+        y-input-code = <INPUT_REL_WHEEL>;
+        bindings = <&ib_wheel_scaler 1 8>;
+    };
+
+    ib_wheel_scaler: ib_wheel_scaler {
+        compatible = "zmk,input-behavior-scaler";
+        #binding-cells = <2>;
+        evt-type = <INPUT_EV_REL>;
+        input-code = <INPUT_REL_WHEEL>;
+    };
 };
 
 / {
@@ -118,7 +166,6 @@
     behaviors {
         lt_qk: layer_toggle_quick {
             compatible = "zmk,behavior-hold-tap";
-            label = "LAYER_TOGGLE_QUICK";
             #binding-cells = <2>;
             flavor = "tap-preferred";
             tapping-term-ms = <150>;
@@ -128,7 +175,6 @@
 
         mt_sk: mod_tap_sticky {
             compatible = "zmk,behavior-hold-tap";
-            label = "MOD_TAP_STICKY";
             #binding-cells = <2>;
             flavor = "tap-preferred";
             tapping-term-ms = <150>;
@@ -138,16 +184,14 @@
 
         ht: hold_tap {
             compatible = "zmk,behavior-hold-tap";
-            label = "HOLD_TAP";
             #binding-cells = <2>;
-            tapping_term_ms = <200>;
-            quick_tap_ms = <200>;
+            tapping-term-ms = <200>;
+            quick-tap-ms = <200>;
             flavor = "tap-preferred";
             bindings = <&kp>, <&kp>;
         };
 
         lswp: left_swp {
-            label = "LSWAP";
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>;
             tapping-term-ms = <200>;
@@ -156,7 +200,6 @@
 
         rswp: right_swap {
             compatible = "zmk,behavior-tap-dance";
-            label = "RIGHT_SWAP";
             #binding-cells = <0>;
             tapping-term-ms = <200>;
             bindings = <&sk RGUI>, <&mo 2>, <&tog 2>;
@@ -167,7 +210,7 @@
         compatible = "zmk,keymap";
 
         default_layer {
-            label = "DEFAULT";
+            display-name = "DEFAULT";
             bindings = <
 &ht GRAVE TAB  &ht N1 Q        &ht N2 W       &ht N3 E         &ht N4 R      &ht N5 T      &ht N6 Y  &ht N7 U       &ht N8 I        &ht N9 O         &ht N0 P           &kp PIPE
 &kp ESC        &kp A           &kp S          &kp D            &kp F         &kp G         &kp H     &kp J          &kp K           &kp L            &kp SEMI           &kp SQT
@@ -180,7 +223,7 @@
         };
 
         winlinux_layer {
-            label = "WINLINUX";
+            display-name = "WINLINUX";
             bindings = <
 &trans  &trans         &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &trans            &trans
 &trans  &trans         &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &trans            &trans
@@ -191,7 +234,7 @@
         };
 
         swap_layer {
-            label = "SWAP";
+            display-name = "SWAP";
             bindings = <
 &kp PIPE   &ht N0 P           &ht N9 O         &ht N8 I        &ht N7 U    &ht N6 Y      &ht N5 T  &ht N4 R    &ht N3 E         &ht N2 W       &ht N1 Q        &ht GRAVE TAB
 &kp SQT    &kp SEMI           &kp L            &kp K           &kp J       &kp H         &kp G     &kp F       &kp D            &kp S          &kp A           &kp ESC
@@ -204,7 +247,7 @@
         };
 
         sym_layer {
-            label = "SYMBOLS";
+            display-name = "SYMBOLS";
             bindings = <
 &trans  &kp EXCL  &kp AT  &kp HASH  &kp DLLR  &kp PRCNT      &kp CARET  &kp AMPS   &kp KP_MULTIPLY  &kp LPAR  &kp RPAR  &kp BSPC
 &trans  &trans    &trans  &trans    &trans    &trans         &kp MINUS  &kp EQUAL  &kp LBKT         &kp RBKT  &kp BSLH  &kp GRAVE
@@ -217,7 +260,7 @@
         };
 
         num_layer {
-            label = "NUMBERS";
+            display-name = "NUMBERS";
             bindings = <
 &kp TAB  &ht F1 N1  &ht F2 N2  &ht F3 N3  &ht F4 N4  &ht F5 N5      &ht F6 N6  &ht F7 N7  &ht F8 N8  &ht F9 N9  &ht F10 N0  &trans
 &trans   &trans     &trans     &trans     &trans     &trans         &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT  &trans      &trans
@@ -230,10 +273,10 @@
         };
 
         adj_layer {
-            label = "ADJUST";
+            display-name = "ADJUST";
             bindings = <
 &bootloader  &rgb_ug RGB_TOG    &rgb_ug RGB_HUI  &rgb_ug RGB_SAI  &rgb_ug RGB_BRI  &rgb_ug RGB_SPI      &out OUT_TOG  &trans    &trans      &trans        &trans      &bootloader
-&sys_reset   &rgb_ug RGB_EFF    &rgb_ug RGB_HUD  &rgb_ug RGB_SAD  &rgb_ug RGB_BRD  &rgb_ug RGB_SPD      &trans        &trans    &trans      &trans        &trans      &sys_reset
+&sys_reset   &rgb_ug RGB_EFF    &rgb_ug RGB_HUD  &rgb_ug RGB_SAD  &rgb_ug RGB_BRD  &rgb_ug RGB_SPD     &studio_unlock &trans    &trans      &trans        &trans      &sys_reset
 &bt BT_CLR   &bt BT_SEL 0       &bt BT_SEL 1     &bt BT_SEL 2     &bt BT_SEL 3     &bt BT_SEL 4         &kp C_PREV    &kp C_PP  &kp C_NEXT  &kp C_VOL_UP  &kp C_MUTE  &kp C_VOL_DN
                                                  &trans                                                                         &trans
              &ext_power EP_TOG  &to WIN          &trans           &trans                                              &trans    &trans      &to DEF       &trans
