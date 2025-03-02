@@ -1,15 +1,13 @@
 file_format: "1"
-id: corne
-name: Corne
+id: cygnus
+name: Cygnus
 type: shield
-url: https://github.com/foostan/crkbd/
+url: https://github.com/juhakaup/keyboards/tree/main/Cygnus%20v1.0
 requires: [pro_micro]
-exposes: [i2c_oled]
+exposes: []
 features:
   - keys
-  - display
-  - underglow
   - studio
 siblings:
-  - corne_left
-  - corne_right
+  - cygnus_left
+  - cygnus_right
