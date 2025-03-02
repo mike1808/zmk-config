@@ -20,3 +20,7 @@ include:
     shield: hillside_view_right
   - board: nice_nano_v2
     shield: settings_reset
+  - board: nice_nano_v2
+    shield: cygnus_left
+  - board: nice_nano_v2
+    shield: cygnus_right

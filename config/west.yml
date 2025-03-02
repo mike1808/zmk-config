@@ -10,8 +10,8 @@ manifest:
     #   revision: main
     #   import: app/west.yml
     - name: zmk
-      remote: badjeff
-      revision: pointers-with-input-processors
+      remote: zmkfirmware
+      revision: main
       import: app/west.yml
     - name: zmk-adns9800-driver
       remote: badjeff
