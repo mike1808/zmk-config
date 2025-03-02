@@ -6,21 +6,6 @@
 
 #include <behaviors/studio_unlock.dtsi>
 
-// Left bottom row pinky 2nd column
-
-#ifndef LB5
-
-#define LB5 40
-
-#endif
-
-// Right bottom row pinky 2nd column
-#ifndef RB5
-
-#define RB5 41
-
-#endif
-
 #define DEF 0
 #define WIN 1
 #define SWP 2
@@ -49,7 +34,7 @@
 
         caps {
             timeout-ms = <50>;
-            key-positions = <LB5 RB5>;
+            key-positions = <24 35>;
             bindings = <&caps_word>;
         };
 
