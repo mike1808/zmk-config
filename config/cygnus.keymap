@@ -7,9 +7,10 @@
 #include <behaviors/studio_unlock.dtsi>
 
 #define DEF 0
-#define SYM 1
-#define NUM 2
-#define ADJ 3
+#define GAM 1
+#define SYM 2
+#define NUM 3
+#define ADJ 4
 
 #define QUICK_TAP_MS 175
 #define TAPPING_TERM_MS 200
@@ -71,6 +72,17 @@
 &kp ESC        &ht LCTRL A     &ht LALT S     &ht LGUI D       &ht LSHIFT F  &kp G             &kp H        &ht LSHIFT J   &ht LGUI K      &ht LALT L       &ht LCTRL SEMI     &kp SQT
 &sk LSHFT      &kp Z           &kp X          &kp C            &kp V         &kp B             &kp N        &kp M          &kp COMMA       &kp DOT          &kp FSLH           &sk RSHFT
                                               &kp LGUI         &kp SPACE     &lq SYM BSPC      &lq NUM DEL  &kp RET        &kp DEL
+            >;
+        };
+
+        game_layer {
+            display-name = "Game";
+            bindings = <
+&kp GRAVE      &kp N1          &kp N2         &kp N3           &kp N4        &kp N5            &kp N6       &kp N7         &kp N8          &kp N9           &kp N0             &kp MINUS
+&kp TAB        &kp T           &kp Q          &kp W            &kp E         &kp R             &kp Y        &kp U          &kp I           &kp O            &kp P              &kp BSLH
+&kp ESC        &kp G           &kp A          &kp S            &kp D         &kp F             &kp H        &kp J          &kp K            &kp L             &kp SEMI           &kp SQT
+&kp LSHFT      &kp Z           &kp X          &kp C            &kp V         &kp B             &kp N        &kp M          &kp COMMA       &kp DOT          &kp FSLH           &sk RSHFT
+                                              &kp LCTRL        &kp SPACE     &lq SYM BSPC      &lq NUM DEL  &kp RET        &to DEF
             >;
         };
 
@@ -153,7 +165,7 @@
 &bootloader  &trans             &trans           &trans           &trans           &trans               &trans         &trans    &trans      &trans        &trans      &bootloader
 &sys_reset   &trans             &trans           &trans           &trans           &trans               &studio_unlock &trans    &trans      &trans        &trans      &sys_reset
 &bt BT_CLR   &bt BT_SEL 0       &bt BT_SEL 1     &bt BT_SEL 2     &bt BT_SEL 3     &bt BT_SEL 4         &kp C_PREV     &kp C_PP  &kp C_NEXT  &kp C_VOL_UP  &kp C_MUTE  &kp C_VOL_DN
-                                                 &trans           &trans           &trans               &trans         &trans    &trans
+                                                 &trans           &trans           &trans               &trans         &trans    &to GAM
             >;
         };
     };
