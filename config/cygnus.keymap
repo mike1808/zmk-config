@@ -65,7 +65,7 @@
             tapping-term-ms = <200>;
             bindings = <&none>, <&bootloader>;
         };
-    }
+    };
 
     keymap {
         compatible = "zmk,keymap";
