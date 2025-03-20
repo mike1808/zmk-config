@@ -39,6 +39,13 @@
             key-positions = <36 47>;
             bindings = <&caps_word>;
         };
+
+        caps2 {
+            bindings = <&caps_word>;
+            key-positions = <29 30>;
+            layers = <0>;
+            timeout-ms = <50>;
+        };
     };
 
     behaviors {
@@ -51,15 +58,14 @@
             bindings = <&mo>, <&kp>;
         };
 
-        ht: hold_tap {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            tapping-term-ms = <TAPPING_TERM_MS>;
-            quick-tap-ms = <QUICK_TAP_MS>;
-            flavor = "tap-preferred";
-            bindings = <&kp>, <&kp>;
+        bootldr: bootldr {
+            compatible = "zmk,behavior-tap-dance";
+            label = "BOOTLDR";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&none>, <&bootloader>;
         };
-    };
+    }
 
     keymap {
         compatible = "zmk,keymap";
@@ -139,7 +145,7 @@
         sym_layer {
             display-name = "Symbols";
             bindings = <
-&trans  &trans    &trans  &trans    &trans    &trans         &trans     &trans     &trans           &trans    &trans    &trans
+&trans  &trans    &trans  &trans    &trans    &trans         &trans     &trans     &trans           &trans    &trans    &bootldr
 &trans  &kp EXCL  &kp AT  &kp HASH  &kp DLLR  &kp PRCNT      &kp CARET  &kp AMPS   &kp KP_MULTIPLY  &kp LPAR  &kp RPAR  &kp BSPC
 &trans  &trans    &trans  &trans    &trans    &trans         &kp MINUS  &kp EQUAL  &kp LBKT         &kp RBKT  &kp BSLH  &kp GRAVE
 &trans  &trans    &trans  &trans    &trans    &trans         &kp UNDER  &kp PLUS   &kp LBRC         &kp RBRC  &kp PIPE  &kp TILDE
@@ -150,8 +156,8 @@
         num_layer {
             display-name = "Numbers";
             bindings = <
-&trans   &kp F1     &kp F2     &kp F3     &kp F4     &kp F5         &kp F6     &kp F7     &kp F8     &kp F9     &kp F10     &trans
-&kp TAB  &ht F1 N1  &ht F2 N2  &ht F3 N3  &ht F4 N4  &ht F5 N5      &ht F6 N6  &ht F7 N7  &ht F8 N8  &ht F9 N9  &ht F10 N0  &trans
+&bootldr &kp F1     &kp F2     &kp F3     &kp F4     &kp F5         &kp F6     &kp F7     &kp F8     &kp F9     &kp F10     &kp F11
+&trans   &ht F1 N1  &ht F2 N2  &ht F3 N3  &ht F4 N4  &ht F5 N5      &ht F6 N6  &ht F7 N7  &ht F8 N8  &ht F9 N9  &ht F10 N0  &kp F12
 &trans   &trans     &trans     &trans     &trans     &trans         &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT  &trans      &trans
 &trans   &trans     &trans     &trans     &trans     &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END    &trans      &trans
                                &trans     &trans     &trans         &trans     &trans     &trans
