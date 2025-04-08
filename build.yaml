@@ -29,4 +29,4 @@ include:
     shield: cygnus_right
   - board: seeeduino_xiao_ble
     shield: cygnus_dongle prospector_adapter
-    snippet: studio-rpc-usb-uart zmk-usb-loggindfas
+    snippet: studio-rpc-usb-uart zmk-usb-logging
