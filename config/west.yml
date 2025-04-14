@@ -58,7 +58,7 @@ manifest:
       remote: badjeff
       revision: main
     - name: prospector-zmk-module
-      remote: carrefinho
+      remote: badjeff
       revision: main
   self:
     path: config
