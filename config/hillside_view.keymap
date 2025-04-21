@@ -1,13 +1,12 @@
+#include <dt-bindings/zmk/mouse.h>
+#include <behaviors/mouse_keys.dtsi>
+#include <behaviors/studio_unlock.dtsi>
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/ext_power.h>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/rgb.h>
-
-#include <dt-bindings/zmk/mouse.h>
-#include <behaviors/mouse_keys.dtsi>
-#include <behaviors/studio_unlock.dtsi>
 
 // Left bottom row pinky 2nd column
 
@@ -28,7 +27,6 @@
 #define SYM 1
 #define NUM 2
 #define ADJ 3
-
 #define QUICK_TAP_MS 175
 #define TAPPING_TERM_MS 150
 
@@ -38,16 +36,18 @@
 };
 
 / {
-	/* assign `input-listener` to all pointing devices */
-	/* &glidepoint0 on central, &glidepoint1 on peripheral */
+    /* assign `input-listener` to all pointing devices */
+    /* &glidepoint0 on central, &glidepoint1 on peripheral */
+
     tpad_central_listener {
         compatible = "zmk,input-behavior-listener";
         device = <&glidepoint0>;
         y-invert;
         scale-multiplier = <2>;
+
         // xy-swap;
         // x-invert;
-	};
+    };
 
     tpad_peripheral_listener {
         compatible = "zmk,input-behavior-listener";
@@ -55,6 +55,7 @@
         layers = <DEF SYM ADJ>;
         y-invert;
         scale-multiplier = <2>;
+
         /* NOTE: do NOT override event code here, */
         /*       let Cirque glidepoint reports click from taps */
         // evt-type = <INPUT_EV_REL>;
@@ -66,7 +67,9 @@
         compatible = "zmk,input-behavior-listener";
         device = <&glidepoint1>;
         layers = <NUM>;
+
         /* NOTE: only apply input-code overriding for INPUT_EV_REL */
+
         evt-type = <INPUT_EV_REL>;
         x-input-code = <INPUT_REL_MISC>;
         y-input-code = <INPUT_REL_WHEEL>;
@@ -114,10 +117,23 @@
         ht: hold_tap {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            tapping-term-ms = <TAPPING_TERM_MS>;
-            quick-tap-ms = <QUICK_TAP_MS>;
+            tapping-term-ms = <200>;
+            quick-tap-ms = <175>;
             flavor = "tap-preferred";
             bindings = <&kp>, <&kp>;
+
+            label = "Hold Tap";
+        };
+
+        htb: hold_tap_balanced {
+            compatible = "zmk,behavior-hold-tap";
+            label = "Hold Tab Balanced";
+            bindings = <&kp>, <&kp>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            quick-tap-ms = <175>;
+            flavor = "balanced";
         };
     };
 
@@ -127,11 +143,11 @@
         default_layer {
             display-name = "Default";
             bindings = <
-&ht GRAVE TAB  &ht N1 Q        &ht N2 W       &ht N3 E         &ht N4 R      &ht N5 T      &ht N6 Y  &ht N7 U       &ht N8 I        &ht N9 O         &ht N0 P           &kp PIPE
-&kp ESC        &ht LCTRL A     &ht LALT S     &ht LGUI D       &ht LSHIFT F  &kp G             &kp H        &ht LSHIFT J   &ht LGUI K      &ht LALT L       &ht LCTRL SEMI     &kp SQT
-&sk LSHFT      &kp Z           &kp X          &kp C            &kp V         &kp B             &kp N        &kp M          &kp COMMA       &kp DOT          &kp FSLH           &sk RSHFT
-                          &kp END                                                  &kp C_PP
-               &kp LGUI        &kp SPACE      &lq SYM BSPC     &sk LEFT_ALT                          &sk RIGHT_ALT  &lq NUM DEL  &kp RET          &kp RGUI
+&ht GRAVE TAB  &ht N1 Q     &ht N2 W    &ht N3 E      &ht N4 R       &ht N5 T      &ht N6 Y  &ht N7 U       &ht N8 I     &ht N9 O    &ht N0 P        &kp PIPE
+&kp ESC        &ht LCTRL A  &ht LALT S  &ht LGUI D    &htb LSHIFT F  &kp G         &kp H     &htb LSHIFT J  &ht LGUI K   &ht LALT L  &ht LCTRL SEMI  &kp SQT
+&sk LSHFT      &kp Z        &kp X       &kp C         &kp V          &kp B         &kp N     &kp M          &kp COMMA    &kp DOT     &kp FSLH        &sk RSHFT
+                                        &kp END                                                             &kp C_PP
+               &kp LGUI     &kp SPACE   &lq SYM BSPC  &sk LEFT_ALT                           &sk RIGHT_ALT  &lq NUM DEL  &kp RET     &kp RGUI
             >;
 
             sensor-bindings = <&inc_dec_kp PG_UP PG_DN &inc_dec_kp C_VOL_UP C_VOL_DN>;
@@ -166,11 +182,11 @@
         adj_layer {
             display-name = "Adjust";
             bindings = <
-&bootloader  &rgb_ug RGB_TOG    &rgb_ug RGB_HUI  &rgb_ug RGB_SAI  &rgb_ug RGB_BRI  &rgb_ug RGB_SPI      &out OUT_TOG  &trans    &trans      &trans        &trans      &bootloader
-&sys_reset   &rgb_ug RGB_EFF    &rgb_ug RGB_HUD  &rgb_ug RGB_SAD  &rgb_ug RGB_BRD  &rgb_ug RGB_SPD     &studio_unlock &trans    &trans      &trans        &trans      &sys_reset
-&bt BT_CLR   &bt BT_SEL 0       &bt BT_SEL 1     &bt BT_SEL 2     &bt BT_SEL 3     &bt BT_SEL 4         &kp C_PREV    &kp C_PP  &kp C_NEXT  &kp C_VOL_UP  &kp C_MUTE  &kp C_VOL_DN
-                                                 &trans                                                                         &trans
-             &ext_power EP_TOG  &trans          &trans           &trans                                              &trans    &trans      &trans       &trans
+&bootloader  &rgb_ug RGB_TOG    &rgb_ug RGB_HUI  &rgb_ug RGB_SAI  &rgb_ug RGB_BRI  &rgb_ug RGB_SPI      &out OUT_TOG    &trans    &trans      &trans        &trans      &bootloader
+&sys_reset   &rgb_ug RGB_EFF    &rgb_ug RGB_HUD  &rgb_ug RGB_SAD  &rgb_ug RGB_BRD  &rgb_ug RGB_SPD      &studio_unlock  &trans    &trans      &trans        &trans      &sys_reset
+&bt BT_CLR   &bt BT_SEL 0       &bt BT_SEL 1     &bt BT_SEL 2     &bt BT_SEL 3     &bt BT_SEL 4         &kp C_PREV      &kp C_PP  &kp C_NEXT  &kp C_VOL_UP  &kp C_MUTE  &kp C_VOL_DN
+                                                 &trans                                                                           &trans
+             &ext_power EP_TOG  &trans           &trans           &trans                                                &trans    &trans      &trans        &trans
             >;
 
             // F15 and F14 are brightness controls for macOS
