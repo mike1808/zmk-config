@@ -143,11 +143,11 @@
         default_layer {
             display-name = "Default";
             bindings = <
-&ht GRAVE TAB  &ht N1 Q     &ht N2 W    &ht N3 E      &ht N4 R       &ht N5 T      &ht N6 Y  &ht N7 U       &ht N8 I     &ht N9 O    &ht N0 P        &kp PIPE
-&kp ESC        &ht LCTRL A  &ht LALT S  &ht LGUI D    &htb LSHIFT F  &kp G         &kp H     &htb LSHIFT J  &ht LGUI K   &ht LALT L  &ht LCTRL SEMI  &kp SQT
-&sk LSHFT      &kp Z        &kp X       &kp C         &kp V          &kp B         &kp N     &kp M          &kp COMMA    &kp DOT     &kp FSLH        &sk RSHFT
-                                        &kp END                                                             &kp C_PP
-              &none &kp LGUI     &kp SPACE   &lq SYM BSPC   &lq NUM DEL  &kp RET     &kp RGUI &none
+&ht GRAVE TAB  &ht N1 Q     &ht N2 W    &ht N3 E    &ht N4 R       &ht N5 T      &ht N6 Y  &ht N7 U       &ht N8 I    &ht N9 O    &ht N0 P        &kp BACKSLASH
+&kp ESC        &ht LCTRL A  &ht LALT S  &ht LGUI D  &htb LSHIFT F  &kp G         &kp H     &htb LSHIFT J  &ht LGUI K  &ht LALT L  &ht LCTRL SEMI  &kp SQT
+&sk LSHFT      &kp Z        &kp X       &kp C       &kp V          &kp B         &kp N     &kp M          &kp COMMA   &kp DOT     &kp FSLH        &sk RSHFT
+                                        &kp END                                                           &kp C_PP
+               &none        &kp LGUI    &kp SPACE   &lq SYM BSPC                           &lq NUM DEL    &kp RET     &kp RGUI    &none
             >;
 
             sensor-bindings = <&inc_dec_kp PG_UP PG_DN &inc_dec_kp C_VOL_UP C_VOL_DN>;
