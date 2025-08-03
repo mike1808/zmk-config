@@ -40,17 +40,17 @@
 /* }; */
 
 
-// &chosen {
-//   zephyr,display = &nice_view;
-// };
+&chosen {
+  zephyr,display = &nice_view;
+};
 
-// &nice_view_spi {
-//   status = "okay";
-// };
+&nice_view_spi {
+  status = "okay";
+};
 
-// &nice_view {
-//   status = "okay";
-// };
+&nice_view {
+  status = "okay";
+};
 
 &i2c0 {
   status = "okay";
