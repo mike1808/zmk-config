@@ -267,7 +267,7 @@
 &kp ESCAPE      &hml LCTRL A           &hml LEFT_ALT S  &hml LEFT_GUI D  &hml_shift LEFT_SHIFT F  &kp G      &kp H  &hmr_shift RIGHT_SHIFT J  &hmr RIGHT_GUI K  &hmr RIGHT_ALT L  &hmr RCTRL SEMI  &kp SQT
 &kp LEFT_SHIFT  &kp Z                  &kp X            &kp C            &kp V                    &kp B      &kp N  &kp M                     &kp COMMA         &kp DOT           &kp FSLH         &kp RG(V)
                                                         &kp HOME                                                                              &kp END
-                &kp LS(LA(LC(LG(P))))  &kp DEL          &tm 2 BACKSPACE  &tm 1 TAB                                  &tm 1 ENTER               &tm 2 SPACE       &caps_word        &trans
+                  &kp DEL          &tm 2 BACKSPACE  &tm 1 TAB     &kp LS(LA(LC(LG(P))))                          &trans   &tm 1 ENTER               &tm 2 SPACE       &caps_word        
             >;
         };
 
