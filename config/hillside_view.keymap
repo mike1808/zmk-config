@@ -281,6 +281,8 @@
                                                &kp HOME                                                                                   &kp END
                 &kp DEL       &tm 2 BACKSPACE  &tm_hold_press 1 TAB  &kp LS(LA(LC(LG(P))))                      &trans                    &tm_hold_press 1 ENTER  &tm 2 SPACE       &caps_word
             >;
+
+            sensor-bindings = <&inc_dec_kp C_VOLUME_UP C_VOLUME_DOWN>;
         };
 
         Symbols {
@@ -296,7 +298,7 @@
 &kp TILDE  &hml LEFT_CONTROL NUMBER_1  &hml LEFT_ALT NUMBER_2  &hml LEFT_GUI NUMBER_3  &hml_shift LEFT_SHIFT NUMBER_4  &kp N5           &kp EQUAL  &hmr_shift RIGHT_SHIFT LEFT_BRACKET  &hmr RIGHT_GUI RIGHT_BRACKET  &hmr RIGHT_ALT LEFT_PARENTHESIS  &hmr RIGHT_CONTROL RIGHT_PARENTHESIS  &kp GRAVE
 &trans     &kp NUMBER_6                &kp N7                  &kp N8                  &kp N9                          &kp N0           &kp UNDER  &kp MINUS                            &kp PLUS                      &kp BACKSLASH                    &kp PIPE                              &trans
                                                                &trans                                                                                                                   &trans
-           &kp C_PP                    &trans                  &trans                  &trans                                                      &trans                               &trans                        &trans                           &trans
+           &trans                      &trans                  &trans                  &kp C_PLAY_PAUSE                                            &trans                               &trans                        &trans                           &trans
             >;
         };
 
