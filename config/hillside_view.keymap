@@ -301,7 +301,7 @@
             bindings = <
 &kp F11     &kp F1            &kp F2                &kp F3                      &kp F4                       &kp F5                &kp F6          &hmr RIGHT_SHIFT F7  &hmr RIGHT_COMMAND F8  &hmr RIGHT_ALT F9  &hmr RIGHT_CONTROL F10  &kp F12
 &trans      &kp LEFT_CONTROL  &hml LEFT_ALT C_PREV  &hml LEFT_COMMAND C_VOL_DN  &hml LEFT_SHIFT C_VOLUME_UP  &kp C_NEXT            &kp LEFT        &kp DOWN             &kp UP_ARROW           &kp RIGHT          &trans                  &trans
-&bt BT_PRV  &bt BT_NXT        &bt BT_CLR            &trans                      &trans                       &kp C_PLAY_PAUSE      &msc SCRL_LEFT  &msc MOVE_Y(10)      &msc MOVE_Y(-20)       &msc SCRL_RIGHT    &trans                  &trans
+&bt BT_PRV  &bt BT_NXT        &bt BT_CLR            &trans                      &trans                       &kp C_PLAY_PAUSE      &msc SCRL_LEFT  &kp LA(DOWN)         &kp LA(UP_ARROW)       &msc SCRL_RIGHT    &trans                  &trans
                                                     &trans                                                                                                              &trans
             &trans            &trans                &trans                      &trans                                                             &trans               &trans                 &trans             &trans
             >;
