@@ -6,6 +6,8 @@ manifest:
       url-base: https://github.com/badjeff
     - name: carrefinho
       url-base: https://github.com/carrefinho
+    - name: janpfischer
+      url-base: https://github.com/janpfischer
   projects:
     # - name: zmk
     #   remote: zmkfirmware
@@ -26,6 +28,9 @@ manifest:
       revision: main
     - name: prospector-zmk-module
       remote: badjeff
+      revision: main
+    - name: zmk-dongle-screen
+      remote: janpfischer
       revision: main
   self:
     path: config
