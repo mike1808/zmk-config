@@ -3,20 +3,16 @@
 #include <behaviors/studio_unlock.dtsi>
 
 // Left bottom row pinky 2nd column
-
 #ifndef LB5
-
 #define LB5 24
-
 #endif
 
 // Right bottom row pinky 2nd column
 #ifndef RB5
-
 #define RB5 35
-
 #endif
 
+// Scrolling value when using mouse commands
 #define ZMK_POINTING_DEFAULT_MOVE_VAL 600  // default: 600
 #define ZMK_POINTING_DEFAULT_SCRL_VAL 20    // default: 10
 
