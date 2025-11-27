@@ -24,7 +24,7 @@
 // #define QUICK_TAP_MS 175
 // #define TAPPING_TERM_MS 150
 // &sk {
-//     release-after-ms = <600>;
+//     release-after-ms = <1000>;
 //     quick-release;
 // };
 // / {
@@ -171,6 +171,15 @@
 
 / {
     behaviors {
+        skq: sticky_key_quick_release {
+        compatible = "zmk,behavior-sticky-key";
+        #binding-cells = <1>;
+        bindings = <&kp>;
+        release-after-ms = <1000>;
+        quick-release;
+        ignore-modifiers;
+      };
+
         hml: homewrow_mods_left {
             compatible = "zmk,behavior-hold-tap";
             label = "HOMEROW_MODS_LEFT_HAND";
@@ -254,8 +263,7 @@
             compatible = "zmk,behavior-tap-dance";
             label = "SHIFT_OR_CAPS_WORD";
             #binding-cells = <0>;
-            bindings = <&sk RIGHT_SHIFT>, <&caps_word>;
-
+            bindings = <&skq RIGHT_SHIFT>, <&caps_word>;
             tapping-term-ms = <200>;
         };
 
