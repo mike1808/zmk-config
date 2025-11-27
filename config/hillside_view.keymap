@@ -255,7 +255,7 @@
             label = "SHIFT_OR_CAPS_WORD";
             #binding-cells = <0>;
             bindings = <&sk RIGHT_SHIFT>, <&caps_word>;
-
+            quick-release;
             tapping-term-ms = <200>;
         };
 
