@@ -171,7 +171,7 @@
 
 / {
     behaviors {
-         sk: sk_override {
+         sk_override: sk_override {
             compatible = "zmk,behavior-some-type";  // pick the correct compatible
             release-after-ms = <1000>;
             # Required as otherwise is double tapping shift
