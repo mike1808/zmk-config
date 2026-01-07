@@ -265,7 +265,7 @@
             #binding-cells = <0>;
             bindings = <&skq RIGHT_SHIFT>, <&caps_word>;
 
-            tapping-term-ms = <200>;
+            tapping-term-ms = <400>;
         };
 
         tm_magic_shift: tm_magic_shift {
