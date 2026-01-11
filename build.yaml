@@ -19,13 +19,3 @@ include:
     shield: hillside_view_right nice_view_gem
   - board: nice_nano_v2
     shield: settings_reset
-  - board: seeeduino_xiao_ble
-    shield: settings_reset
-  - board: nice_nano_v2
-    shield: cygnus_left
-    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
-  - board: nice_nano_v2
-    shield: cygnus_right
-  - board: seeeduino_xiao_ble
-    shield: cygnus_dongle prospector_adapter
-    snippet: studio-rpc-usb-uart zmk-usb-logging
