@@ -165,9 +165,14 @@
     combos {
         compatible = "zmk,combos";
 
-        caps_word_combo {
+        caps_word_right {
             bindings = <&caps_word>;
-            key-positions = <44 45 39 38>;
+            key-positions = <44 45>;
+        };
+
+        caps_work_left {
+            bindings = <&caps_word>;
+            key-positions = <39 38>;
         };
     };
 
