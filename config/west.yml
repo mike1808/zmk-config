@@ -17,11 +17,8 @@ manifest:
     #   import: app/west.yml
     - name: zmk
       remote: zmkfirmware
-      revision: abb64ba316c29caddc49727ca2cac2f0ed5970c7
-      import: app/west.yml
-    - name: zmk-split-peripheral-input-relay
-      remote: badjeff
       revision: main
+      import: app/west.yml
     - name: cirque-input-module
       remote: badjeff
       revision: main
