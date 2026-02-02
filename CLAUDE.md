@@ -23,17 +23,17 @@ This is a ZMK firmware configuration repository for custom split mechanical keyb
 
 - `.github/workflows/` - GitHub Actions workflows for automated firmware builds
 
-### ZMK Version Pinning
+### ZMK Version
 
-This repository pins ZMK to a specific commit (`abb64ba316c29caddc49caddc49727ca2cac2f0ed5970c7`) in `config/west.yml`. This ensures consistent builds. To update ZMK:
-1. Change the `revision` field in `config/west.yml`
+This repository uses ZMK `main` branch in `config/west.yml`. To pin to a specific commit:
+1. Change the `revision` field from `main` to a specific commit hash
 2. Test the build to ensure compatibility
-3. The commit message pattern suggests using descriptive messages like "pin zmk version to pre 4.1"
+3. Update both `config/west.yml` and the ZMK build directory's `west.yml` if building locally
 
 ### Build System
 
 Builds are defined in `build.yaml` and run via GitHub Actions. The build matrix includes:
-- **Hillside View**: Split keyboard with nice!nano v2, nice_view display, and studio-rpc-usb-uart snippet
+- **Hillside View**: Split keyboard with nice!nano v2, nice_epaper display and studio-rpc-usb-uart snippet
 - **Cygnus**: Split keyboard with nice!nano v2 peripherals and Seeeduino XIAO BLE dongle with screen
 - **Settings Reset**: Utility builds for both nice!nano v2 and Seeeduino XIAO BLE
 
@@ -42,17 +42,20 @@ Build outputs are generated as firmware artifacts by the GitHub Actions workflow
 ### External Dependencies
 
 The repository uses several ZMK modules defined in `config/west.yml`:
-- `zmk-split-peripheral-input-relay` (badjeff) - For split keyboard input relay
-- `cirque-input-module` (badjeff) - Cirque trackpad support
-- `zmk-dongle-screen` (janpfischer) - Dongle display support
+- `cirque-input-module` (badjeff) - Cirque Glidepoint trackpad support for I2C
+- `zmk-dongle-screen` (janpfischer) - Dongle display support for Cygnus
+- `prospector-zmk-module` (badjeff) - Additional sensor support
+- `zmk-pmw3610-driver` (badjeff) - PMW3610 optical sensor driver
+
+**Note:** Split peripheral input relay is now built into ZMK core as `zmk,input-split` (since PR #2477, Dec 2024)
 
 ### Keyboard-Specific Features
 
 **Hillside View:**
-- 46-key split keyboard with sharp display support
-- Cirque Glidepoint trackpad integration (both central and peripheral)
-- Input listeners for mouse movement and scrolling
-- Custom layer-dependent trackpad behavior (mouse mode on DEF/SYM/ADJ layers, scroll mode on NUM layer)
+- 46-key split keyboard with Nice!View e-paper display 
+- Cirque Glidepoint trackpad on right (peripheral) side relayed via `zmk,input-split`
+- Input processors for y-axis inversion and 2x scaling
+- Trackpad uses I2C bus on peripheral with DR (data ready) GPIO
 - Conditional layer activation (ADJ layer activates when both SYM and NUM are held)
 
 **Cygnus:**
@@ -75,12 +78,49 @@ Both keyboards follow similar patterns:
 
 ### Building Firmware
 
-Firmware builds automatically on push/PR via GitHub Actions. To manually trigger a build:
+**Automated builds:** Firmware builds automatically on push/PR via GitHub Actions. The build workflow outputs `.uf2` files for flashing to keyboards.
+
+**Local builds:** For testing changes before pushing:
+
 ```bash
-# Push to repository or use GitHub Actions UI to manually trigger workflow_dispatch
+# Navigate to ZMK app directory (adjust path to your ZMK installation)
+cd <zmk-root>/app
+
+# Activate Python virtual environment with west
+source <zmk-root>/.venv/bin/activate
+
+# Update dependencies (run after modifying west.yml)
+west update
+
+# Build left side (Hillside View example)
+west build -p -d build/hsv/left -b nice_nano_v2 -S studio-rpc-usb-uart \
+  -- -DSHIELD="hillside_view_left nice_epaper" \
+     -DZMK_CONFIG=$(realpath <path-to-zmk-config>/config/)
+
+# Build right side
+west build -p -d build/hsv/right -b nice_nano_v2 \
+  -- -DSHIELD="hillside_view_right" \
+     -DZMK_CONFIG=$(realpath <path-to-zmk-config>/config/)
+
+# Firmware output: build/hsv/{left,right}/zephyr/zmk.uf2
 ```
 
-The build workflow outputs `.uf2` files for flashing to keyboards.
+**Required Python packages in venv:**
+- `west`
+- `pyelftools`
+- `setuptools`
+- `protobuf`
+- `grpcio-tools`
+
+**Build flags:**
+- `-p` = pristine build (clean)
+- `-d <dir>` = build directory
+- `-b <board>` = board name (nice_nano_v2, seeeduino_xiao_ble)
+- `-S <snippet>` = snippet (studio-rpc-usb-uart for ZMK Studio support)
+- `-DSHIELD` = shield(s) to build
+- `-DZMK_CONFIG` = path to this config repository
+
+**Tip:** Use `grep -E "(Wrote|FAILED|error:|Memory region)"` to filter build output and save tokens.
 
 ### Editing Keymaps
 
@@ -115,8 +155,21 @@ Define behaviors in the `behaviors` node with clear labels. Common patterns incl
 - `hml`/`hmr` - Home row mods (left/right)
 - `bootldr` - Tap-dance to bootloader
 
-### Input Processing
-For trackpads/pointing devices:
-- Define `input-behavior-listener` nodes
-- Configure per-layer behavior using `layers` property
-- Use `input-behavior-scaler` for scroll acceleration
+### Input Processing (Split Peripherals)
+For trackpads on split peripherals, use the integrated `zmk,input-split`:
+
+1. **Shared .dtsi file:**
+   - Define `zmk,input-split` device with unique `reg` value
+   - Define `zmk,input-listener` (disabled by default) referencing the split device
+
+2. **Peripheral overlay:**
+   - Override split device with `device = <&physical_trackpad>`
+
+3. **Central overlay:**
+   - Enable the listener with `status = "okay"`
+
+4. **Input processors:**
+   - Include `<input/processors.dtsi>` in keymap
+   - Use `&zip_xy_transform` for axis transformations (invert, swap)
+   - Use `&zip_xy_scaler` for sensitivity scaling (multiplier, divisor)
+   - Apply via `input-processors` property on listener nodes

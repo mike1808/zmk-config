@@ -17,11 +17,8 @@ manifest:
       remote: zmkfirmware
       revision: main
       import: app/west.yml
-    - name: cirque-input-module
-      remote: badjeff
-      revision: main
     - name: zmk-dongle-screen
       remote: janpfischer
-      revision: main
+      revision: upgrade-4.1
   self:
     path: config
