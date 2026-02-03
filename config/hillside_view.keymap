@@ -28,7 +28,7 @@
     tpad0_mmv_il {
             compatible = "zmk,input-listener";
             device = <&glidepoint_split>;
-            input-processors = <&zip_xy_scaler 1 2>;
+            /* input-processors = <&zip_xy_scaler 1 2>; */
 
             precise {
                     layers = <NUM>;
