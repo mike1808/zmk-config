@@ -135,23 +135,29 @@ west build -p -d build/hsv/right -b nice_nano_v2 \
 # Set ZMK_ROOT in Makefile or as environment variable
 export ZMK_ROOT=~/path/to/zmk
 
-# Build commands
-make all           # Build both sides
-make left          # Build left side only
-make right         # Build right side only
+# Hillside View
+make hsv/all              # Build left + right
+make hsv/left             # Build left (central)
+make hsv/right            # Build right (peripheral)
+make hsv/upload/left      # Upload left firmware
+make hsv/upload/right     # Upload right firmware
 
-# Upload commands (waits for board to be mounted in bootloader mode)
-make upload-left   # Upload left side firmware
-make upload-right  # Upload right side firmware
+# Cygnus
+make cygnus/all           # Build left + right + dongle
+make cygnus/left          # Build left (peripheral)
+make cygnus/right         # Build right (peripheral)
+make cygnus/dongle        # Build dongle (central)
+make cygnus/upload/left   # Upload left firmware
+make cygnus/upload/right  # Upload right firmware
+make cygnus/upload/dongle # Upload dongle firmware
 
-# Maintenance commands
-make update        # Update west dependencies
-make clean         # Clean build artifacts
-make help          # Show help
+# Maintenance
+make update               # Update west dependencies
+make clean                # Clean build artifacts
+make help                 # Show help
 
-# Configuration variables
-MOUNT_POINT=~/path  # Override board mount point (default: /run/media/$USER/NICENANO)
-UPLOAD_TIMEOUT=60   # Upload wait timeout in seconds (default: 60)
+# Chain commands
+make hsv/left hsv/upload/left   # Build and upload in one command
 ```
 
 ### Editing Keymaps

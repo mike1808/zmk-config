@@ -1,158 +1,150 @@
 # ZMK Firmware Local Build Configuration
-# Adjust these paths to match your local setup
 ZMK_ROOT ?= $(HOME)/path/to/zmk
 VENV ?= $(ZMK_ROOT)/.venv
 CONFIG_PATH := $(CURDIR)/config
-
-# Build directories
 BUILD_BASE := $(ZMK_ROOT)/app/build
-BUILD_HSV_LEFT := $(BUILD_BASE)/hsv/left
-BUILD_HSV_RIGHT := $(BUILD_BASE)/hsv/right
-
-# Board and shield configuration
-BOARD_NICENANO := nice_nano
-SHIELD_LEFT := hillside_view_left nice_view
-SHIELD_RIGHT := hillside_view_right
-SNIPPET_STUDIO := studio-rpc-usb-uart
-
-# Upload configuration
-MOUNT_POINT ?= /run/media/$(USER)/NICENANO
 UPLOAD_TIMEOUT ?= 60
 
-.PHONY: all left right clean update upload-left upload-right help
+# Board definitions
+BOARD_NICENANO := nice_nano
+BOARD_XIAO := xiao_ble
 
-all: left right
-
-# Build left side (central) with ZMK Studio support
-left:
-	@echo "Building Hillside View - Left (Central)"
+# =============================================================================
+# Build function: $(call build,name,build_dir,board,shield,extra_cmake_args)
+# =============================================================================
+define build
+	@echo "Building $(1)..."
 	cd $(ZMK_ROOT)/app && \
 	. $(VENV)/bin/activate && \
-	west build -p -d $(BUILD_HSV_LEFT) -b $(BOARD_NICENANO) \
-		-- -DSHIELD="$(SHIELD_LEFT)" -DZMK_CONFIG=$(CONFIG_PATH)
+	west build -p -d $(2) -b $(3) -- -DSHIELD="$(4)" -DZMK_CONFIG=$(CONFIG_PATH) $(5)
+endef
 
-# Build right side (peripheral)
-right:
-	@echo "Building Hillside View - Right (Peripheral)"
-	cd $(ZMK_ROOT)/app && \
-	. $(VENV)/bin/activate && \
-	west build -p -d $(BUILD_HSV_RIGHT) -b $(BOARD_NICENANO) \
-		-- -DSHIELD="$(SHIELD_RIGHT)" -DZMK_CONFIG=$(CONFIG_PATH)
+# =============================================================================
+# Upload function: $(call upload,name,build_dir,device_pattern)
+# =============================================================================
+define upload
+	@echo "Waiting for bootloader device..."
+	@echo "Please connect $(1) in bootloader mode"
+	@timeout=$(UPLOAD_TIMEOUT); elapsed=0; device=""; \
+	while [ -z "$$device" ] && [ $$elapsed -lt $$timeout ]; do \
+		device=$$(lsblk -no NAME,LABEL 2>/dev/null | grep -E '$(3)' | awk '{print "/dev/"$$1}'); \
+		[ -z "$$device" ] && sleep 1 && elapsed=$$((elapsed + 1)); \
+	done; \
+	if [ -z "$$device" ]; then echo "Error: Device not found after $(UPLOAD_TIMEOUT)s"; exit 1; fi; \
+	echo "✓ Device: $$device"; \
+	mount_point=$$(udisksctl mount -b $$device 2>&1 | grep -oP 'at \K.*' || lsblk -no MOUNTPOINT $$device 2>/dev/null | head -1); \
+	if [ -z "$$mount_point" ] || [ ! -d "$$mount_point" ]; then echo "Error: Mount failed"; exit 1; fi; \
+	echo "✓ Mounted: $$mount_point"; \
+	until cp $(2)/zephyr/zmk.uf2 $$mount_point/; do echo "Retrying..."; sleep 1; done; \
+	sync; echo "✓ $(1) uploaded successfully"
+endef
 
-# Update west dependencies (run after modifying west.yml)
+# =============================================================================
+# Hillside View Configuration
+# =============================================================================
+HSV_LEFT_DIR     := $(BUILD_BASE)/hsv/left
+HSV_RIGHT_DIR    := $(BUILD_BASE)/hsv/right
+HSV_LEFT_SHIELD  := hillside_view_left nice_view
+HSV_RIGHT_SHIELD := hillside_view_right
+
+# =============================================================================
+# Cygnus Configuration
+# =============================================================================
+CYG_LEFT_DIR      := $(BUILD_BASE)/cygnus/left
+CYG_RIGHT_DIR     := $(BUILD_BASE)/cygnus/right
+CYG_DONGLE_DIR    := $(BUILD_BASE)/cygnus/dongle
+CYG_LEFT_SHIELD   := cygnus_left
+CYG_RIGHT_SHIELD  := cygnus_right
+CYG_DONGLE_SHIELD := cygnus_dongle dongle_screen
+
+# =============================================================================
+# Targets
+# =============================================================================
+.PHONY: help update clean \
+        hsv/all hsv/left hsv/right hsv/upload/left hsv/upload/right \
+        cygnus/all cygnus/left cygnus/right cygnus/dongle \
+        cygnus/upload/left cygnus/upload/right cygnus/upload/dongle
+
+# Default target
+all: hsv/all
+
+# -----------------------------------------------------------------------------
+# Hillside View
+# -----------------------------------------------------------------------------
+hsv/all: hsv/left hsv/right
+
+hsv/left:
+	$(call build,Hillside View Left,$(HSV_LEFT_DIR),$(BOARD_NICENANO),$(HSV_LEFT_SHIELD),)
+
+hsv/right:
+	$(call build,Hillside View Right,$(HSV_RIGHT_DIR),$(BOARD_NICENANO),$(HSV_RIGHT_SHIELD),)
+
+hsv/upload/left:
+	$(call upload,Hillside View Left,$(HSV_LEFT_DIR),NICENANO)
+
+hsv/upload/right:
+	$(call upload,Hillside View Right,$(HSV_RIGHT_DIR),NICENANO)
+
+# -----------------------------------------------------------------------------
+# Cygnus
+# -----------------------------------------------------------------------------
+cygnus/all: cygnus/left cygnus/right cygnus/dongle
+
+cygnus/left:
+	$(call build,Cygnus Left,$(CYG_LEFT_DIR),$(BOARD_NICENANO),$(CYG_LEFT_SHIELD),-DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n)
+
+cygnus/right:
+	$(call build,Cygnus Right,$(CYG_RIGHT_DIR),$(BOARD_NICENANO),$(CYG_RIGHT_SHIELD),)
+
+cygnus/dongle:
+	$(call build,Cygnus Dongle,$(CYG_DONGLE_DIR),$(BOARD_XIAO),$(CYG_DONGLE_SHIELD),-DCONFIG_DONGLE_SCREEN_AMBIENT_LIGHT=y)
+
+cygnus/upload/left:
+	$(call upload,Cygnus Left,$(CYG_LEFT_DIR),NICENANO)
+
+cygnus/upload/right:
+	$(call upload,Cygnus Right,$(CYG_RIGHT_DIR),NICENANO)
+
+cygnus/upload/dongle:
+	$(call upload,Cygnus Dongle,$(CYG_DONGLE_DIR),XIAO|SEEED)
+
+# -----------------------------------------------------------------------------
+# Maintenance
+# -----------------------------------------------------------------------------
 update:
-	@echo "Updating west dependencies"
-	cd $(ZMK_ROOT)/app && \
-	. $(VENV)/bin/activate && \
-	west update
+	@echo "Updating west dependencies..."
+	cd $(ZMK_ROOT)/app && . $(VENV)/bin/activate && west update
 
-# Clean build directories
 clean:
-	@echo "Cleaning build directories"
-	rm -rf $(BUILD_HSV_LEFT) $(BUILD_HSV_RIGHT)
+	@echo "Cleaning build directories..."
+	rm -rf $(HSV_LEFT_DIR) $(HSV_RIGHT_DIR) $(CYG_LEFT_DIR) $(CYG_RIGHT_DIR) $(CYG_DONGLE_DIR)
 
-# Upload left side firmware to board
-upload-left:
-	@echo "Waiting for bootloader device (NICENANO)..."
-	@echo "Please connect the left side in bootloader mode"
-	@timeout=$(UPLOAD_TIMEOUT); \
-	elapsed=0; \
-	device=""; \
-	while [ -z "$$device" ] && [ $$elapsed -lt $$timeout ]; do \
-		device=$$(lsblk -no NAME,LABEL 2>/dev/null | grep NICENANO | awk '{print "/dev/"$$1}'); \
-		if [ -z "$$device" ]; then \
-			sleep 1; \
-			elapsed=$$((elapsed + 1)); \
-		fi; \
-	done; \
-	if [ -z "$$device" ]; then \
-		echo "Error: Bootloader device not found after $(UPLOAD_TIMEOUT)s"; \
-		exit 1; \
-	fi; \
-	echo "✓ Device detected: $$device"; \
-	echo "Mounting device..."; \
-	mount_point=$$(udisksctl mount -b $$device 2>&1 | grep -oP 'Mounted .* at \K.*' || echo ""); \
-	if [ -z "$$mount_point" ]; then \
-		mount_point=$$(lsblk -no MOUNTPOINT $$device 2>/dev/null | head -1); \
-	fi; \
-	if [ -z "$$mount_point" ] || [ ! -d "$$mount_point" ]; then \
-		echo "Error: Failed to mount device"; \
-		exit 1; \
-	fi; \
-	echo "✓ Mounted at: $$mount_point"; \
-	echo "Uploading firmware..."; \
-	until cp $(BUILD_HSV_LEFT)/zephyr/zmk.uf2 $$mount_point/; do \
-		echo "Upload failed, retrying..."; \
-		sleep 1; \
-	done; \
-	sync; \
-	echo "✓ Left side firmware uploaded successfully"; \
-	echo "Board will reboot automatically"
-
-# Upload right side firmware to board
-upload-right:
-	@echo "Waiting for bootloader device (NICENANO)..."
-	@echo "Please connect the right side in bootloader mode"
-	@timeout=$(UPLOAD_TIMEOUT); \
-	elapsed=0; \
-	device=""; \
-	while [ -z "$$device" ] && [ $$elapsed -lt $$timeout ]; do \
-		device=$$(lsblk -no NAME,LABEL 2>/dev/null | grep NICENANO | awk '{print "/dev/"$$1}'); \
-		if [ -z "$$device" ]; then \
-			sleep 1; \
-			elapsed=$$((elapsed + 1)); \
-		fi; \
-	done; \
-	if [ -z "$$device" ]; then \
-		echo "Error: Bootloader device not found after $(UPLOAD_TIMEOUT)s"; \
-		exit 1; \
-	fi; \
-	echo "✓ Device detected: $$device"; \
-	echo "Mounting device..."; \
-	mount_point=$$(udisksctl mount -b $$device 2>&1 | grep -oP 'Mounted .* at \K.*' || echo ""); \
-	if [ -z "$$mount_point" ]; then \
-		mount_point=$$(lsblk -no MOUNTPOINT $$device 2>/dev/null | head -1); \
-	fi; \
-	if [ -z "$$mount_point" ] || [ ! -d "$$mount_point" ]; then \
-		echo "Error: Failed to mount device"; \
-		exit 1; \
-	fi; \
-	echo "✓ Mounted at: $$mount_point"; \
-	echo "Uploading firmware..."; \
-	until cp $(BUILD_HSV_RIGHT)/zephyr/zmk.uf2 $$mount_point/; do \
-		echo "Upload failed, retrying..."; \
-		sleep 1; \
-	done; \
-	sync; \
-	echo "✓ Right side firmware uploaded successfully"; \
-	echo "Board will reboot automatically"
-
-# Display help information
+# =============================================================================
+# Help
+# =============================================================================
 help:
 	@echo "ZMK Firmware Build System"
 	@echo ""
-	@echo "Usage:"
-	@echo "  make [target]"
+	@echo "Hillside View:"
+	@echo "  hsv/all                 Build left + right"
+	@echo "  hsv/left                Build left (central)"
+	@echo "  hsv/right               Build right (peripheral)"
+	@echo "  hsv/upload/left         Upload left firmware"
+	@echo "  hsv/upload/right        Upload right firmware"
 	@echo ""
-	@echo "Targets:"
-	@echo "  all          - Build both left and right firmware (default)"
-	@echo "  left         - Build left side (central) with ZMK Studio"
-	@echo "  right        - Build right side (peripheral)"
-	@echo "  upload-left  - Upload left side firmware to board"
-	@echo "  upload-right - Upload right side firmware to board"
-	@echo "  update       - Update west dependencies"
-	@echo "  clean        - Remove build artifacts"
-	@echo "  help         - Show this help message"
+	@echo "Cygnus:"
+	@echo "  cygnus/all              Build left + right + dongle"
+	@echo "  cygnus/left             Build left (peripheral)"
+	@echo "  cygnus/right            Build right (peripheral)"
+	@echo "  cygnus/dongle           Build dongle (central)"
+	@echo "  cygnus/upload/left      Upload left firmware"
+	@echo "  cygnus/upload/right     Upload right firmware"
+	@echo "  cygnus/upload/dongle    Upload dongle firmware"
 	@echo ""
-	@echo "Configuration:"
-	@echo "  ZMK_ROOT     - ZMK installation path (default: $(ZMK_ROOT))"
-	@echo "  MOUNT_POINT  - Board mount point (default: $(MOUNT_POINT))"
-	@echo "  UPLOAD_TIMEOUT - Upload wait timeout in seconds (default: $(UPLOAD_TIMEOUT))"
+	@echo "Maintenance:"
+	@echo "  update                  Update west dependencies"
+	@echo "  clean                   Remove build artifacts"
 	@echo ""
-	@echo "Examples:"
-	@echo "  make ZMK_ROOT=~/zmk left"
-	@echo "  make upload-left MOUNT_POINT=/media/NICENANO"
+	@echo "Config: ZMK_ROOT=$(ZMK_ROOT)"
 	@echo ""
-	@echo "Firmware output:"
-	@echo "  Left:  $(BUILD_HSV_LEFT)/zephyr/zmk.uf2"
-	@echo "  Right: $(BUILD_HSV_RIGHT)/zephyr/zmk.uf2"
+	@echo "Example: make ZMK_ROOT=~/zmk hsv/left hsv/upload/left"
