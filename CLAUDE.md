@@ -52,9 +52,12 @@ The repository uses several ZMK modules defined in `config/west.yml`:
 ### Keyboard-Specific Features
 
 **Hillside View:**
-- 46-key split keyboard with Nice!View e-paper display 
+- 46-key split keyboard with Nice!View e-paper display
 - Cirque Glidepoint trackpad on right (peripheral) side relayed via `zmk,input-split`
 - Input processors for y-axis inversion and 2x scaling
+- Temporary mouse layer (MOUSE) activates during trackpad movement (300ms timeout)
+  - Right click on left thumb key (position 41, was LEFT_ALT)
+  - Left click on right thumb key (position 42, was RIGHT_ALT)
 - Trackpad uses I2C bus on peripheral with DR (data ready) GPIO
 - Conditional layer activation (ADJ layer activates when both SYM and NUM are held)
 
@@ -67,12 +70,13 @@ The repository uses several ZMK modules defined in `config/west.yml`:
 ### Keymap Patterns
 
 Both keyboards follow similar patterns:
-- Layer definitions: DEF (default), SYM (symbols), NUM (numbers), ADJ (adjust)
+- Layer definitions: DEF (default), SYM (symbols), NUM (numbers), ADJ (adjust), MOUSE (temp mouse clicks)
 - Home row mods with custom behaviors (`hml`, `hmr`)
 - Hold-tap behaviors with quick-tap configuration (175ms quick-tap, 150-200ms tapping term)
 - Sticky keys with 600ms release-after
 - Caps word combos for quick capitalization
 - Custom bootloader tap-dance behavior
+- Temporary layers activated by input processors (e.g., MOUSE layer during trackpad movement)
 
 ## Build and Development
 
@@ -115,12 +119,40 @@ west build -p -d build/hsv/right -b nice_nano_v2 \
 **Build flags:**
 - `-p` = pristine build (clean)
 - `-d <dir>` = build directory
-- `-b <board>` = board name (nice_nano_v2, seeeduino_xiao_ble)
+- `-b <board>` = board name (nice_nano for v2.0+, seeeduino_xiao_ble)
 - `-S <snippet>` = snippet (studio-rpc-usb-uart for ZMK Studio support)
 - `-DSHIELD` = shield(s) to build
 - `-DZMK_CONFIG` = path to this config repository
 
+**Board Names (Zephyr 4.1+):**
+- Use `nice_nano` (not nice_nano_v2)
+- Use `nice_view` (not nice_epaper) for display shield
+
 **Tip:** Use `grep -E "(Wrote|FAILED|error:|Memory region)"` to filter build output and save tokens.
+
+**Makefile Usage:**
+```bash
+# Set ZMK_ROOT in Makefile or as environment variable
+export ZMK_ROOT=~/path/to/zmk
+
+# Build commands
+make all           # Build both sides
+make left          # Build left side only
+make right         # Build right side only
+
+# Upload commands (waits for board to be mounted in bootloader mode)
+make upload-left   # Upload left side firmware
+make upload-right  # Upload right side firmware
+
+# Maintenance commands
+make update        # Update west dependencies
+make clean         # Clean build artifacts
+make help          # Show help
+
+# Configuration variables
+MOUNT_POINT=~/path  # Override board mount point (default: /run/media/$USER/NICENANO)
+UPLOAD_TIMEOUT=60   # Upload wait timeout in seconds (default: 60)
+```
 
 ### Editing Keymaps
 
@@ -172,4 +204,39 @@ For trackpads on split peripherals, use the integrated `zmk,input-split`:
    - Include `<input/processors.dtsi>` in keymap
    - Use `&zip_xy_transform` for axis transformations (invert, swap)
    - Use `&zip_xy_scaler` for sensitivity scaling (multiplier, divisor)
+   - Use `&zip_temp_layer` for temporary layer activation (layer_number, timeout_ms)
    - Apply via `input-processors` property on listener nodes
+
+### Temporary Layers with Pointing Devices
+
+To enable a temporary layer during pointer movement:
+
+1. **Include pointing header:**
+   ```c
+   #include <dt-bindings/zmk/pointing.h>
+   ```
+
+2. **Add temp_layer processor to input listener:**
+   ```c
+   input-processors = <&zip_temp_layer LAYER_NUM TIMEOUT_MS>;
+   ```
+   - `LAYER_NUM`: Layer index to activate (e.g., 4 for MOUSE layer)
+   - `TIMEOUT_MS`: Duration to keep layer active after last movement (e.g., 300)
+
+3. **Create layer with mouse click bindings:**
+   ```c
+   mouse_layer {
+       bindings = <
+           &trans  &trans  &mkp LCLK  &mkp RCLK  // ... positions
+       >;
+   };
+   ```
+
+**Mouse Click Defines:**
+- `&mkp LCLK` - Left click (MB1)
+- `&mkp RCLK` - Right click (MB2)
+- `&mkp MCLK` - Middle click (MB3)
+- `&mkp MB4` - Back button
+- `&mkp MB5` - Forward button
+
+**Example:** Hillside View uses 300ms timeout for near-instant layer deactivation when trackpad movement stops.
