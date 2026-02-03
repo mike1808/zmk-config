@@ -33,7 +33,7 @@ This repository uses ZMK `main` branch in `config/west.yml`. To pin to a specifi
 ### Build System
 
 Builds are defined in `build.yaml` and run via GitHub Actions. The build matrix includes:
-- **Hillside View**: Split keyboard with nice!nano v2, nice_epaper display and studio-rpc-usb-uart snippet
+- **Hillside View**: Split keyboard with nice!nano v2, nice_view_gem display and studio-rpc-usb-uart snippet
 - **Cygnus**: Split keyboard with nice!nano v2 peripherals and Seeeduino XIAO BLE dongle with screen
 - **Settings Reset**: Utility builds for both nice!nano v2 and Seeeduino XIAO BLE
 
@@ -44,6 +44,7 @@ Build outputs are generated as firmware artifacts by the GitHub Actions workflow
 The repository uses several ZMK modules defined in `config/west.yml`:
 - `cirque-input-module` (badjeff) - Cirque Glidepoint trackpad support for I2C
 - `zmk-dongle-screen` (janpfischer) - Dongle display support for Cygnus
+- `nice-view-gem` (M165437) - Nice!View custom display widgets with animations
 - `prospector-zmk-module` (badjeff) - Additional sensor support
 - `zmk-pmw3610-driver` (badjeff) - PMW3610 optical sensor driver
 
@@ -52,7 +53,9 @@ The repository uses several ZMK modules defined in `config/west.yml`:
 ### Keyboard-Specific Features
 
 **Hillside View:**
-- 46-key split keyboard with Nice!View e-paper display
+- 46-key split keyboard with Nice!View e-paper display (nice-view-gem custom widgets)
+- Custom display status screen on left (central) side with `CONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM=y`
+- Display disabled on right (peripheral) side (`CONFIG_ZMK_DISPLAY=n`) to save resources
 - Cirque Glidepoint trackpad on right (peripheral) side relayed via `zmk,input-split`
 - Input processors for y-axis inversion and 2x scaling
 - Temporary mouse layer (MOUSE) activates during trackpad movement (300ms timeout)
@@ -126,7 +129,7 @@ west build -p -d build/hsv/right -b nice_nano_v2 \
 
 **Board Names (Zephyr 4.1+):**
 - Use `nice_nano` (not nice_nano_v2)
-- Use `nice_view` (not nice_epaper) for display shield
+- Use `nice_view_gem` for display shield (custom widgets with animations from M165437/nice-view-gem)
 
 **Tip:** Use `grep -E "(Wrote|FAILED|error:|Memory region)"` to filter build output and save tokens.
 

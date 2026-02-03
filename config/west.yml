@@ -8,6 +8,8 @@ manifest:
       url-base: https://github.com/carrefinho
     - name: janpfischer
       url-base: https://github.com/janpfischer
+    - name: m165437 
+      url-base: https://github.com/M165437
   projects:
     # - name: zmk
     #   remote: zmkfirmware
@@ -20,5 +22,8 @@ manifest:
     - name: zmk-dongle-screen
       remote: janpfischer
       revision: upgrade-4.1
+    - name: nice-view-gem
+      remote: m165437
+      revision: main
   self:
     path: config

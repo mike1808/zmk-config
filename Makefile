@@ -44,7 +44,7 @@ endef
 # =============================================================================
 HSV_LEFT_DIR     := $(BUILD_BASE)/hsv/left
 HSV_RIGHT_DIR    := $(BUILD_BASE)/hsv/right
-HSV_LEFT_SHIELD  := hillside_view_left nice_view
+HSV_LEFT_SHIELD  := hillside_view_left nice_view_gem
 HSV_RIGHT_SHIELD := hillside_view_right
 
 # =============================================================================
