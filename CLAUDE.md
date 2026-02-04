@@ -87,29 +87,33 @@ Both keyboards follow similar patterns:
 
 **Automated builds:** Firmware builds automatically on push/PR via GitHub Actions. The build workflow outputs `.uf2` files for flashing to keyboards.
 
-**Local builds:** For testing changes before pushing:
+**Local builds:** Use the provided Makefile for simplified builds:
 
 ```bash
-# Navigate to ZMK app directory (adjust path to your ZMK installation)
-cd <zmk-root>/app
+# First time setup: Clone external modules
+make modules/setup ZMK_ROOT=~/workspace/dactyl/zmk
 
-# Activate Python virtual environment with west
+# Build commands
+make hsv/left ZMK_ROOT=~/workspace/dactyl/zmk
+make hsv/right ZMK_ROOT=~/workspace/dactyl/zmk
+
+# Or set ZMK_ROOT permanently
+export ZMK_ROOT=~/workspace/dactyl/zmk
+make hsv/all
+
+# Firmware output: <zmk-root>/app/build/hsv/{left,right}/zephyr/zmk.uf2
+```
+
+**Manual builds (advanced):**
+```bash
+cd <zmk-root>/app
 source <zmk-root>/.venv/bin/activate
 
-# Update dependencies (run after modifying west.yml)
-west update
-
-# Build left side (Hillside View example)
-west build -p -d build/hsv/left -b nice_nano_v2 -S studio-rpc-usb-uart \
-  -- -DSHIELD="hillside_view_left nice_epaper" \
-     -DZMK_CONFIG=$(realpath <path-to-zmk-config>/config/)
-
-# Build right side
-west build -p -d build/hsv/right -b nice_nano_v2 \
-  -- -DSHIELD="hillside_view_right" \
-     -DZMK_CONFIG=$(realpath <path-to-zmk-config>/config/)
-
-# Firmware output: build/hsv/{left,right}/zephyr/zmk.uf2
+# Build with external modules
+west build -p -d build/hsv/left -b nice_nano \
+  -- -DSHIELD="hillside_view_left nice_view_gem" \
+     -DZMK_CONFIG=$(realpath <config-path>/config/) \
+     -DZMK_EXTRA_MODULES="<modules-path>/zmk-dongle-screen:<modules-path>/nice-view-gem:..."
 ```
 
 **Required Python packages in venv:**
@@ -119,17 +123,29 @@ west build -p -d build/hsv/right -b nice_nano_v2 \
 - `protobuf`
 - `grpcio-tools`
 
+**External Modules Setup:**
+
+This repository uses `ZMK_EXTRA_MODULES` instead of modifying ZMK's west.yml:
+1. Run `make modules/setup` to clone all external modules to `./modules/`
+2. Build commands automatically include `-DZMK_EXTRA_MODULES` pointing to cloned modules
+3. Update modules with `make modules/update`
+
+**Modules included:**
+- `zmk-dongle-screen` (janpfischer/upgrade-4.1) - Dongle display support
+- `nice-view-gem` (M165437/main) - Custom display widgets
+- `zmk-feature-split-esb` (badjeff/main) - ESB split keyboard support
+
 **Build flags:**
 - `-p` = pristine build (clean)
 - `-d <dir>` = build directory
-- `-b <board>` = board name (nice_nano for v2.0+, seeeduino_xiao_ble)
-- `-S <snippet>` = snippet (studio-rpc-usb-uart for ZMK Studio support)
+- `-b <board>` = board name (nice_nano for v2.0+, xiao_ble)
 - `-DSHIELD` = shield(s) to build
 - `-DZMK_CONFIG` = path to this config repository
+- `-DZMK_EXTRA_MODULES` = colon-separated paths to external modules
 
 **Board Names (Zephyr 4.1+):**
 - Use `nice_nano` (not nice_nano_v2)
-- Use `nice_view_gem` for display shield (custom widgets with animations from M165437/nice-view-gem)
+- Use `nice_view_gem` for display shield (custom widgets with animations)
 
 **Tip:** Use `grep -E "(Wrote|FAILED|error:|Memory region)"` to filter build output and save tokens.
 

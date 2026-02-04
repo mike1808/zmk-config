@@ -5,6 +5,10 @@ CONFIG_PATH := $(CURDIR)/config
 BUILD_BASE := $(ZMK_ROOT)/app/build
 UPLOAD_TIMEOUT ?= 60
 
+# External modules directory
+MODULES_DIR := $(CURDIR)/modules
+WEST_YML := $(CONFIG_PATH)/west.yml
+
 # Board definitions
 BOARD_NICENANO := nice_nano
 BOARD_XIAO := xiao_ble
@@ -14,9 +18,10 @@ BOARD_XIAO := xiao_ble
 # =============================================================================
 define build
 	@echo "Building $(1)..."
+	@modules=$$(find $(MODULES_DIR) -mindepth 1 -maxdepth 1 -type d 2>/dev/null | tr '\n' ':' | sed 's/:$$//'); \
 	cd $(ZMK_ROOT)/app && \
 	. $(VENV)/bin/activate && \
-	west build -p -d $(2) -b $(3) -- -DSHIELD="$(4)" -DZMK_CONFIG=$(CONFIG_PATH) $(5)
+	west build -p -d $(2) -b $(3) -- -DSHIELD="$(4)" -DZMK_CONFIG=$(CONFIG_PATH) $${modules:+-DZMK_EXTRA_MODULES="$$modules"} $(5)
 endef
 
 # =============================================================================
@@ -32,9 +37,15 @@ define upload
 	done; \
 	if [ -z "$$device" ]; then echo "Error: Device not found after $(UPLOAD_TIMEOUT)s"; exit 1; fi; \
 	echo "✓ Device: $$device"; \
-	mount_point=$$(udisksctl mount -b $$device 2>&1 | grep -oP 'at \K.*' || lsblk -no MOUNTPOINT $$device 2>/dev/null | head -1); \
+	mount_point=$$(lsblk -no MOUNTPOINT $$device 2>/dev/null | head -1); \
+	if [ -z "$$mount_point" ]; then \
+		echo "Mounting device..."; \
+		mount_point=$$(udisksctl mount -b $$device 2>&1 | grep -oP 'at \K.*'); \
+	else \
+		echo "Already mounted"; \
+	fi; \
 	if [ -z "$$mount_point" ] || [ ! -d "$$mount_point" ]; then echo "Error: Mount failed"; exit 1; fi; \
-	echo "✓ Mounted: $$mount_point"; \
+	echo "✓ Mount point: $$mount_point"; \
 	until cp $(2)/zephyr/zmk.uf2 $$mount_point/; do echo "Retrying..."; sleep 1; done; \
 	sync; echo "✓ $(1) uploaded successfully"
 endef
@@ -60,7 +71,7 @@ CYG_DONGLE_SHIELD := cygnus_dongle dongle_screen
 # =============================================================================
 # Targets
 # =============================================================================
-.PHONY: help update clean \
+.PHONY: help update clean modules/setup modules/update modules/clean \
         hsv/all hsv/left hsv/right hsv/upload/left hsv/upload/right \
         cygnus/all cygnus/left cygnus/right cygnus/dongle \
         cygnus/upload/left cygnus/upload/right cygnus/upload/dongle
@@ -119,6 +130,42 @@ clean:
 	@echo "Cleaning build directories..."
 	rm -rf $(HSV_LEFT_DIR) $(HSV_RIGHT_DIR) $(CYG_LEFT_DIR) $(CYG_RIGHT_DIR) $(CYG_DONGLE_DIR)
 
+# -----------------------------------------------------------------------------
+# External Modules
+# -----------------------------------------------------------------------------
+modules/setup:
+	@echo "Setting up external modules from $(WEST_YML)..."
+	@command -v yq >/dev/null 2>&1 || { echo "Error: yq is required. Install with: brew install yq / apt install yq"; exit 1; }
+	@mkdir -p $(MODULES_DIR)
+	@yq -r '.manifest.projects[] | select(.name != "zmk") | .name' $(WEST_YML) | while read -r name; do \
+		if [ -d "$(MODULES_DIR)/$$name" ]; then \
+			echo "✓ $$name already exists"; \
+		else \
+			remote=$$(yq -r ".manifest.projects[] | select(.name == \"$$name\") | .remote" $(WEST_YML)); \
+			revision=$$(yq -r ".manifest.projects[] | select(.name == \"$$name\") | .revision" $(WEST_YML)); \
+			url_base=$$(yq -r ".manifest.remotes[] | select(.name == \"$$remote\") | .[\"url-base\"]" $(WEST_YML)); \
+			echo "Cloning $$name ($$revision) from $$url_base..."; \
+			git clone -b $$revision $$url_base/$$name.git $(MODULES_DIR)/$$name || exit 1; \
+		fi; \
+	done
+	@echo "✓ Modules setup complete"
+
+modules/update:
+	@echo "Updating external modules..."
+	@if [ ! -d "$(MODULES_DIR)" ]; then echo "Error: Run 'make modules/setup' first"; exit 1; fi
+	@for dir in $(MODULES_DIR)/*; do \
+		if [ -d "$$dir/.git" ]; then \
+			echo "Updating $$(basename $$dir)..."; \
+			cd $$dir && git pull || echo "Warning: Failed to update $$(basename $$dir)"; \
+		fi; \
+	done
+	@echo "✓ Modules updated"
+
+modules/clean:
+	@echo "Removing all external modules..."
+	@rm -rf $(MODULES_DIR)
+	@echo "✓ Modules removed"
+
 # =============================================================================
 # Help
 # =============================================================================
@@ -141,10 +188,17 @@ help:
 	@echo "  cygnus/upload/right     Upload right firmware"
 	@echo "  cygnus/upload/dongle    Upload dongle firmware"
 	@echo ""
+	@echo "Modules:"
+	@echo "  modules/setup           Clone external modules from west.yml"
+	@echo "  modules/update          Update all cloned modules"
+	@echo "  modules/clean           Remove all modules"
+	@echo ""
 	@echo "Maintenance:"
 	@echo "  update                  Update west dependencies"
 	@echo "  clean                   Remove build artifacts"
 	@echo ""
 	@echo "Config: ZMK_ROOT=$(ZMK_ROOT)"
+	@echo "        MODULES_DIR=$(MODULES_DIR)"
 	@echo ""
-	@echo "Example: make ZMK_ROOT=~/zmk hsv/left hsv/upload/left"
+	@echo "Example: make modules/setup ZMK_ROOT=~/zmk"
+	@echo "         make hsv/left hsv/upload/left"
