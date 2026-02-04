@@ -179,31 +179,35 @@ RC(2,1) RC(2,2) RC(2,3) RC(2,4) RC(2,5)                                       RC
     compatible = "cirque,pinnacle";
     reg = <0x2a>;
     status = "disabled";
-    dr-gpios = <&gpio1 2 (GPIO_ACTIVE_HIGH)>;
+    data-ready-gpios = <&gpio1 2 (GPIO_ACTIVE_HIGH)>;
 
     sensitivity = "1x";
-    sleep;
-    // no-taps;
+    sleep-mode-enable;
+    invert-y;
+    // doesn't work for now
+    /* primary-tap-enable; */
   };
 };
 
-// / {
-// 	/* assign `input-listener` to all pointing devices */
-// 	/* &glidepoint0 on central, &glidepoint1 on peripheral */
-//     tpad_central_listener {
-//         compatible = "zmk,input-listener";
-//         device = <&glidepoint0>;
-// 	};
+/ {
+  /* Shared input-split configuration for peripheral trackpad */
+  split_inputs {
+    #address-cells = <1>;
+    #size-cells = <0>;
 
-//     tpad_peripheral_listener {
-//         compatible = "zmk,input-listener";
-//         device = <&glidepoint1>;
-//         y-invert;
-//         // xy-swap;
-//         // x-invert;
-//         scale-multiplier = <3>;
-// 	};
-// };
+    glidepoint_split: glidepoint_split@0 {
+      compatible = "zmk,input-split";
+      reg = <0>;
+    };
+  };
+
+  /* Input listener for the split trackpad (disabled by default, enabled on central) */
+  tpad_peripheral_listener: tpad_peripheral_listener {
+    compatible = "zmk,input-listener";
+    status = "disabled";
+    device = <&glidepoint_split>;
+  };
+};
 
 nice_view_spi: &spi1 {
   compatible = "nordic,nrf-spim";

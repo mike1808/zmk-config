@@ -8,6 +8,8 @@ manifest:
       url-base: https://github.com/carrefinho
     - name: janpfischer
       url-base: https://github.com/janpfischer
+    - name: m165437 
+      url-base: https://github.com/M165437
   projects:
     # - name: zmk
     #   remote: zmkfirmware
@@ -15,16 +17,13 @@ manifest:
     #   import: app/west.yml
     - name: zmk
       remote: zmkfirmware
-      revision: abb64ba316c29caddc49727ca2cac2f0ed5970c7
+      revision: main
       import: app/west.yml
-    - name: zmk-split-peripheral-input-relay
-      remote: badjeff
-      revision: main
-    - name: cirque-input-module
-      remote: badjeff
-      revision: main
     - name: zmk-dongle-screen
       remote: janpfischer
+      revision: upgrade-4.1
+    - name: nice-view-gem
+      remote: m165437
       revision: main
   self:
     path: config
