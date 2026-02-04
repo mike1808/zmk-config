@@ -18,7 +18,7 @@ BOARD_XIAO := xiao_ble
 # =============================================================================
 define build
 	@echo "Building $(1)..."
-	@modules=$$(find $(MODULES_DIR) -mindepth 1 -maxdepth 1 -type d 2>/dev/null | tr '\n' ':' | sed 's/:$$//'); \
+	@modules=$$(find $(MODULES_DIR) -mindepth 1 -maxdepth 1 -type d 2>/dev/null | tr '\n' ';' | sed 's/;$$//'); \
 	cd $(ZMK_ROOT)/app && \
 	. $(VENV)/bin/activate && \
 	west build -p -d $(2) -b $(3) -- -DSHIELD="$(4)" -DZMK_CONFIG=$(CONFIG_PATH) $${modules:+-DZMK_EXTRA_MODULES="$$modules"} $(5)
