@@ -11,19 +11,18 @@ manifest:
     - name: m165437 
       url-base: https://github.com/M165437
   projects:
-    # - name: zmk
-    #   remote: zmkfirmware
-    #   revision: main
-    #   import: app/west.yml
     - name: zmk
       remote: zmkfirmware
       revision: main
       import: app/west.yml
-    - name: zmk-dongle-screen
-      remote: janpfischer
-      revision: upgrade-4.1
+    # - name: zmk-dongle-screen
+    #   remote: janpfischer
+    #   revision: upgrade-4.1
     - name: nice-view-gem
       remote: m165437
       revision: main
+    - name: prospector-zmk-module
+      remote: carrefinho
+      revision: feat/new-status-screens
   self:
     path: config
