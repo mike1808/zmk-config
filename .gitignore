@@ -1,2 +1,3 @@
 config/_boards
 modules/
+.envrc
