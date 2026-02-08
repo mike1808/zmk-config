@@ -3,40 +3,87 @@ ZMK_ROOT ?= $(HOME)/path/to/zmk
 VENV ?= $(ZMK_ROOT)/.venv
 CONFIG_PATH := $(CURDIR)/config
 BUILD_BASE := $(ZMK_ROOT)/app/build
+BUILD_YAML := $(CURDIR)/build.yaml
 UPLOAD_TIMEOUT ?= 60
 
 # External modules directory
 MODULES_DIR := $(CURDIR)/modules
 WEST_YML := $(CONFIG_PATH)/west.yml
 
-# Board definitions
-BOARD_NICENANO := nice_nano
-BOARD_XIAO := xiao_ble
+# =============================================================================
+# Build targets derived from build.yaml
+# Target name format: <first_shield>-<board>
+# =============================================================================
+BUILDS := $(shell yq -r '.include[] | ((.shield | split(" ") | .[0]) + "-" + .board)' $(BUILD_YAML) 2>/dev/null)
+
+# Group builds by keyboard prefix
+HSV_BUILDS := $(filter hillside_view_%,$(BUILDS))
+CYG_BUILDS := $(filter cygnus_%,$(BUILDS))
+
+# yq filter: select build.yaml entry by target name (set $$target in shell first)
+YQ_SELECT = .include[] | select(((.shield | split(\" \") | .[0]) + \"-\" + .board) == \"$$target\")
 
 # =============================================================================
-# Build function: $(call build,name,build_dir,board,shield,extra_cmake_args)
+# Phony targets
 # =============================================================================
-define build
-	@echo "Building $(1)..."
-	@modules=$$(find $(MODULES_DIR) -mindepth 1 -maxdepth 1 -type d 2>/dev/null | tr '\n' ';' | sed 's/;$$//'); \
+.PHONY: all list help update clean \
+        hsv/all hsv/left hsv/right hsv/upload/left hsv/upload/right \
+        cygnus/all cygnus/left cygnus/right cygnus/dongle \
+        cygnus/upload/left cygnus/upload/right cygnus/upload/dongle \
+        modules/setup modules/update modules/clean
+
+all: $(addprefix build/,$(BUILDS))
+
+# =============================================================================
+# build/<first_shield>-<board>
+# All parameters (board, shield, cmake-args, snippet) read from build.yaml
+# =============================================================================
+build/%:
+	@target="$*"; \
+	eval $$(yq -r "$(YQ_SELECT) | \"board=\" + (.board | @sh) + \" shield=\" + (.shield | @sh) + \" cmake_args=\" + ((.[\"cmake-args\"] // \"\") | @sh) + \" snippet=\" + ((.snippet // \"\") | @sh)" $(BUILD_YAML)); \
+	if [ -z "$$board" ]; then \
+		echo "Error: '$$target' not found in $(BUILD_YAML)"; \
+		echo "Run 'make list' to see available targets"; \
+		exit 1; \
+	fi; \
+	snippet_args=""; \
+	for s in $$snippet; do snippet_args="$$snippet_args -S $$s"; done; \
+	echo "Building $$shield ($$board)..."; \
+	modules=$$(find $(MODULES_DIR) -mindepth 1 -maxdepth 1 -type d 2>/dev/null | paste -sd';'); \
 	cd $(ZMK_ROOT)/app && \
 	. $(VENV)/bin/activate && \
-	west build -p -d $(2) -b $(3) -- -DSHIELD="$(4)" -DZMK_CONFIG=$(CONFIG_PATH) $${modules:+-DZMK_EXTRA_MODULES="$$modules"} $(5)
-endef
+	west build -p -d "$(BUILD_BASE)/$$target" -b "$$board" $$snippet_args \
+		-- -DSHIELD="$$shield" -DZMK_CONFIG=$(CONFIG_PATH) \
+		$${modules:+-DZMK_EXTRA_MODULES="$$modules"} $$cmake_args
 
 # =============================================================================
-# Upload function: $(call upload,name,build_dir,device_pattern)
+# upload/<first_shield>-<board>
+# Detects bootloader device and flashes firmware
 # =============================================================================
-define upload
-	@echo "Waiting for bootloader device..."
-	@echo "Please connect $(1) in bootloader mode"
-	@timeout=$(UPLOAD_TIMEOUT); elapsed=0; device=""; \
+upload/%:
+	@target="$*"; \
+	eval $$(yq -r "$(YQ_SELECT) | \"board=\" + (.board | @sh) + \" shield=\" + (.shield | @sh)" $(BUILD_YAML)); \
+	if [ -z "$$board" ]; then \
+		echo "Error: '$$target' not found in $(BUILD_YAML)"; \
+		echo "Run 'make list' to see available targets"; \
+		exit 1; \
+	fi; \
+	fw="$(BUILD_BASE)/$$target/zephyr/zmk.uf2"; \
+	if [ ! -f "$$fw" ]; then echo "Error: Firmware not found at $$fw (run build first)"; exit 1; fi; \
+	case "$$board" in \
+		nice_nano) pattern="NICENANO";; \
+		xiao_ble) pattern="XIAO|SEEED";; \
+		*) echo "Error: No device pattern for board '$$board' - update Makefile"; exit 1;; \
+	esac; \
+	echo "Waiting for bootloader device..."; \
+	echo "Please connect $$shield in bootloader mode"; \
+	timeout=$(UPLOAD_TIMEOUT); elapsed=0; device=""; \
 	while [ -z "$$device" ] && [ $$elapsed -lt $$timeout ]; do \
-		device=$$(lsblk -no NAME,LABEL 2>/dev/null | grep -E '$(3)' | awk '{print "/dev/"$$1}'); \
+		device=$$(lsblk -no NAME,LABEL 2>/dev/null | grep -E "$$pattern" | awk '{print "/dev/"$$1}'); \
 		[ -z "$$device" ] && sleep 1 && elapsed=$$((elapsed + 1)); \
 	done; \
 	if [ -z "$$device" ]; then echo "Error: Device not found after $(UPLOAD_TIMEOUT)s"; exit 1; fi; \
-	echo "✓ Device: $$device"; \
+	echo "Device: $$device"; \
 	mount_point=$$(lsblk -no MOUNTPOINT $$device 2>/dev/null | head -1); \
 	if [ -z "$$mount_point" ]; then \
 		echo "Mounting device..."; \
@@ -45,110 +92,70 @@ define upload
 		echo "Already mounted"; \
 	fi; \
 	if [ -z "$$mount_point" ] || [ ! -d "$$mount_point" ]; then echo "Error: Mount failed"; exit 1; fi; \
-	echo "✓ Mount point: $$mount_point"; \
-	until cp $(2)/zephyr/zmk.uf2 $$mount_point/; do echo "Retrying..."; sleep 1; done; \
-	sync; echo "✓ $(1) uploaded successfully"
-endef
+	echo "Mount point: $$mount_point"; \
+	until cp "$$fw" "$$mount_point/"; do echo "Retrying..."; sleep 1; done; \
+	sync; echo "$$shield uploaded successfully"
 
 # =============================================================================
-# Hillside View Configuration
+# Aliases
 # =============================================================================
-HSV_LEFT_DIR     := $(BUILD_BASE)/hsv/left
-HSV_RIGHT_DIR    := $(BUILD_BASE)/hsv/right
-HSV_LEFT_SHIELD  := hillside_view_left nice_view_gem
-HSV_RIGHT_SHIELD := hillside_view_right
+hsv/all: $(addprefix build/,$(HSV_BUILDS))
+cygnus/all: $(addprefix build/,$(CYG_BUILDS))
+
+hsv/left:           build/hillside_view_left-nice_nano
+hsv/right:          build/hillside_view_right-nice_nano
+hsv/upload/left:    upload/hillside_view_left-nice_nano
+hsv/upload/right:   upload/hillside_view_right-nice_nano
+
+cygnus/left:          build/cygnus_left-nice_nano
+cygnus/right:         build/cygnus_right-nice_nano
+cygnus/dongle:        build/cygnus_dongle-xiao_ble
+cygnus/upload/left:   upload/cygnus_left-nice_nano
+cygnus/upload/right:  upload/cygnus_right-nice_nano
+cygnus/upload/dongle: upload/cygnus_dongle-xiao_ble
 
 # =============================================================================
-# Cygnus Configuration
+# List available targets
 # =============================================================================
-CYG_LEFT_DIR      := $(BUILD_BASE)/cygnus/left
-CYG_RIGHT_DIR     := $(BUILD_BASE)/cygnus/right
-CYG_DONGLE_DIR    := $(BUILD_BASE)/cygnus/dongle
-CYG_LEFT_SHIELD   := cygnus_left
-CYG_RIGHT_SHIELD  := cygnus_right
-CYG_DONGLE_SHIELD := cygnus_dongle dongle_screen
+list:
+	@echo "Available builds (from build.yaml):"
+	@yq -r '.include[] | "  build/" + ((.shield | split(" ") | .[0]) + "-" + .board) + "\t" + .shield + " (" + .board + ")"' $(BUILD_YAML) | column -t -s '	'
+	@echo ""
+	@echo "Groups:"
+	@echo "  hsv/all                 Hillside View builds"
+	@echo "  cygnus/all              Cygnus builds"
+	@echo "  all                     All builds"
+	@echo ""
+	@echo "Upload: replace 'build/' with 'upload/' (e.g. upload/cygnus_left-nice_nano)"
 
 # =============================================================================
-# Targets
-# =============================================================================
-.PHONY: help update clean modules/setup modules/update modules/clean \
-        hsv/all hsv/left hsv/right hsv/upload/left hsv/upload/right \
-        cygnus/all cygnus/left cygnus/right cygnus/dongle \
-        cygnus/upload/left cygnus/upload/right cygnus/upload/dongle
-
-# Default target
-all: hsv/all
-
-# -----------------------------------------------------------------------------
-# Hillside View
-# -----------------------------------------------------------------------------
-hsv/all: hsv/left hsv/right
-
-hsv/left:
-	$(call build,Hillside View Left,$(HSV_LEFT_DIR),$(BOARD_NICENANO),$(HSV_LEFT_SHIELD),)
-
-hsv/right:
-	$(call build,Hillside View Right,$(HSV_RIGHT_DIR),$(BOARD_NICENANO),$(HSV_RIGHT_SHIELD),)
-
-hsv/upload/left:
-	$(call upload,Hillside View Left,$(HSV_LEFT_DIR),NICENANO)
-
-hsv/upload/right:
-	$(call upload,Hillside View Right,$(HSV_RIGHT_DIR),NICENANO)
-
-# -----------------------------------------------------------------------------
-# Cygnus
-# -----------------------------------------------------------------------------
-cygnus/all: cygnus/left cygnus/right cygnus/dongle
-
-cygnus/left:
-	$(call build,Cygnus Left,$(CYG_LEFT_DIR),$(BOARD_NICENANO),$(CYG_LEFT_SHIELD),-DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n)
-
-cygnus/right:
-	$(call build,Cygnus Right,$(CYG_RIGHT_DIR),$(BOARD_NICENANO),$(CYG_RIGHT_SHIELD),)
-
-cygnus/dongle:
-	$(call build,Cygnus Dongle,$(CYG_DONGLE_DIR),$(BOARD_XIAO),$(CYG_DONGLE_SHIELD),-DCONFIG_DONGLE_SCREEN_AMBIENT_LIGHT=y)
-
-cygnus/upload/left:
-	$(call upload,Cygnus Left,$(CYG_LEFT_DIR),NICENANO)
-
-cygnus/upload/right:
-	$(call upload,Cygnus Right,$(CYG_RIGHT_DIR),NICENANO)
-
-cygnus/upload/dongle:
-	$(call upload,Cygnus Dongle,$(CYG_DONGLE_DIR),XIAO|SEEED)
-
-# -----------------------------------------------------------------------------
 # Maintenance
-# -----------------------------------------------------------------------------
+# =============================================================================
 update:
 	@echo "Updating west dependencies..."
 	cd $(ZMK_ROOT)/app && . $(VENV)/bin/activate && west update
 
 clean:
 	@echo "Cleaning build directories..."
-	rm -rf $(HSV_LEFT_DIR) $(HSV_RIGHT_DIR) $(CYG_LEFT_DIR) $(CYG_RIGHT_DIR) $(CYG_DONGLE_DIR)
+	@for target in $(BUILDS); do rm -rf "$(BUILD_BASE)/$$target"; done
+	@echo "Build directories cleaned"
 
-# -----------------------------------------------------------------------------
+# =============================================================================
 # External Modules
-# -----------------------------------------------------------------------------
+# =============================================================================
 modules/setup:
 	@echo "Setting up external modules from $(WEST_YML)..."
 	@command -v yq >/dev/null 2>&1 || { echo "Error: yq is required. Install with: brew install yq / apt install yq"; exit 1; }
 	@mkdir -p $(MODULES_DIR)
-	@yq -r '.manifest.projects[] | select(.name != "zmk") | .name' $(WEST_YML) | while read -r name; do \
+	@yq -r '.manifest | . as $$m | .projects[] | select(.name == "zmk" | not) | . as $$p | $$m.remotes[] | select(.name == $$p.remote) | [$$p.name, .["url-base"], $$p.revision] | @tsv' $(WEST_YML) | while read -r name url_base revision; do \
 		if [ -d "$(MODULES_DIR)/$$name" ]; then \
-			echo "✓ $$name already exists"; \
+			echo "$$name already exists"; \
 		else \
-			remote=$$(yq -r ".manifest.projects[] | select(.name == \"$$name\") | .remote" $(WEST_YML)); \
-			revision=$$(yq -r ".manifest.projects[] | select(.name == \"$$name\") | .revision" $(WEST_YML)); \
-			url_base=$$(yq -r ".manifest.remotes[] | select(.name == \"$$remote\") | .[\"url-base\"]" $(WEST_YML)); \
 			echo "Cloning $$name ($$revision) from $$url_base..."; \
 			git clone -b $$revision $$url_base/$$name.git $(MODULES_DIR)/$$name || exit 1; \
 		fi; \
 	done
-	@echo "✓ Modules setup complete"
+	@echo "Modules setup complete"
 
 modules/update:
 	@echo "Updating external modules..."
@@ -159,18 +166,26 @@ modules/update:
 			cd $$dir && git pull || echo "Warning: Failed to update $$(basename $$dir)"; \
 		fi; \
 	done
-	@echo "✓ Modules updated"
+	@echo "Modules updated"
 
 modules/clean:
 	@echo "Removing all external modules..."
 	@rm -rf $(MODULES_DIR)
-	@echo "✓ Modules removed"
+	@echo "Modules removed"
 
 # =============================================================================
 # Help
 # =============================================================================
 help:
 	@echo "ZMK Firmware Build System"
+	@echo ""
+	@echo "Builds are derived from $(BUILD_YAML)"
+	@echo ""
+	@echo "Commands:"
+	@echo "  list                    Show available build targets"
+	@echo "  all                     Build all targets"
+	@echo "  build/<name>            Build a specific target"
+	@echo "  upload/<name>           Upload firmware to device"
 	@echo ""
 	@echo "Hillside View:"
 	@echo "  hsv/all                 Build left + right"
@@ -201,4 +216,4 @@ help:
 	@echo "        MODULES_DIR=$(MODULES_DIR)"
 	@echo ""
 	@echo "Example: make modules/setup ZMK_ROOT=~/zmk"
-	@echo "         make hsv/left hsv/upload/left"
+	@echo "         make build/cygnus_left-nice_nano upload/cygnus_left-nice_nano"
