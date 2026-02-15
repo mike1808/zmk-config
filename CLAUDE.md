@@ -42,11 +42,8 @@ Build outputs are generated as firmware artifacts by the GitHub Actions workflow
 ### External Dependencies
 
 The repository uses several ZMK modules defined in `config/west.yml`:
-- `cirque-input-module` (badjeff) - Cirque Glidepoint trackpad support for I2C
-- `zmk-dongle-screen` (janpfischer) - Dongle display support for Cygnus
 - `nice-view-gem` (M165437) - Nice!View custom display widgets with animations
-- `prospector-zmk-module` (badjeff) - Additional sensor support
-- `zmk-pmw3610-driver` (badjeff) - PMW3610 optical sensor driver
+- `prospector-zmk-module` (carrefinho) - Status screen widgets and sensor support for Cygnus dongle
 
 **Note:** Split peripheral input relay is now built into ZMK core as `zmk,input-split` (since PR #2477, Dec 2024)
 
@@ -66,7 +63,7 @@ The repository uses several ZMK modules defined in `config/west.yml`:
 
 **Cygnus:**
 - Split keyboard with dongle configuration
-- Dongle uses Seeeduino XIAO BLE with ambient light sensor support (`CONFIG_DONGLE_SCREEN_AMBIENT_LIGHT=y`)
+- Dongle uses Seeeduino XIAO BLE with `prospector_adapter` shield for status screen display
 - Split peripherals use `CONFIG_ZMK_SPLIT_ROLE_CENTRAL=n` for left side
 - Gaming layer (GAM) in addition to standard layers
 
@@ -131,9 +128,8 @@ This repository uses `ZMK_EXTRA_MODULES` instead of modifying ZMK's west.yml:
 3. Update modules with `make modules/update`
 
 **Modules included:**
-- `zmk-dongle-screen` (janpfischer/upgrade-4.1) - Dongle display support
-- `nice-view-gem` (M165437/main) - Custom display widgets
-- `zmk-feature-split-esb` (badjeff/main) - ESB split keyboard support
+- `nice-view-gem` (M165437/main) - Custom display widgets with animations
+- `prospector-zmk-module` (carrefinho/feat/new-status-screens) - Status screen support for Cygnus dongle
 
 **Build flags:**
 - `-p` = pristine build (clean)
@@ -150,10 +146,21 @@ This repository uses `ZMK_EXTRA_MODULES` instead of modifying ZMK's west.yml:
 **Tip:** Use `grep -E "(Wrote|FAILED|error:|Memory region)"` to filter build output and save tokens.
 
 **Makefile Usage:**
+
+The Makefile reads all build configurations from `build.yaml` (single source of truth). Targets use the format `build/<first_shield>-<board>` or convenience aliases.
+
 ```bash
 # Set ZMK_ROOT in Makefile or as environment variable
 export ZMK_ROOT=~/path/to/zmk
 
+# List all available targets from build.yaml
+make list
+
+# Build using direct targets (read from build.yaml)
+make build/hillside_view_left-nice_nano
+make build/cygnus_dongle-xiao_ble
+
+# Or use convenience aliases
 # Hillside View
 make hsv/all              # Build left + right
 make hsv/left             # Build left (central)
@@ -178,6 +185,20 @@ make help                 # Show help
 # Chain commands
 make hsv/left hsv/upload/left   # Build and upload in one command
 ```
+
+**Makefile Implementation Details:**
+
+The Makefile dynamically reads `build.yaml` to generate build targets:
+- Uses `yq` to parse board, shield, cmake-args, and snippet fields
+- Consolidates multiple yq calls into single invocations for efficiency (4→1 for build, 2→1 for upload, 3N+1→1 for modules/setup)
+- Validates firmware exists before upload attempt
+- Auto-discovers external modules from `./modules/` directory
+- Provides both explicit targets (`build/<shield>-<board>`) and convenience aliases (`hsv/left`)
+
+**Adding new keyboards to build.yaml:**
+1. Add entry to `build.yaml` include list with board, shield, and optional cmake-args/snippet
+2. Run `make list` to verify the new target appears
+3. Build with `make build/<first_shield>-<board>` or add convenience alias to Makefile
 
 ### Editing Keymaps
 
