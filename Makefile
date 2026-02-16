@@ -72,7 +72,7 @@ upload/%:
 	if [ ! -f "$$fw" ]; then echo "Error: Firmware not found at $$fw (run build first)"; exit 1; fi; \
 	case "$$board" in \
 		nice_nano) pattern="NICENANO";; \
-		xiao_ble) pattern="XIAO|SEEED";; \
+		xiao_ble|xiao_ble//zmk) pattern="XIAO|SEEED";; \
 		*) echo "Error: No device pattern for board '$$board' - update Makefile"; exit 1;; \
 	esac; \
 	echo "Waiting for bootloader device..."; \
@@ -109,10 +109,10 @@ hsv/upload/right:   upload/hillside_view_right-nice_nano
 
 cygnus/left:          build/cygnus_left-nice_nano
 cygnus/right:         build/cygnus_right-nice_nano
-cygnus/dongle:        build/cygnus_dongle-xiao_ble
+cygnus/dongle:        build/cygnus_dongle-xiao_ble//zmk
 cygnus/upload/left:   upload/cygnus_left-nice_nano
 cygnus/upload/right:  upload/cygnus_right-nice_nano
-cygnus/upload/dongle: upload/cygnus_dongle-xiao_ble
+cygnus/upload/dongle: upload/cygnus_dongle-xiao_ble//zmk
 
 # =============================================================================
 # List available targets
