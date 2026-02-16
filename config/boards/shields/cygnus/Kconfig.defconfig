@@ -31,6 +31,9 @@ if SHIELD_CYGNUS_LEFT || SHIELD_CYGNUS_RIGHT || SHIELD_CYGNUS_DONGLE
 config ZMK_SPLIT
     default y
 
+config ZMK_BLE
+    default y
+
 config ZMK_SPLIT_BLE
     default y
 
