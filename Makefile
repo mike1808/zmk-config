@@ -72,7 +72,7 @@ upload/%:
 	fw="$(BUILD_BASE)/$$target/zephyr/zmk.uf2"; \
 	if [ ! -f "$$fw" ]; then echo "Error: Firmware not found at $$fw (run build first)"; exit 1; fi; \
 	case "$$board" in \
-		nice_nano) pattern="NICENANO";; \
+		nice_nano|nice_nano//zmk) pattern="NICENANO";; \
 		xiao_ble|xiao_ble//zmk) pattern="XIAO|SEEED";; \
 		*) echo "Error: No device pattern for board '$$board' - update Makefile"; exit 1;; \
 	esac; \
@@ -103,10 +103,10 @@ upload/%:
 hsv/all: $(addprefix build/,$(HSV_BUILDS))
 cygnus/all: $(addprefix build/,$(CYG_BUILDS))
 
-hsv/left:           build/hillside_view_left-nice_nano
-hsv/right:          build/hillside_view_right-nice_nano
-hsv/upload/left:    upload/hillside_view_left-nice_nano
-hsv/upload/right:   upload/hillside_view_right-nice_nano
+hsv/left:           build/hillside_view_left-nice_nano//zmk
+hsv/right:          build/hillside_view_right-nice_nano//zmk
+hsv/upload/left:    upload/hillside_view_left-nice_nano//zmk
+hsv/upload/right:   upload/hillside_view_right-nice_nano//zmk
 
 cygnus/left:          build/cygnus_left-nice_nano//zmk
 cygnus/right:         build/cygnus_right-nice_nano//zmk

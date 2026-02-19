@@ -13,10 +13,10 @@
 #
 ---
 include:
-  - board: nice_nano
+  - board: nice_nano//zmk
     shield: hillside_view_left nice_view_gem
     snippet: studio-rpc-usb-uart
-  - board: nice_nano
+  - board: nice_nano//zmk
     shield: hillside_view_right
   - board: nice_nano
     shield: settings_reset
