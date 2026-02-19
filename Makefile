@@ -49,12 +49,13 @@ build/%:
 	snippet_args=""; \
 	for s in $$snippet; do snippet_args="$$snippet_args -S $$s"; done; \
 	echo "Building $$shield ($$board)..."; \
-	modules=$$(find $(MODULES_DIR) -mindepth 1 -maxdepth 1 -type d 2>/dev/null | paste -sd';'); \
+	extra_modules=$$(find $(MODULES_DIR) -mindepth 1 -maxdepth 1 -type d 2>/dev/null | paste -sd';'); \
+	modules="$(CURDIR)$${extra_modules:+;$$extra_modules}"; \
 	cd $(ZMK_ROOT)/app && \
 	. $(VENV)/bin/activate && \
 	west build -p -d "$(BUILD_BASE)/$$target" -b "$$board" $$snippet_args \
 		-- -DSHIELD="$$shield" -DZMK_CONFIG=$(CONFIG_PATH) \
-		$${modules:+-DZMK_EXTRA_MODULES="$$modules"} $$cmake_args
+		-DZMK_EXTRA_MODULES="$$modules" $$cmake_args
 
 # =============================================================================
 # upload/<first_shield>-<board>
@@ -71,7 +72,7 @@ upload/%:
 	fw="$(BUILD_BASE)/$$target/zephyr/zmk.uf2"; \
 	if [ ! -f "$$fw" ]; then echo "Error: Firmware not found at $$fw (run build first)"; exit 1; fi; \
 	case "$$board" in \
-		nice_nano) pattern="NICENANO";; \
+		nice_nano|nice_nano//zmk) pattern="NICENANO";; \
 		xiao_ble|xiao_ble//zmk) pattern="XIAO|SEEED";; \
 		*) echo "Error: No device pattern for board '$$board' - update Makefile"; exit 1;; \
 	esac; \
@@ -102,13 +103,13 @@ upload/%:
 hsv/all: $(addprefix build/,$(HSV_BUILDS))
 cygnus/all: $(addprefix build/,$(CYG_BUILDS))
 
-hsv/left:           build/hillside_view_left-nice_nano
-hsv/right:          build/hillside_view_right-nice_nano
-hsv/upload/left:    upload/hillside_view_left-nice_nano
-hsv/upload/right:   upload/hillside_view_right-nice_nano
+hsv/left:           build/hillside_view_left-nice_nano//zmk
+hsv/right:          build/hillside_view_right-nice_nano//zmk
+hsv/upload/left:    upload/hillside_view_left-nice_nano//zmk
+hsv/upload/right:   upload/hillside_view_right-nice_nano//zmk
 
-cygnus/left:          build/cygnus_left-nice_nano
-cygnus/right:         build/cygnus_right-nice_nano
+cygnus/left:          build/cygnus_left-nice_nano//zmk
+cygnus/right:         build/cygnus_right-nice_nano//zmk
 cygnus/dongle:        build/cygnus_dongle-xiao_ble//zmk
 cygnus/upload/left:   upload/cygnus_left-nice_nano
 cygnus/upload/right:  upload/cygnus_right-nice_nano

@@ -13,20 +13,21 @@
 #
 ---
 include:
-  - board: nice_nano
+  - board: nice_nano//zmk
     shield: hillside_view_left nice_view_gem
     snippet: studio-rpc-usb-uart
-  - board: nice_nano
+  - board: nice_nano//zmk
     shield: hillside_view_right
   - board: nice_nano
     shield: settings_reset
   - board: xiao_ble
     shield: settings_reset
-  - board: nice_nano
+  - board: nice_nano//zmk
     shield: cygnus_left
-    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
-  - board: nice_nano
+    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n -DCONFIG_ZMK_USB=n
+  - board: nice_nano//zmk
     shield: cygnus_right
+    cmake-args: -DCONFIG_ZMK_USB=n
   - board: xiao_ble//zmk
     shield: cygnus_dongle prospector_adapter
     snippet: studio-rpc-usb-uart

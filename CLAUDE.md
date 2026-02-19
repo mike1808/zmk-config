@@ -10,18 +10,28 @@ This is a ZMK firmware configuration repository for custom split mechanical keyb
 
 ### Repository Structure
 
-- `config/` - Main configuration directory containing keymaps and board definitions
+- `boards/shields/` - Shield definitions at repo root (discovered via module system)
+  - `hillside_view/` - Hillside View hardware definitions (.dtsi, .overlay, Kconfig files)
+  - `cygnus/` - Cygnus hardware definitions
+
+- `config/` - Main configuration directory containing keymaps and per-user settings
   - `*.keymap` - User-facing keymap files (hillside_view.keymap, cygnus.keymap)
   - `*.conf` - Configuration files for keyboard features
   - `*.json` - Keymap editor JSON exports (editable via https://nickcoutsos.github.io/keymap-editor/)
-  - `boards/shields/` - Shield definitions for each keyboard
-    - `hillside_view/` - Hillside View hardware definitions (.dtsi, .overlay, Kconfig files)
-    - `cygnus/` - Cygnus hardware definitions
-  - `west.yml` - West manifest defining ZMK version and module dependencies
+  - `west.yml` - West manifest defining ZMK version and external module dependencies
+
+- `zephyr/module.yml` - Declares this repo as a Zephyr module with `board_root: .`
 
 - `build.yaml` - Build matrix configuration defining which board+shield combinations to build
 
 - `.github/workflows/` - GitHub Actions workflows for automated firmware builds
+
+### Module System
+
+This repository is a **Zephyr module** declared via `zephyr/module.yml` (contains `board_root: .`). This means:
+- Zephyr automatically discovers shield definitions in `./boards/shields/` when this repo is listed as a module
+- Local builds pass `$(CURDIR)` (the repo root) as the first entry in `ZMK_EXTRA_MODULES` — the Makefile handles this automatically
+- CI uses ZMK's shared workflow (`zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3`) which also handles module discovery via `build.yaml`
 
 ### ZMK Version
 
@@ -32,9 +42,9 @@ This repository uses ZMK `main` branch in `config/west.yml`. To pin to a specifi
 
 ### Build System
 
-Builds are defined in `build.yaml` and run via GitHub Actions. The build matrix includes:
+Builds are defined in `build.yaml` and run via GitHub Actions using the ZMK shared workflow (`zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3`). The build matrix includes:
 - **Hillside View**: Split keyboard with nice!nano v2, nice_view_gem display and studio-rpc-usb-uart snippet
-- **Cygnus**: Split keyboard with nice!nano v2 peripherals and Seeeduino XIAO BLE dongle with screen
+- **Cygnus**: Split keyboard with nice!nano v2 peripherals (`nice_nano//zmk` board qualifier) and Seeeduino XIAO BLE dongle with screen
 - **Settings Reset**: Utility builds for both nice!nano v2 and Seeeduino XIAO BLE
 
 Build outputs are generated as firmware artifacts by the GitHub Actions workflow.
@@ -43,7 +53,7 @@ Build outputs are generated as firmware artifacts by the GitHub Actions workflow
 
 The repository uses several ZMK modules defined in `config/west.yml`:
 - `nice-view-gem` (M165437) - Nice!View custom display widgets with animations
-- `prospector-zmk-module` (carrefinho) - Status screen widgets and sensor support for Cygnus dongle
+- `prospector-zmk-module` (carrefinho/feat/new-status-screens) - Status screen widgets and sensor support for Cygnus dongle
 
 **Note:** Split peripheral input relay is now built into ZMK core as `zmk,input-split` (since PR #2477, Dec 2024)
 
@@ -53,6 +63,7 @@ The repository uses several ZMK modules defined in `config/west.yml`:
 - 46-key split keyboard with Nice!View e-paper display (nice-view-gem custom widgets)
 - Custom display status screen on left (central) side with `CONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM=y`
 - Display disabled on right (peripheral) side (`CONFIG_ZMK_DISPLAY=n`) to save resources
+- `CONFIG_ZMK_USB=y` is set in `hillside_view_left.conf` (not `Kconfig.defconfig`) to avoid Kconfig warnings on non-central builds
 - Cirque Glidepoint trackpad on right (peripheral) side relayed via `zmk,input-split`
 - Input processors for y-axis inversion and 2x scaling
 - Temporary mouse layer (MOUSE) activates during trackpad movement (300ms timeout)
@@ -64,7 +75,10 @@ The repository uses several ZMK modules defined in `config/west.yml`:
 **Cygnus:**
 - Split keyboard with dongle configuration
 - Dongle uses Seeeduino XIAO BLE with `prospector_adapter` shield for status screen display
-- Split peripherals use `CONFIG_ZMK_SPLIT_ROLE_CENTRAL=n` for left side
+- Left and right sides are BLE peripherals using `nice_nano//zmk` board qualifier
+- `config/cygnus.conf` applies to all variants (ZMK strips `_left`/`_right`/`_dongle` suffixes when searching for conf files)
+- Central-only settings (ZMK Studio RPC, battery level fetching) live in `config/cygnus_dongle.conf`
+- Peripherals have `CONFIG_ZMK_USB=n` in `cmake-args` (the board default enables USB; a dependency blocks it on peripherals without this override)
 - Gaming layer (GAM) in addition to standard layers
 
 ### Keymap Patterns
@@ -106,11 +120,11 @@ make hsv/all
 cd <zmk-root>/app
 source <zmk-root>/.venv/bin/activate
 
-# Build with external modules
+# Build with external modules (semicolon-separated for CMake)
 west build -p -d build/hsv/left -b nice_nano \
   -- -DSHIELD="hillside_view_left nice_view_gem" \
      -DZMK_CONFIG=$(realpath <config-path>/config/) \
-     -DZMK_EXTRA_MODULES="<modules-path>/zmk-dongle-screen:<modules-path>/nice-view-gem:..."
+     -DZMK_EXTRA_MODULES="<repo-root>;<modules-path>/nice-view-gem;..."
 ```
 
 **Required Python packages in venv:**
@@ -131,19 +145,21 @@ This repository uses `ZMK_EXTRA_MODULES` instead of modifying ZMK's west.yml:
 - `nice-view-gem` (M165437/main) - Custom display widgets with animations
 - `prospector-zmk-module` (carrefinho/feat/new-status-screens) - Status screen support for Cygnus dongle
 
+The repo root (`$(CURDIR)`) is always included as the first `ZMK_EXTRA_MODULES` entry so Zephyr discovers the shields in `./boards/shields/` via `zephyr/module.yml`.
+
 **Build flags:**
 - `-p` = pristine build (clean)
 - `-d <dir>` = build directory
-- `-b <board>` = board name (nice_nano for v2.0+, xiao_ble)
+- `-b <board>` = board name (nice_nano for v2.0+, xiao_ble; use `nice_nano//zmk` qualifier for Cygnus peripherals)
 - `-DSHIELD` = shield(s) to build
 - `-DZMK_CONFIG` = path to this config repository
-- `-DZMK_EXTRA_MODULES` = colon-separated paths to external modules
+- `-DZMK_EXTRA_MODULES` = **semicolon**-separated paths to modules (CMake list separator; colons also work on Linux but semicolons are canonical)
 
 **Board Names (Zephyr 4.1+):**
 - Use `nice_nano` (not nice_nano_v2)
 - Use `nice_view_gem` for display shield (custom widgets with animations)
 
-**Tip:** Use `grep -E "(Wrote|FAILED|error:|Memory region)"` to filter build output and save tokens.
+**Tip:** Use `grep -E "(Wrote|FAILED|error:|warning:|Memory region)"` to filter build output and save tokens.
 
 **Makefile Usage:**
 
@@ -191,8 +207,9 @@ make hsv/left hsv/upload/left   # Build and upload in one command
 The Makefile dynamically reads `build.yaml` to generate build targets:
 - Uses `yq` to parse board, shield, cmake-args, and snippet fields
 - Consolidates multiple yq calls into single invocations for efficiency (4→1 for build, 2→1 for upload, 3N+1→1 for modules/setup)
+- Always prepends `$(CURDIR)` (repo root) as first `ZMK_EXTRA_MODULES` entry for module discovery
+- Auto-discovers additional external modules from `./modules/` directory
 - Validates firmware exists before upload attempt
-- Auto-discovers external modules from `./modules/` directory
 - Provides both explicit targets (`build/<shield>-<board>`) and convenience aliases (`hsv/left`)
 
 **Adding new keyboards to build.yaml:**
@@ -211,12 +228,12 @@ The Makefile dynamically reads `build.yaml` to generate build targets:
 
 - Keyboard features: Edit `.conf` files in `config/`
 - Build matrix: Edit `build.yaml` to add/remove build targets
-- Hardware definitions: Edit files in `config/boards/shields/<keyboard>/`
+- Hardware definitions: Edit files in `boards/shields/<keyboard>/`
 - ZMK modules: Modify `config/west.yml` to change dependencies or ZMK version
 
 ### Adding New Keyboards
 
-1. Create shield directory in `config/boards/shields/<keyboard_name>/`
+1. Create shield directory in `boards/shields/<keyboard_name>/`
 2. Add hardware definition files (`.dtsi`, `.overlay`, Kconfig files)
 3. Create keymap files in `config/` root
 4. Update `build.yaml` to include new build targets
