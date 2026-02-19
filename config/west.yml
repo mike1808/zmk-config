@@ -20,9 +20,12 @@ manifest:
     # - name: zmk-dongle-screen
     #   remote: janpfischer
     #   revision: upgrade-4.1
+    # - name: nice-view-gem
+    #   remote: m165437
+    #   revision: main
     - name: nice-view-gem
-      remote: m165437
-      revision: main
+      remote: mike1808
+      revision: fix/zmk-endpoint-api
     - name: prospector-zmk-module
       remote: mike1808
       revision: fix/new-status-screan-zmk-refactor
