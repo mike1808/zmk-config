@@ -49,12 +49,13 @@ build/%:
 	snippet_args=""; \
 	for s in $$snippet; do snippet_args="$$snippet_args -S $$s"; done; \
 	echo "Building $$shield ($$board)..."; \
-	modules=$$(find $(MODULES_DIR) -mindepth 1 -maxdepth 1 -type d 2>/dev/null | paste -sd';'); \
+	extra_modules=$$(find $(MODULES_DIR) -mindepth 1 -maxdepth 1 -type d 2>/dev/null | paste -sd';'); \
+	modules="$(CURDIR)$${extra_modules:+;$$extra_modules}"; \
 	cd $(ZMK_ROOT)/app && \
 	. $(VENV)/bin/activate && \
 	west build -p -d "$(BUILD_BASE)/$$target" -b "$$board" $$snippet_args \
 		-- -DSHIELD="$$shield" -DZMK_CONFIG=$(CONFIG_PATH) \
-		$${modules:+-DZMK_EXTRA_MODULES="$$modules"} $$cmake_args
+		-DZMK_EXTRA_MODULES="$$modules" $$cmake_args
 
 # =============================================================================
 # upload/<first_shield>-<board>
@@ -107,8 +108,8 @@ hsv/right:          build/hillside_view_right-nice_nano
 hsv/upload/left:    upload/hillside_view_left-nice_nano
 hsv/upload/right:   upload/hillside_view_right-nice_nano
 
-cygnus/left:          build/cygnus_left-nice_nano
-cygnus/right:         build/cygnus_right-nice_nano
+cygnus/left:          build/cygnus_left-nice_nano//zmk
+cygnus/right:         build/cygnus_right-nice_nano//zmk
 cygnus/dongle:        build/cygnus_dongle-xiao_ble//zmk
 cygnus/upload/left:   upload/cygnus_left-nice_nano
 cygnus/upload/right:  upload/cygnus_right-nice_nano
