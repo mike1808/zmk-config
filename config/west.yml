@@ -25,7 +25,7 @@ manifest:
     #   revision: main
     - name: nice-view-gem
       remote: mike1808
-      revision: fix/zmk-endpoint-api
+      revision: feat/mods
     - name: prospector-zmk-module
       remote: mike1808
       revision: fix/new-status-screan-zmk-refactor
