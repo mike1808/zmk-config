@@ -18,6 +18,11 @@ include:
     snippet: studio-rpc-usb-uart
   - board: nice_nano//zmk
     shield: hillside_view_right
+  - board: nice_nano//zmk
+    shield: hillside_view_enc_left nice_view_gem
+    snippet: studio-rpc-usb-uart
+  - board: nice_nano//zmk
+    shield: hillside_view_enc_right nice_view_gem
   - board: nice_nano
     shield: settings_reset
   - board: xiao_ble

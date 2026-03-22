@@ -17,7 +17,8 @@ WEST_YML := $(CONFIG_PATH)/west.yml
 BUILDS := $(shell yq -r '.include[] | ((.shield | split(" ") | .[0]) + "-" + .board)' $(BUILD_YAML) 2>/dev/null)
 
 # Group builds by keyboard prefix
-HSV_BUILDS := $(filter hillside_view_%,$(BUILDS))
+HSV_BUILDS := $(filter hillside_view_left% hillside_view_right%,$(BUILDS))
+HSV_ENC_BUILDS := $(filter hillside_view_enc_%,$(BUILDS))
 CYG_BUILDS := $(filter cygnus_%,$(BUILDS))
 
 # yq filter: select build.yaml entry by target name (set $$target in shell first)
@@ -28,6 +29,7 @@ YQ_SELECT = .include[] | select(((.shield | split(\" \") | .[0]) + \"-\" + .boar
 # =============================================================================
 .PHONY: all list help update clean \
         hsv/all hsv/left hsv/right hsv/upload/left hsv/upload/right \
+        hsv-enc/all hsv-enc/left hsv-enc/right hsv-enc/upload/left hsv-enc/upload/right \
         cygnus/all cygnus/left cygnus/right cygnus/dongle \
         cygnus/upload/left cygnus/upload/right cygnus/upload/dongle \
         modules/setup modules/update modules/clean
@@ -101,12 +103,18 @@ upload/%:
 # Aliases
 # =============================================================================
 hsv/all: $(addprefix build/,$(HSV_BUILDS))
+hsv-enc/all: $(addprefix build/,$(HSV_ENC_BUILDS))
 cygnus/all: $(addprefix build/,$(CYG_BUILDS))
 
 hsv/left:           build/hillside_view_left-nice_nano//zmk
 hsv/right:          build/hillside_view_right-nice_nano//zmk
 hsv/upload/left:    upload/hillside_view_left-nice_nano//zmk
 hsv/upload/right:   upload/hillside_view_right-nice_nano//zmk
+
+hsv-enc/left:           build/hillside_view_enc_left-nice_nano//zmk
+hsv-enc/right:          build/hillside_view_enc_right-nice_nano//zmk
+hsv-enc/upload/left:    upload/hillside_view_enc_left-nice_nano//zmk
+hsv-enc/upload/right:   upload/hillside_view_enc_right-nice_nano//zmk
 
 cygnus/left:          build/cygnus_left-nice_nano//zmk
 cygnus/right:         build/cygnus_right-nice_nano//zmk
@@ -123,7 +131,8 @@ list:
 	@yq -r '.include[] | "  build/" + ((.shield | split(" ") | .[0]) + "-" + .board) + "\t" + .shield + " (" + .board + ")"' $(BUILD_YAML) | column -t -s '	'
 	@echo ""
 	@echo "Groups:"
-	@echo "  hsv/all                 Hillside View builds"
+	@echo "  hsv/all                 Hillside View trackpad builds"
+	@echo "  hsv-enc/all             Hillside View encoder builds"
 	@echo "  cygnus/all              Cygnus builds"
 	@echo "  all                     All builds"
 	@echo ""
@@ -189,11 +198,18 @@ help:
 	@echo "  upload/<name>           Upload firmware to device"
 	@echo ""
 	@echo "Hillside View:"
-	@echo "  hsv/all                 Build left + right"
+	@echo "  hsv/all                 Build left + right (trackpad)"
 	@echo "  hsv/left                Build left (central)"
 	@echo "  hsv/right               Build right (peripheral)"
 	@echo "  hsv/upload/left         Upload left firmware"
 	@echo "  hsv/upload/right        Upload right firmware"
+	@echo ""
+	@echo "Hillside View Enc:"
+	@echo "  hsv-enc/all             Build left + right (encoders)"
+	@echo "  hsv-enc/left            Build left (central)"
+	@echo "  hsv-enc/right           Build right (peripheral)"
+	@echo "  hsv-enc/upload/left     Upload left firmware"
+	@echo "  hsv-enc/upload/right    Upload right firmware"
 	@echo ""
 	@echo "Cygnus:"
 	@echo "  cygnus/all              Build left + right + dongle"
