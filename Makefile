@@ -34,13 +34,20 @@ YQ_SELECT = .include[] | select(((.shield | split(\" \") | .[0]) + \"-\" + .boar
         cygnus/upload/left cygnus/upload/right cygnus/upload/dongle \
         modules/setup modules/update modules/clean
 
+WEST_STAMP := $(ZMK_ROOT)/.west-updated
+
 all: $(addprefix build/,$(BUILDS))
 
 # =============================================================================
 # build/<first_shield>-<board>
 # All parameters (board, shield, cmake-args, snippet) read from build.yaml
 # =============================================================================
-build/%:
+$(WEST_STAMP): $(WEST_YML)
+	@echo "west.yml changed, running west update..."
+	cd $(ZMK_ROOT)/app && . $(VENV)/bin/activate && west update
+	@touch $(WEST_STAMP)
+
+build/%: $(WEST_STAMP)
 	@target="$*"; \
 	eval $$(yq -r "$(YQ_SELECT) | \"board=\" + (.board | @sh) + \" shield=\" + (.shield | @sh) + \" cmake_args=\" + ((.[\"cmake-args\"] // \"\") | @sh) + \" snippet=\" + ((.snippet // \"\") | @sh)" $(BUILD_YAML)); \
 	if [ -z "$$board" ]; then \
@@ -144,6 +151,7 @@ list:
 update:
 	@echo "Updating west dependencies..."
 	cd $(ZMK_ROOT)/app && . $(VENV)/bin/activate && west update
+	@touch $(WEST_STAMP)
 
 clean:
 	@echo "Cleaning build directories..."
