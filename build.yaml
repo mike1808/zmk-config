@@ -35,4 +35,4 @@ include:
     cmake-args: -DCONFIG_ZMK_USB=n
   - board: xiao_ble//zmk
     shield: cygnus_dongle prospector_adapter
-    snippet: studio-rpc-usb-uart
+    snippet: studio-rpc-usb-uart zmk-usb-logging
