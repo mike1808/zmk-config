@@ -30,7 +30,7 @@ include:
   - board: nice_nano//zmk
     shield: cygnus_left
     snippet: zmk-usb-logging
-    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n -DCONFIG_ZMK_USB=n -DCONFIG_BT_LOG_LEVEL_DBG=y -DCONFIG_ZMK_LOG_LEVEL_DBG=y
+    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n -DCONFIG_ZMK_USB=n= -DCONFIG_ZMK_LOG_LEVEL_DBG=y -DCONFIG_LOG_BUFFER_SIZE=4096 -DCONFIG_LOG_MODE_DEFERRED=y
   - board: nice_nano//zmk
     shield: cygnus_right
     cmake-args: -DCONFIG_ZMK_USB=n
