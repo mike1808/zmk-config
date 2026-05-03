@@ -28,9 +28,14 @@ def strip_gutenberg(text: str) -> str:
 
 
 def normalize(text: str) -> str:
-    """Normalize line endings and collapse excessive blank lines."""
+    """Normalize line endings, collapse blank lines, map Unicode to ASCII."""
     text = text.replace("\r\n", "\n").replace("\r", "\n")
     text = re.sub(r"\n{3,}", "\n\n", text)
+    # Map Unicode typography to ASCII equivalents (font covers 0x20-0x7F only)
+    text = text.replace("“", '"').replace("”", '"')  # curly double quotes
+    text = text.replace("‘", "'").replace("’", "'")  # curly single quotes / apostrophe
+    text = text.replace("—", "--").replace("–", "-")  # em-dash, en-dash
+    text = text.replace("…", "...")                        # ellipsis
     return text.strip()
 
 
