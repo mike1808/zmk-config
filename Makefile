@@ -32,6 +32,7 @@ YQ_SELECT = .include[] | select(((.shield | split(\" \") | .[0]) + \"-\" + .boar
         hsv-enc/all hsv-enc/left hsv-enc/right hsv-enc/upload/left hsv-enc/upload/right \
         cygnus/all cygnus/left cygnus/right cygnus/dongle \
         cygnus/upload/left cygnus/upload/right cygnus/upload/dongle \
+        ebook/left ebook/upload/left \
         modules/setup modules/update modules/clean
 
 WEST_STAMP := $(ZMK_ROOT)/.west-updated
@@ -129,6 +130,9 @@ cygnus/dongle:        build/cygnus_dongle-xiao_ble//zmk
 cygnus/upload/left:   upload/cygnus_left-nice_nano
 cygnus/upload/right:  upload/cygnus_right-nice_nano
 cygnus/upload/dongle: upload/cygnus_dongle-xiao_ble//zmk
+
+ebook/left:           build/ebook_reader-nice_nano//zmk
+ebook/upload/left:    upload/ebook_reader-nice_nano//zmk
 
 # =============================================================================
 # List available targets

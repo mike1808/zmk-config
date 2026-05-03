@@ -37,3 +37,6 @@ include:
   - board: xiao_ble//zmk
     shield: cygnus_dongle prospector_adapter
     snippet: studio-rpc-usb-uart zmk-usb-logging
+  - board: nice_nano//zmk
+    shield: ebook_reader hillside_view_left
+    snippet: studio-rpc-usb-uart
