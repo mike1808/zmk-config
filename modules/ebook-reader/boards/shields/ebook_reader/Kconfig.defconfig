@@ -30,5 +30,6 @@ config EBOOK_READER_WIDGET
     select LV_USE_LABEL
     select LV_USE_BAR
     select LV_FONT_UNSCII_8
+    select LV_USE_ANIMATION
 
 endif # SHIELD_EBOOK_READER

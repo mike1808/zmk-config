@@ -74,7 +74,7 @@ def emit_c(pages: list[list[str]], output_path: str) -> None:
     lines_out = []
     lines_out.append('#include "ebook_data.h"')
     lines_out.append("")
-    lines_out.append("const char *ebook_pages[] = {")
+    lines_out.append("const char * const ebook_pages[] = {")
     for page_lines in pages:
         content = "\n".join(page_lines)
         lines_out.append(f'    "{escape_c_string(content)}",')
