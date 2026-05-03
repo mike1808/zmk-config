@@ -1,4 +1,34 @@
 /*
  * Display hardware configured by hillside_view_left.overlay.
- * No additional overlay needed.
+ * Ebook navigation behaviors and combos defined here so they
+ * only apply to ebook builds (overlays are shield-specific).
  */
+
+/ {
+    behaviors {
+        ebook_next: ebook_next {
+            compatible = "zmk,behavior-ebook-nav";
+            #binding-cells = <0>;
+            direction = <1>;
+        };
+        ebook_prev: ebook_prev {
+            compatible = "zmk,behavior-ebook-nav";
+            #binding-cells = <0>;
+            direction = <0>;
+        };
+    };
+
+    combos {
+        ebook_page_next {
+            timeout-ms = <50>;
+            key-positions = <19 20>;  /* J + K = next page */
+            bindings = <&ebook_next>;
+        };
+
+        ebook_page_prev {
+            timeout-ms = <50>;
+            key-positions = <16 17>;  /* F + G = prev page */
+            bindings = <&ebook_prev>;
+        };
+    };
+};

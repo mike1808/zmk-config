@@ -7,38 +7,6 @@
 
 #define MOUSE 4
 
-#if defined(CONFIG_EBOOK_READER_WIDGET)
-/ {
-    behaviors {
-        ebook_next: ebook_next {
-            compatible = "zmk,behavior-ebook-nav";
-            #binding-cells = <0>;
-            direction = <1>;
-        };
-        ebook_prev: ebook_prev {
-            compatible = "zmk,behavior-ebook-nav";
-            #binding-cells = <0>;
-            direction = <0>;
-        };
-    };
-
-    combos {
-        compatible = "zmk,combos";
-
-        ebook_page_next {
-            timeout-ms = <50>;
-            key-positions = <19 20>;  // J + K
-            bindings = <&ebook_next>;
-        };
-
-        ebook_page_prev {
-            timeout-ms = <50>;
-            key-positions = <16 17>;  // F + G
-            bindings = <&ebook_prev>;
-        };
-    };
-};
-#endif
 
 / {
     // Trackpad input listener with temp layer and layer-specific processors
