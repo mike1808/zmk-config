@@ -29,5 +29,6 @@ config EBOOK_READER_WIDGET
     default y
     select LV_USE_LABEL
     select LV_USE_BAR
+    select LV_FONT_UNSCII_8
 
 endif # SHIELD_EBOOK_READER

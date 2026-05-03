@@ -56,7 +56,7 @@ lv_obj_t *zmk_display_status_screen() {
     page_num_label = lv_label_create(screen);
     lv_obj_set_pos(page_num_label, 132, 60);
     lv_obj_set_size(page_num_label, 24, 8);
-    lv_obj_set_style_text_font(page_num_label, &pixel_operator_mono, LV_PART_MAIN);
+    lv_obj_set_style_text_font(page_num_label, &lv_font_unscii_8, LV_PART_MAIN);
     lv_obj_set_style_text_color(page_num_label, lv_color_black(), LV_PART_MAIN);
     lv_obj_set_style_text_align(page_num_label, LV_TEXT_ALIGN_RIGHT, LV_PART_MAIN);
     lv_obj_set_style_pad_all(page_num_label, 0, LV_PART_MAIN);
