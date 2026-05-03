@@ -8,6 +8,8 @@
 #include "ebook_data.h"
 #include "events/ebook_page_changed.h"
 
+extern uint16_t ebook_current_page;
+
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 /* pixel_operator_mono: line_height=13px, char_width=8px
@@ -148,7 +150,7 @@ static void set_ebook_page(struct ebook_page_state state) {
 static struct ebook_page_state ebook_page_get_state(const zmk_event_t *eh) {
     const struct zmk_ebook_page_changed *ev = as_zmk_ebook_page_changed(eh);
     return (struct ebook_page_state){
-        .page_idx = (ev != NULL) ? ev->page_idx : 0,
+        .page_idx = (ev != NULL) ? ev->page_idx : ebook_current_page,
     };
 }
 
