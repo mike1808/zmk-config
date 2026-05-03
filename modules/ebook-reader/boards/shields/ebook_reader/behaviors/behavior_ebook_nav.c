@@ -69,7 +69,7 @@ static int on_keymap_binding_pressed(struct zmk_behavior_binding *binding,
     raise_ebook_page_changed(ebook_current_page);
 
 #if IS_ENABLED(CONFIG_SETTINGS)
-    k_work_reschedule(&ebook_save_work, K_NO_WAIT);
+    k_work_reschedule(&ebook_save_work, K_MSEC(CONFIG_ZMK_SETTINGS_SAVE_DEBOUNCE));
 #endif
 
     return ZMK_BEHAVIOR_OPAQUE;
