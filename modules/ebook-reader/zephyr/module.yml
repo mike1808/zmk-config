@@ -2,3 +2,4 @@ name: "zmk-shield-ebook-reader"
 build:
   settings:
     board_root: .
+    dts_root: .

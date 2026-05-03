@@ -1,0 +1,14 @@
+# Copyright (c) 2024 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+description: Ebook reader page navigation behavior
+
+compatible: "zmk,behavior-ebook-nav"
+
+include: zero_param.yaml
+
+properties:
+  direction:
+    type: int
+    required: true
+    description: Navigation direction (0 = previous page, 1 = next page)
