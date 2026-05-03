@@ -1,3 +1,4 @@
 config/_boards
-modules/
+modules/*
+!modules/ebook-reader/
 .envrc

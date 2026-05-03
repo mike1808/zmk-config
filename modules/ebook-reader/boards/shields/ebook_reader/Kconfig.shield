@@ -1,0 +1,2 @@
+config SHIELD_EBOOK_READER
+    def_bool $(shields_list_contains,ebook_reader)
