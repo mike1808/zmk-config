@@ -25,6 +25,8 @@ config LV_Z_MEM_POOL_SIZE
     default 8192
 
 config EBOOK_READER_WIDGET
+    bool
+    default y
     select LV_USE_LABEL
     select LV_USE_BAR
 
