@@ -1,7 +1,12 @@
 /*
  * Display hardware configured by hillside_view_left.overlay.
- * Ebook navigation behaviors and combos defined here so they
- * only apply to ebook builds (overlays are shield-specific).
+ *
+ * TODO: behaviors and combos live here instead of hillside_view.keymap because
+ * CONFIG_* Kconfig macros are not available to the DTS preprocessor for keymap
+ * files in user config dirs (no -include autoconf.h passed). Ideal fix: either
+ * investigate how to pass Kconfig flags to the keymap DTS preprocessor, or use
+ * a dedicated hillside_view_ebook.keymap that includes hillside_view_common.dtsi
+ * and adds ebook nodes directly without any #ifdef guard.
  */
 
 / {
