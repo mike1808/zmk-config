@@ -16,19 +16,40 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 uint16_t ebook_current_page = 0;
 
-static int ebook_settings_set(const char *key, size_t len,
-                               settings_read_cb read_cb, void *cb_arg) {
-    if (strcmp(key, "page") == 0 && len == sizeof(ebook_current_page)) {
-        read_cb(cb_arg, &ebook_current_page, len);
+#if IS_ENABLED(CONFIG_SETTINGS)
+
+static int ebook_settings_load_cb(const char *name, size_t len, settings_read_cb read_cb,
+                                   void *cb_arg) {
+    const char *next;
+    if (settings_name_steq(name, "page", &next) && !next) {
+        if (len != sizeof(ebook_current_page)) {
+            return -EINVAL;
+        }
+        return read_cb(cb_arg, &ebook_current_page, sizeof(ebook_current_page));
     }
-    return 0;
+    return -ENOENT;
 }
 
-SETTINGS_STATIC_HANDLER_DEFINE(ebook, "ebook", NULL, ebook_settings_set, NULL, NULL);
+SETTINGS_STATIC_HANDLER_DEFINE(ebook, "ebook", NULL, ebook_settings_load_cb, NULL, NULL);
+
+static void ebook_save_work_handler(struct k_work *work) {
+    settings_save_one("ebook/page", &ebook_current_page, sizeof(ebook_current_page));
+}
+
+static struct k_work_delayable ebook_save_work;
+
+#endif /* IS_ENABLED(CONFIG_SETTINGS) */
 
 struct behavior_ebook_nav_config {
     uint8_t direction;
 };
+
+static int ebook_nav_init(const struct device *dev) {
+#if IS_ENABLED(CONFIG_SETTINGS)
+    k_work_init_delayable(&ebook_save_work, ebook_save_work_handler);
+#endif
+    return 0;
+}
 
 static int on_keymap_binding_pressed(struct zmk_behavior_binding *binding,
                                      struct zmk_behavior_binding_event event) {
@@ -46,7 +67,11 @@ static int on_keymap_binding_pressed(struct zmk_behavior_binding *binding,
     }
 
     raise_ebook_page_changed(ebook_current_page);
-    settings_save_one("ebook/page", &ebook_current_page, sizeof(ebook_current_page));
+
+#if IS_ENABLED(CONFIG_SETTINGS)
+    k_work_reschedule(&ebook_save_work, K_MSEC(CONFIG_ZMK_SETTINGS_SAVE_DEBOUNCE));
+#endif
+
     return ZMK_BEHAVIOR_OPAQUE;
 }
 
@@ -64,8 +89,8 @@ static const struct behavior_driver_api behavior_ebook_nav_driver_api = {
     static const struct behavior_ebook_nav_config behavior_ebook_nav_config_##n = {               \
         .direction = DT_INST_PROP(n, direction),                                                   \
     };                                                                                             \
-    BEHAVIOR_DT_INST_DEFINE(n, NULL, NULL, NULL, &behavior_ebook_nav_config_##n, POST_KERNEL,     \
-                            CONFIG_KERNEL_INIT_PRIORITY_DEFAULT,                                   \
+    BEHAVIOR_DT_INST_DEFINE(n, ebook_nav_init, NULL, NULL, &behavior_ebook_nav_config_##n,        \
+                            POST_KERNEL, CONFIG_KERNEL_INIT_PRIORITY_DEFAULT,                      \
                             &behavior_ebook_nav_driver_api);
 
 DT_INST_FOREACH_STATUS_OKAY(EBOOK_NAV_INST)
