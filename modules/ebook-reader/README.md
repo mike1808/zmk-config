@@ -26,6 +26,35 @@ Combos are defined in `ebook_reader.overlay` and only apply to ebook builds.
 > config dirs. Proper fix: dedicated `hillside_view_ebook.keymap` or pass autoconf.h to
 > the DTS preprocessor.
 
+## Smooth scroll animation
+
+Page turns animate with a vertical slide (150 ms, ease-in-out):
+
+- **Next page** (`J+K`) — current page slides up, incoming slides in from below
+- **Prev page** (`F+G`) — current page slides down, incoming slides in from above
+
+### Implementation (`custom_status_screen.c`)
+
+Two LVGL labels sit inside a clipped 160×60 container. On each page change
+`set_ebook_page` runs two simultaneous `lv_anim_t` animations — one for the
+outgoing label, one for the incoming — both using
+`lv_anim_path_ease_in_out` over `SCROLL_ANIM_MS` (150 ms).
+
+```
+container (160×60, children clipped)
+  label_a  ← active label, y=0
+  label_b  ← inactive label, y=±60 (off-screen)
+
+next page: label_a 0→-60, label_b +60→0  (slide up)
+prev page: label_a 0→+60, label_b -60→0  (slide down)
+```
+
+`active_label` and `displayed_page` track which label is currently visible
+so direction and slot are determined correctly on each turn.
+
+Required Kconfig: `LV_USE_ANIMATION=y` (selected automatically via
+`EBOOK_READER_WIDGET` in `Kconfig.defconfig`).
+
 ## Adding a book
 
 1. Get a plain-text `.txt` from [Project Gutenberg](https://www.gutenberg.org/)
