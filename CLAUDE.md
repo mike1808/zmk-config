@@ -49,11 +49,16 @@ Builds are defined in `build.yaml` and run via GitHub Actions using the ZMK shar
 
 Build outputs are generated as firmware artifacts by the GitHub Actions workflow.
 
+The build matrix also includes an **ebook reader** variant (`ebook_reader hillside_view_left`) that replaces the status screen with a paginated book display. This uses the local `ebook-reader` module and is built with `make ebook/left`.
+
 ### External Dependencies
 
 The repository uses several ZMK modules defined in `config/west.yml`:
 - `nice-view-gem` (M165437) - Nice!View custom display widgets with animations
 - `prospector-zmk-module` (carrefinho/feat/new-status-screens) - Status screen widgets and sensor support for Cygnus dongle
+
+**Local modules** (committed in `modules/`, gitignore-excepted via `!modules/ebook-reader/`):
+- `ebook-reader` — Hillside View nice!view e-book reader shield. See [`modules/ebook-reader/README.md`](modules/ebook-reader/README.md).
 
 **Note:** Split peripheral input relay is now built into ZMK core as `zmk,input-split` (since PR #2477, Dec 2024)
 
@@ -192,6 +197,10 @@ make cygnus/dongle        # Build dongle (central)
 make cygnus/upload/left   # Upload left firmware
 make cygnus/upload/right  # Upload right firmware
 make cygnus/upload/dongle # Upload dongle firmware
+
+# Ebook reader (Hillside View, local ebook-reader module)
+make ebook/left               # Build ebook firmware
+make ebook/upload/left        # Upload ebook firmware
 
 # Maintenance
 make update               # Update west dependencies
