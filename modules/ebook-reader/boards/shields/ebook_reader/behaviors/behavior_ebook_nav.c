@@ -24,7 +24,14 @@ static int ebook_settings_set(const char *key, size_t len,
     return 0;
 }
 
-SETTINGS_STATIC_HANDLER_DEFINE(ebook, "ebook", NULL, ebook_settings_set, NULL, NULL);
+/* Called after settings_load() completes — raise event so display syncs */
+static int ebook_settings_commit(void) {
+    raise_ebook_page_changed(ebook_current_page);
+    return 0;
+}
+
+SETTINGS_STATIC_HANDLER_DEFINE(ebook, "ebook", NULL, ebook_settings_set,
+                                ebook_settings_commit, NULL);
 
 struct behavior_ebook_nav_config {
     uint8_t direction;
