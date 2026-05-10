@@ -58,7 +58,7 @@ build/%: $(WEST_STAMP)
 	snippet_args=""; \
 	for s in $$snippet; do snippet_args="$$snippet_args -S $$s"; done; \
 	echo "Building $$shield ($$board)..."; \
-	extra_modules=$$(find $(MODULES_DIR) -mindepth 1 -maxdepth 1 -type d 2>/dev/null | paste -sd';'); \
+	extra_modules=$$(find $(MODULES_DIR) -mindepth 1 -maxdepth 1 -type d 2>/dev/null | while read d; do [ -f "$$d/zephyr/module.yml" ] && echo "$$d"; done | paste -sd';'); \
 	modules="$(CURDIR)$${extra_modules:+;$$extra_modules}"; \
 	cd $(ZMK_ROOT)/app && \
 	. $(VENV)/bin/activate && \
